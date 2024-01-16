@@ -1,0 +1,8 @@
+.DS_Store
+
+# TypeScript
+dist/
+node_modules/
+
+# App specific
+data/

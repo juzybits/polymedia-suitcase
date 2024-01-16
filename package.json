@@ -1,0 +1,44 @@
+{
+    "private": false,
+    "version": "0.0.0",
+    "name": "@polymedia/suits",
+    "author": "@juzybits (https://polymedia.app)",
+    "homepage": "https://github.com/juzybits/polymedia-suits",
+    "description": "Sui TypeScript utilities",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/juzybits/polymedia-suits"
+    },
+    "keywords": [
+        "polymedia",
+        "sui",
+        "utilities"
+    ],
+    "type": "module",
+    "scripts": {
+        "build": "rm -rf dist/ && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
+        "prepublishOnly": "pnpm build"
+    },
+    "dependencies": {
+        "@mysten/sui.js": "^0.49.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.4",
+        "typescript": "^5.3.3"
+    },
+    "files": [
+        "dist/",
+        "src/",
+        "LICENSE",
+        "README.md"
+    ],
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/esm/index.d.ts",
+    "exports": {
+        "source": "./src/index.ts",
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js"
+    }
+}
