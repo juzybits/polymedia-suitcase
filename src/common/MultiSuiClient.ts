@@ -8,7 +8,7 @@ export type SuiClientWithEndpoint = SuiClient & {
     endpoint: string;
 };
 /**
- * A tool to make many requests to multiple Sui RPC endpoints in parallel.
+ * A tool to make many RPC requests using multiple endpoints.
  * @see MultiSuiClient.executeInBatches()
  */
 export class MultiSuiClient {
@@ -61,7 +61,7 @@ export class MultiSuiClient {
     }
 
     /**
-     * Execute many `SuiClient` RPC operations in parallel using multiple endpoints.
+     * Execute `SuiClient` RPC operations in parallel using multiple endpoints.
      * If any operation fails, it's retried by calling this function recursively.
      * @param inputs The inputs for each RPC call.
      * @param operation A function that performs the RPC operation.

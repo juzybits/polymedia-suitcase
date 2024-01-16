@@ -10,29 +10,8 @@ import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { fromB64, isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
 import { NetworkName, SuiExplorerItem } from '../types.js';
 
-export const ADDRESS_REGEX = '0[xX][a-fA-F0-9]{64}';
-
 /**
- * Shorten a Sui address. Default format is '1234..5678' (given an address
- * like '0x1234000000000000000000000000000000000000000000000000000000005678')
- */
-export function shortenSuiAddress(address: string|null|undefined, start=4, end=4, prefix='', separator='..'): string {
-    return !address ? '' : prefix + address.slice(2, 2+start) + separator + address.slice(-end);
-}
-
-/**
- * Build a Sui Explorer URL, like 'https://suiexplorer.com/address/0x123...456?network=testnet'
- */
-export function makeSuiExplorerUrl(network: NetworkName, kind: SuiExplorerItem, address: string): string {
-    const baseUrl = network === 'localnet'
-    ? 'http://localhost:3000'
-    : 'https://suiexplorer.com';
-    const networkLabel = network === 'localnet' ? 'local' : network;
-    return `${baseUrl}/${kind}/${address}?network=${networkLabel}`;
-}
-
-/**
- * Generate a random Sui address (for development only)
+ * Generate a random Sui address
  */
 export function generateRandomAddress(): string {
     const randomBytes = crypto.randomBytes(32);
@@ -78,6 +57,25 @@ export function getActiveAddressKeypair(): Ed25519Keypair {
 export function getActiveEnv(): NetworkName {
     const activeEnv = execSync('sui client active-env', { encoding: 'utf8' }).trim();
     return activeEnv as NetworkName;
+}
+
+/**
+ * Build a Sui Explorer URL, like 'https://suiexplorer.com/address/0x123...456?network=testnet'
+ */
+export function makeSuiExplorerUrl(network: NetworkName, kind: SuiExplorerItem, address: string): string {
+    const baseUrl = network === 'localnet'
+    ? 'http://localhost:3000'
+    : 'https://suiexplorer.com';
+    const networkLabel = network === 'localnet' ? 'local' : network;
+    return `${baseUrl}/${kind}/${address}?network=${networkLabel}`;
+}
+
+/**
+ * Shorten a Sui address. Default format is '1234..5678' (given an address
+ * like '0x1234000000000000000000000000000000000000000000000000000000005678')
+ */
+export function shortenSuiAddress(address: string|null|undefined, start=4, end=4, prefix='', separator='..'): string {
+    return !address ? '' : prefix + address.slice(2, 2+start) + separator + address.slice(-end);
 }
 
 /**

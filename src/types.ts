@@ -1,5 +1,5 @@
 /**
- * A Sui network name
+ * A Sui network name.
  */
 export type NetworkName =  'mainnet' | 'testnet' | 'devnet' | 'localnet';
 
