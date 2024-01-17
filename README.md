@@ -14,10 +14,10 @@ pnpm add @polymedia/suits
 
 ## Usage
 
-Import from `@polymedia/suits/common` for utilities that can be used in any JavaScript environment:
+Import from `@polymedia/suits` for utilities that can be used in any JavaScript environment:
 
 ```javascript
-import { validateAndNormalizeSuiAddress } from '@polymedia/suits/common';
+import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 ```
 
 Import from `@polymedia/suits/node` for utilities specific to Node.js:
@@ -39,8 +39,6 @@ import { getActiveAddressKeypair } from '@polymedia/suits/node';
 - `function apiRequestIndexer` - Make a request to the Indexer.xyz API (NFTs).
 
 ## Sui functions
-
-### `@polymedia/suits/common`
 
 - `function generateRandomAddress` - Generate a random Sui address.
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
