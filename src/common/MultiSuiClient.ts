@@ -1,5 +1,5 @@
 import { SuiClient } from '@mysten/sui.js/client';
-import { sleep } from './misc.js';
+import { sleep } from './utils-misc.js';
 
 /**
  * A `SuiClient` object that exposes the URL of its RPC endpoint.

@@ -8,7 +8,7 @@ import path from 'path';
 
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { fromB64, isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
-import { NetworkName, SuiExplorerItem } from '../types.js';
+import { NetworkName, SuiExplorerItem } from './types.js';
 
 /**
  * Generate a random Sui address
