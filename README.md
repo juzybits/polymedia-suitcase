@@ -4,23 +4,31 @@ Sui TypeScript utilities.
 
 ![Polymedia SuiTS](https://assets.polymedia.app/img/suits/open-graph.webp)
 
-## How to use
+## Installation
 
 Add SuiTS to your project:
 
-```
+```bash
 pnpm add @polymedia/suits
 ```
 
-Use it in your code, for example:
+## Usage
 
+Import from `@polymedia/suits/common` for utilities that can be used in any JavaScript environment:
+
+```javascript
+import { validateAndNormalizeSuiAddress } from '@polymedia/suits/common';
 ```
-import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
+
+Import from `@polymedia/suits/node` for utilities specific to Node.js:
+
+```javascript
+import { getActiveAddressKeypair } from '@polymedia/suits/node';
 ```
 
 ## Constants
 
-- `const ADDRESS_REGEX` - Match a normalized Sui address.
+- `const ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
 
 ## Types
 
@@ -32,18 +40,23 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 
 ## Sui functions
 
+### `@polymedia/suits/common`
+
 - `function generateRandomAddress` - Generate a random Sui address.
-- `function getActiveAddressKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
-- `function getActiveEnv` - Get the active Sui environment from `sui client active-env`.
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
 - `function shortenSuiAddress` - Shorten a Sui address.
 - `function validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
+### `@polymedia/suits/node`
+
+- `function getActiveAddressKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
+- `function getActiveEnv` - Get the active Sui environment from `sui client active-env`.
+
 ## Classes
 
 - `class MultiSuiClient` - A tool to make many RPC requests using multiple endpoints.
-    - `function MultiSuiClient.executeInBatches` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
-    - `function MultiSuiClient.testEndpoints` - Test the latency of various Sui RPC endpoints.
+    - `function executeInBatches` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
+    - `function testEndpoints` - Test the latency of various Sui RPC endpoints.
 
 ## Misc
 
