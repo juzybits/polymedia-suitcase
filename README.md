@@ -2,6 +2,8 @@
 
 Sui TypeScript utilities.
 
+![Polymedia SuiTS](https://assets.polymedia.app/img/suits/open-graph.webp)
+
 ## How to use
 
 Add SuiTS to your project:
