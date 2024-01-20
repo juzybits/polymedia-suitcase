@@ -32,7 +32,7 @@ export function formatNumber(num: number | BigInt): string {
 /**
  * Log a message including the current date and time.
  */
-export function log(level: 'log'|'info'|'debug'|'warn'|'error', message: string) {
+export function log(level: 'log'|'info'|'debug'|'warn'|'error', ...data: any[]) {
     const date = new Date();
     const year = date.getFullYear().toString().slice(-2);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -40,9 +40,9 @@ export function log(level: 'log'|'info'|'debug'|'warn'|'error', message: string)
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const seconds = date.getSeconds().toString().padStart(2, '0');
-    const dateStr = `${year}${month}${day} ${hours}${minutes}${seconds}`;
+    const dateStr = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
-    console[level](`${dateStr} | ${message}`);
+    console[level](`${dateStr} |`, ...data);
 }
 
 /**
