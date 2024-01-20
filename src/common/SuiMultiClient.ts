@@ -9,9 +9,9 @@ export type SuiClientWithEndpoint = SuiClient & {
 };
 /**
  * A tool to make many RPC requests using multiple endpoints.
- * @see MultiSuiClient.executeInBatches()
+ * @see SuiMultiClient.executeInBatches()
  */
-export class MultiSuiClient {
+export class SuiMultiClient {
     private readonly clients: SuiClientWithEndpoint[];
     private clientIdx = 0; // the index of the next client to be returned by getNextClient()
 

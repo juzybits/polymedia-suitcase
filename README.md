@@ -52,7 +52,11 @@ import { getActiveAddressKeypair } from '@polymedia/suits/node';
 
 ## Classes
 
-- `class MultiSuiClient` - A tool to make many RPC requests using multiple endpoints.
+- `class SuiEventFetcher` - A tool to fetch the latest Sui events and parse them into custom objects.
+    - `function fetchEvents` - Fetch the latest events. Every time the function is called it looks
+        for events that took place since the last call.
+
+- `class SuiMultiClient` - A tool to make many RPC requests using multiple endpoints.
     - `function executeInBatches` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
     - `function testEndpoints` - Test the latency of various Sui RPC endpoints.
 

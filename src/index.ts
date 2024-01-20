@@ -1,4 +1,5 @@
-export * from './common/MultiSuiClient.js';
+export * from './common/SuiEventFetcher.js';
+export * from './common/SuiMultiClient.js';
 export * from './common/constants.js';
 export * from './common/types.js';
 export * from './common/utils-api.js';
