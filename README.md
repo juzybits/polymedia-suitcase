@@ -60,4 +60,5 @@ import { getActiveAddressKeypair } from '@polymedia/suits/node';
 
 - `function chunkArray` - Split an array into multiple chunks of a certain size.
 - `function formatNumber` - Format a number into a readable string.
+- `function log` - Log a message including the current date and time.
 - `function sleep` - Wait for a number of milliseconds.
