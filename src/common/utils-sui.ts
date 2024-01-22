@@ -17,12 +17,20 @@ export function generateRandomAddress(): string {
 /**
  * Build a Sui Explorer URL, like 'https://suiexplorer.com/address/0x123...456?network=testnet'
  */
-export function makeSuiExplorerUrl(network: NetworkName, kind: SuiExplorerItem, address: string): string {
+export function makeSuiExplorerUrl(
+    network: NetworkName,
+    kind: SuiExplorerItem,
+    address: string,
+): string {
     const baseUrl = network === 'localnet'
-    ? 'http://localhost:3000'
-    : 'https://suiexplorer.com';
-    const networkLabel = network === 'localnet' ? 'local' : network;
-    return `${baseUrl}/${kind}/${address}?network=${networkLabel}`;
+        ? 'http://localhost:3000'
+        : 'https://suiexplorer.com';
+    let url = `${baseUrl}/${kind}/${address}`;
+    if (network !== 'mainnet') {
+        const networkLabel = network === 'localnet' ? 'local' : network;
+        url += `?network=${networkLabel}`;
+    }
+    return url;
 }
 
 /**
