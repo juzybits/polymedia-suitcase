@@ -21,7 +21,7 @@ export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
  *
  * - 'compact' format:
  *   - If the number is < 1 million, use 'standard' format
- *   - If the number is >= 1 million, use word notation (e.g. '540.23 million', '20.05 billion')
+ *   - If the number is >= 1 million, use word notation (e.g. '540.23M', '20.05B')
  */
 export function formatNumber(
     num: number | BigInt,
@@ -47,11 +47,11 @@ function formatNumberCompact(num: number): string {
     if (num < 1_000_000) {
         return formatNumberStandard(num);
     } else if (num < 1_000_000_000) {
-        return formatNumberStandard(num / 1_000_000) + ' million';
+        return formatNumberStandard(num / 1_000_000) + 'M';
     } else if (num < 1_000_000_000_000) {
-        return formatNumberStandard(num / 1_000_000_000) + ' billion';
+        return formatNumberStandard(num / 1_000_000_000) + 'B';
     } else {
-        return formatNumberStandard(num / 1_000_000_000_000) + ' trillion';
+        return formatNumberStandard(num / 1_000_000_000_000) + 'T';
     }
 }
 
