@@ -14,19 +14,45 @@ export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
 
 /**
  * Format a number into a readable string.
- * - If the number is < 1000, show 2 decimals.
- * - If the number is >= 1000, don't show any decimals.
+ *
+ * - 'standard' format:
+ *   - If the number is < 1000, show 2 decimals (e.g. '123.45')
+ *   - If the number is >= 1000, don't show any decimals (e.g. '1,234')
+ *
+ * - 'compact' format:
+ *   - If the number is < 1 million, use 'standard' format
+ *   - If the number is >= 1 million, use word notation (e.g. '540.23 million', '20.05 billion')
  */
-export function formatNumber(num: number | BigInt): string {
-    if (typeof num === 'bigint') {
-        return num.toLocaleString('en-US');
+export function formatNumber(
+    num: number | BigInt,
+    format: 'standard'|'compact' = 'standard'
+): string {
+    num = num as number;
+    if (format === 'standard') {
+        return formatNumberStandard(num);
+    } else {
+        return formatNumberCompact(num);
     }
+}
 
-    if (num as number < 1000) {
+function formatNumberStandard(num: number): string {
+    if (num < 1000) {
         return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    } else {
+        return num.toLocaleString('en-US', { maximumFractionDigits: 0 });
     }
+}
 
-    return num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+function formatNumberCompact(num: number): string {
+    if (num < 1_000_000) {
+        return formatNumberStandard(num);
+    } else if (num < 1_000_000_000) {
+        return formatNumberStandard(num / 1_000_000) + ' million';
+    } else if (num < 1_000_000_000_000) {
+        return formatNumberStandard(num / 1_000_000_000) + ' billion';
+    } else {
+        return formatNumberStandard(num / 1_000_000_000_000) + ' trillion';
+    }
 }
 
 /**
