@@ -1,7 +1,0 @@
-{
-    "private": true,
-    "types": "../dist/cjs/node/index.d.js",
-    "main": "../dist/cjs/node/index.js",
-    "import": "../dist/esm/node/index.js",
-    "sideEffects": false
-}

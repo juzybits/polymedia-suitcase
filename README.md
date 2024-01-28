@@ -4,53 +4,40 @@ Sui TypeScript utilities.
 
 ![Polymedia SuiTS](https://assets.polymedia.app/img/suits/open-graph.webp)
 
-## Installation
+## Usage
 
 Add SuiTS to your project:
-
 ```bash
 pnpm add @polymedia/suits
 ```
 
-## Usage
-
-Import from `@polymedia/suits` for utilities that can be used in any JavaScript environment:
-
-```javascript
+Use it in your code, for example:
+```typescript
 import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 ```
 
-Import from `@polymedia/suits/node` for utilities specific to Node.js:
+## Exports
 
-```javascript
-import { getActiveAddressKeypair } from '@polymedia/suits/node';
-```
-
-## Constants
+### Constants
 
 - `const ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
 
-## Types
+### Types
 
 - `type NetworkName` - A Sui network name.
 
-## API functions
+### API functions
 
 - `function apiRequestIndexer` - Make a request to the Indexer.xyz API (NFTs).
 
-## Sui functions
+### Sui functions
 
 - `function generateRandomAddress` - Generate a random Sui address.
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
 - `function shortenSuiAddress` - Shorten a Sui address.
 - `function validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
-### `@polymedia/suits/node`
-
-- `function getActiveAddressKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
-- `function getActiveEnv` - Get the active Sui environment from `sui client active-env`.
-
-## Classes
+### Classes
 
 - `class SuiEventFetcher` - A tool to fetch the latest Sui events and parse them into custom objects.
     - `function fetchEvents` - Fetch the latest events. Every time the function is called it looks
@@ -60,7 +47,7 @@ import { getActiveAddressKeypair } from '@polymedia/suits/node';
     - `function executeInBatches` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
     - `function testEndpoints` - Test the latency of various Sui RPC endpoints.
 
-## Misc
+### Misc functions
 
 - `function chunkArray` - Split an array into multiple chunks of a certain size.
 - `function formatNumber` - Format a number into a readable string.
