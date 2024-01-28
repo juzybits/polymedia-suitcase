@@ -1,16 +1,18 @@
 /* Sui utils */
 
-import crypto from 'crypto';
-
 import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
 import { NetworkName, SuiExplorerItem } from './types.js';
 
 /**
- * Generate a random Sui address
+ * Generate a random Sui address (for development only)
  */
-export function generateRandomAddress(): string {
-    const randomBytes = crypto.randomBytes(32);
-    const address = '0x' + randomBytes.toString('hex');
+export function generateRandomAddressDevOnly() {
+    // Function to generate a random byte in hexadecimal format
+    const randomByteHex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
+
+    // Generate 32 random bytes and convert each to hex
+    const address = '0x' + Array.from({ length: 32 }, randomByteHex).join('');
+
     return address;
 }
 
