@@ -2,49 +2,24 @@ import { SuiClient } from '@mysten/sui.js/client';
 import { sleep } from './utils-misc.js';
 
 /**
- * A `SuiClient` object that exposes the URL of its RPC endpoint.
- */
-export type SuiClientWithEndpoint = SuiClient & {
-    endpoint: string;
-};
-/**
  * A tool to make many RPC requests using multiple endpoints.
  * @see SuiMultiClient.executeInBatches()
  */
-export class SuiMultiClient { // TODO: accept custom endpoints
+export class SuiMultiClient {
     private readonly clients: SuiClientWithEndpoint[];
-    private clientIdx = 0; // the index of the next client to be returned by getNextClient()
+    private readonly rateLimitDelay: number;
+    private clientIdx: number; // the index of the next client to be returned by getNextClient()
 
-    private readonly rateLimitDelay = 334; // minimum time between batches (in milliseconds)
-    private readonly endpoints = [
-        // 'https://mainnet-rpc.sui.chainbase.online',          // 567 response
-        // 'https://mainnet.sui.rpcpool.com',                   // 403 forbidden when using VPN
-        'https://mainnet.suiet.app',
-        'https://rpc-mainnet.suiscan.xyz',
-        'https://sui-mainnet-endpoint.blockvision.org',
-        'https://sui-mainnet.public.blastapi.io',
-        // 'https://sui-rpc-mainnet.testnet-pride.com',         // 502 bad gateway
-        // 'https://sui1mainnet-rpc.chainode.tech',             // 502 bad gateway
-        // 'https://sui-mainnet-ca-1.cosmostation.io',
-        'https://sui-mainnet-ca-2.cosmostation.io',
-        // 'https://sui-mainnet-eu-1.cosmostation.io',          // 000
-        // 'https://sui-mainnet-eu-2.cosmostation.io',          // 000
-        'https://sui-mainnet-eu-3.cosmostation.io',
-        'https://sui-mainnet-eu-4.cosmostation.io',
-        'https://sui-mainnet-us-1.cosmostation.io',
-        'https://sui-mainnet-us-2.cosmostation.io',
-        'https://fullnode.mainnet.sui.io',
-        // 'https://sui-mainnet-rpc.allthatnode.com',           // 429 too many requests
-        // 'https://sui-mainnet-rpc-germany.allthatnode.com',   // 429 too many requests
-        // 'https://sui-mainnet-rpc-korea.allthatnode.com',     // too slow/far
-        // 'https://sui-mainnet.nodeinfra.com',                 // 429 too many requests
-        'https://sui.publicnode.com',
-        'https://sui-mainnet-rpc.bartestnet.com',
-    ];
-
-    constructor() {
+    /**
+     * @param endpoints (optional) A list of RPC endpoint URLs to overwrite the default list
+     * @param rateLimitDelay (optional) Minimum time between batches, in milliseconds. You might want to tweak this value if you get rate limited, but it works well with DEFAULT_ENDPOINTS.
+     */
+    constructor(endpointUrls?: string[], rateLimitDelay: number = 334) {
         this.clients = [];
-        for (const endpoint of this.endpoints) {
+        this.clientIdx = 0;
+        this.rateLimitDelay = rateLimitDelay;
+        const endpoints = endpointUrls ?? DEFAULT_ENDPOINTS;
+        for (const endpoint of endpoints) {
             let client = new SuiClient({ url: endpoint });
             const clientWithEndpoint = Object.assign(client, { endpoint });
             this.clients.push(clientWithEndpoint);
@@ -136,3 +111,40 @@ export class SuiMultiClient { // TODO: accept custom endpoints
         console.timeEnd('total time');
     }
 }
+
+/**
+ * A `SuiClient` object that exposes the URL of its RPC endpoint.
+ */
+export type SuiClientWithEndpoint = SuiClient & {
+    endpoint: string;
+};
+
+/**
+ * Default RPC endpoint URLs for SuiMultiClient.
+ * Manually tested for the last time on January 2023.
+ */
+export const DEFAULT_ENDPOINTS = [
+    // 'https://mainnet-rpc.sui.chainbase.online',          // 567 response
+    // 'https://mainnet.sui.rpcpool.com',                   // 403 forbidden when using VPN
+    'https://mainnet.suiet.app',
+    'https://rpc-mainnet.suiscan.xyz',
+    'https://sui-mainnet-endpoint.blockvision.org',
+    'https://sui-mainnet.public.blastapi.io',
+    // 'https://sui-rpc-mainnet.testnet-pride.com',         // 502 bad gateway
+    // 'https://sui1mainnet-rpc.chainode.tech',             // 502 bad gateway
+    // 'https://sui-mainnet-ca-1.cosmostation.io',
+    'https://sui-mainnet-ca-2.cosmostation.io',
+    // 'https://sui-mainnet-eu-1.cosmostation.io',          // 000
+    // 'https://sui-mainnet-eu-2.cosmostation.io',          // 000
+    'https://sui-mainnet-eu-3.cosmostation.io',
+    'https://sui-mainnet-eu-4.cosmostation.io',
+    'https://sui-mainnet-us-1.cosmostation.io',
+    'https://sui-mainnet-us-2.cosmostation.io',
+    'https://fullnode.mainnet.sui.io',
+    // 'https://sui-mainnet-rpc.allthatnode.com',           // 429 too many requests
+    // 'https://sui-mainnet-rpc-germany.allthatnode.com',   // 429 too many requests
+    // 'https://sui-mainnet-rpc-korea.allthatnode.com',     // too slow/far
+    // 'https://sui-mainnet.nodeinfra.com',                 // 429 too many requests
+    'https://sui.publicnode.com',
+    'https://sui-mainnet-rpc.bartestnet.com',
+];
