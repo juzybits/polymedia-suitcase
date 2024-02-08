@@ -32,9 +32,10 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 
 ### Sui functions
 
-- `function generateRandomAddressDevOnly` - Generate a random Sui address (for development only).
+- `function generateRandomAddress` - Generate a random Sui address (for development only).
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
 - `function shortenSuiAddress` - Shorten a Sui address.
+- `function useSuiFaucet` - Send SUI to an address on localnet/devnet/testnet.
 - `function validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
 ### Classes

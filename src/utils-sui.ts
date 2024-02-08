@@ -6,7 +6,7 @@ import { NetworkName, SuiExplorerItem } from './types.js';
 /**
  * Generate a random Sui address (for development only)
  */
-export function generateRandomAddressDevOnly() {
+export function generateRandomAddress() {
     // Function to generate a random byte in hexadecimal format
     const randomByteHex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
 
@@ -41,6 +41,35 @@ export function makeSuiExplorerUrl(
  */
 export function shortenSuiAddress(address: string|null|undefined, start=4, end=4, prefix='', separator='..'): string {
     return !address ? '' : prefix + address.slice(2, 2+start) + separator + address.slice(-end);
+}
+
+/**
+ * Send SUI to an address on localnet/devnet/testnet.
+ */
+export async function useSuiFaucet(network: 'localnet'|'devnet'|'testnet', address: string) {
+    let faucetUrl: string;
+    if (network == 'localnet') {
+        faucetUrl='http://127.0.0.1:9123/gas';
+    }
+    else if (network == 'devnet') {
+        faucetUrl='https://faucet.devnet.sui.io/v1/gas';
+    }
+    else if (network == 'testnet') {
+        faucetUrl='https://faucet.testnet.sui.io/v1/gas';
+    }
+    else {
+        throw Error(`Can't use faucet on '${network}'`);
+    }
+
+    return fetch(faucetUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            FixedAmountRequest: {
+                recipient: address
+            }
+        }),
+    });
 }
 
 /**
