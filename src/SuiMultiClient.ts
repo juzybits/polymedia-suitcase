@@ -14,13 +14,13 @@ export class SuiMultiClient {
      * @param endpoints (optional) A list of RPC endpoint URLs to overwrite the default list
      * @param rateLimitDelay (optional) Minimum time between batches, in milliseconds. You might want to tweak this value if you get rate limited, but it works well with DEFAULT_ENDPOINTS.
      */
-    constructor(endpointUrls?: string[], rateLimitDelay: number = 334) {
+    constructor(endpointUrls?: string[], rateLimitDelay = 334) {
         this.clients = [];
         this.clientIdx = 0;
         this.rateLimitDelay = rateLimitDelay;
         const endpoints = endpointUrls ?? DEFAULT_ENDPOINTS;
         for (const endpoint of endpoints) {
-            let client = new SuiClient({ url: endpoint });
+            const client = new SuiClient({ url: endpoint });
             const clientWithEndpoint = Object.assign(client, { endpoint });
             this.clients.push(clientWithEndpoint);
         }

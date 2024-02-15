@@ -24,7 +24,7 @@ export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
  *   - If the number is >= 1 million, use word notation (e.g. '540.23M', '20.05B')
  */
 export function formatNumber(
-    num: number | BigInt,
+    num: number | bigint,
     format: 'standard'|'compact' = 'standard'
 ): string {
     num = num as number;

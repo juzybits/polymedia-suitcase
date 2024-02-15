@@ -44,7 +44,7 @@ export class SuiEventFetcher<T> {
                 return await this.fetchEventsFromCursor();
             }
         } catch(error) {
-            console.error(`[SuiEventFetcher] ${error}`);
+            console.error('[SuiEventFetcher]', error);
             return [];
         }
     }

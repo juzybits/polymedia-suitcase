@@ -54,11 +54,8 @@ export async function useSuiFaucet(network: 'localnet'|'devnet'|'testnet', addre
     else if (network == 'devnet') {
         faucetUrl='https://faucet.devnet.sui.io/v1/gas';
     }
-    else if (network == 'testnet') {
+    else { // network == 'testnet'
         faucetUrl='https://faucet.testnet.sui.io/v1/gas';
-    }
-    else {
-        throw Error(`Can't use faucet on '${network}'`);
     }
 
     return fetch(faucetUrl, {
