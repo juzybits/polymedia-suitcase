@@ -58,7 +58,7 @@ function formatNumberCompact(num: number): string {
 /**
  * Log a message including the current date and time.
  */
-export function log(level: 'log'|'info'|'debug'|'warn'|'error', ...data: any[]) {
+export function log(level: 'log'|'info'|'debug'|'warn'|'error', ...data: unknown[]) {
     const date = new Date();
     const year = date.getFullYear().toString().slice(-2);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');

@@ -3,7 +3,7 @@
 /**
  * Make a request to the Indexer.xyz API (NFTs).
  */
-export async function apiRequestIndexer(apiUser: string, apiKey: string, query: any): Promise<any> {
+export async function apiRequestIndexer<T>(apiUser: string, apiKey: string, query: string): Promise<T> {
     const result = await fetch('https://api.indexer.xyz/graphql', {
       method: 'POST',
       headers: {
@@ -17,10 +17,7 @@ export async function apiRequestIndexer(apiUser: string, apiKey: string, query: 
         if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
         }
-        return response.json();
-    })
-    .then((result: any) => {
-        return result;
+        return response.json() as Promise<T>;
     });
     return result;
 }
