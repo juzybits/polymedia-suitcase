@@ -24,7 +24,8 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 
 ### Types
 
-- `type NetworkName` - A Sui network name.
+- `type NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
+- `type SuiExplorerItem` - A Sui Explorer item type (address/object/package/txblock).
 
 ### API functions
 
@@ -32,6 +33,7 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 
 ### Sui functions
 
+- `function fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
 - `function generateRandomAddress` - Generate a random Sui address (for development only).
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
 - `function shortenSuiAddress` - Shorten a Sui address.

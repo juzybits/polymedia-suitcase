@@ -1,7 +1,40 @@
 /* Sui utils */
 
+import { DynamicFieldInfo, SuiClient } from '@mysten/sui.js/client';
 import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
 import { NetworkName, SuiExplorerItem } from './types.js';
+import { sleep } from './utils-misc.js';
+
+/**
+ * Get all dynamic object fields owned by an object.
+ */
+export async function fetchAllDynamicFields(
+    suiClient: SuiClient,
+    parentId: string,
+    sleepBetweenRequests = 330, // milliseconds
+    verbose = false,
+): Promise<DynamicFieldInfo[]> {
+    const allFieldsInfo: DynamicFieldInfo[] = [];
+    let hasNextPage = true as boolean; // type cast so ESLint doesn't complain about 'no-unnecessary-condition'
+    let cursor: string|null = null;
+    let pageNumber = 1;
+    while (hasNextPage) {
+        if (verbose) {
+            console.log(`Fetching page ${pageNumber}`);
+        }
+        pageNumber++;
+        await suiClient.getDynamicFields({ parentId, cursor })
+        .then(async page => {
+            allFieldsInfo.push(...page.data);
+            hasNextPage = page.hasNextPage;
+            cursor = page.nextCursor;
+            if (sleepBetweenRequests > 0) {
+                await sleep(sleepBetweenRequests); // give the RPC a break
+            }
+        });
+    }
+    return allFieldsInfo;
+}
 
 /**
  * Generate a random Sui address (for development only)
