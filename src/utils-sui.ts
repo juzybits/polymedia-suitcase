@@ -1,9 +1,32 @@
 /* Sui utils */
 
-import { DynamicFieldInfo, SuiClient, SuiObjectResponse } from '@mysten/sui.js/client';
+import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from '@mysten/sui.js/client';
+import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
 import { NetworkName, SuiExplorerItem } from './types.js';
 import { sleep } from './utils-misc.js';
+
+/**
+ * Call `SuiClient.devInspectTransactionBlock()` and return the results.
+ */
+export async function devInspectAndGetResults(
+    suiClient: SuiClient,
+    txb: TransactionBlock,
+    sender = '0x7777777777777777777777777777777777777777777777777777777777777777',
+): Promise<SuiExecutionResult[]> {
+    return await suiClient.devInspectTransactionBlock({
+        sender: sender,
+        transactionBlock: txb
+    }).then(resp => {
+        if (resp.error) {
+            throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+        }
+        if (!resp.results?.length) {
+            throw Error(`response has no results: ${JSON.stringify(resp, null, 2)}`);
+        }
+        return resp.results;
+    });
+}
 
 /**
  * Get all dynamic object fields owned by an object.
