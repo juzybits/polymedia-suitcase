@@ -37,9 +37,12 @@ export class SuiMultiClient {
      */
     public static newWithDefaultEndpoints(
         network: NetworkName,
-        rateLimitDelay = 334,
+        rateLimitDelay?: number,
     ): SuiMultiClient {
         const endpoints = RPC_ENDPOINTS[network];
+        if (typeof rateLimitDelay === 'undefined') {
+            rateLimitDelay = network === 'localnet' ? 0 : 334;
+        }
         return new SuiMultiClient(endpoints, rateLimitDelay);
     }
 
