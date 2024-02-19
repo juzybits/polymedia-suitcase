@@ -74,10 +74,12 @@ export class SuiMultiClient {
 
             // Execute all operations in the current batch
             const batch = inputs.slice(start, start + batchSize);
-            const client = this.getNextClient();
             const timeStart = Date.now();
             const batchResults = await Promise.allSettled(
-                batch.map(input => operation(client, input))
+                batch.map(input => {
+                    const client = this.getNextClient();
+                    return operation(client, input);
+                })
             );
             const timeTaken = Date.now() - timeStart;
 
@@ -86,7 +88,7 @@ export class SuiMultiClient {
                 if (result.status === 'fulfilled') {
                     results[start + index] = result.value;
                 } else {
-                    retries.push(batch[index]);
+                    retries.push(batch[index]); // TODO: ignore failing RPC endpoints moving forward
                 }
             });
 
