@@ -31,7 +31,7 @@ export class SuiMultiClient {
     }
 
     /**
-     * Create a SuiMultiClient instance with the default endpoints for a given network.
+     * Create a SuiMultiClient instance with the default endpoints for a given network.
      * @param network The network name to select default RPC endpoints.
      * @param rateLimitDelay (optional) Minimum time between batches, in milliseconds.
      */

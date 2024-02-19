@@ -1,6 +1,6 @@
 /* Sui utils */
 
-import { DynamicFieldInfo, SuiClient } from '@mysten/sui.js/client';
+import { DynamicFieldInfo, SuiClient, SuiObjectResponse } from '@mysten/sui.js/client';
 import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
 import { NetworkName, SuiExplorerItem } from './types.js';
 import { sleep } from './utils-misc.js';
@@ -47,6 +47,28 @@ export function generateRandomAddress() {
     const address = '0x' + Array.from({ length: 32 }, randomByteHex).join('');
 
     return address;
+}
+
+/**
+ * Validate a SuiObjectResponse and return its content.
+ * @param resp A `SuiObjectResponse` from `SuiClient.getObject()` / `.multiGetObjects()` / `.getDynamicFieldObject()`
+ * @param typeRegex (optional) A regular expression to check that `resp.data.content.type` has the right type
+ * @returns The contents of `resp.data.content.fields`
+ */
+export function getSuiObjectResponseFields(
+    resp: SuiObjectResponse,
+    typeRegex?: string,
+): Record<string, any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (resp.data?.content?.dataType !== 'moveObject') {
+        throw Error(`content missing: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (typeRegex && !new RegExp(typeRegex).test(resp.data.content.type)) {
+        throw Error(`wrong object type: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 /**
