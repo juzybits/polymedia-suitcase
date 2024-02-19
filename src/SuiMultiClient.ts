@@ -113,18 +113,17 @@ export class SuiMultiClient {
     /**
      * Test the latency of various Sui RPC endpoints.
      */
-    public async testEndpoints(): Promise<void> {
+    public async testEndpoints(
+        operation: (client: SuiClientWithEndpoint) => Promise<void>
+    ): Promise<void> {
         console.log(`testing ${this.clients.length} endpoints`);
         console.time('total time');
         for (const client of this.clients) {
             console.time(`time: ${client.endpoint}`);
-            const balance = await client.getBalance({
-                owner: '0x8ec0945def230349b2cbd72abd0a91ceb1ca8a4604474d03ef16379414f05a10',
-                coinType: '0x2::sui::SUI',
-            });
+            await operation(client);
             console.timeEnd(`time: ${client.endpoint}`);
-            console.log(`balance: ${balance.totalBalance}`);
         }
+        console.log('');
         console.timeEnd('total time');
     }
 }
