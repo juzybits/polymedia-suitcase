@@ -33,10 +33,13 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 
 ### Sui functions
 
+- `function devInspectAndGetResults` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
 - `function fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
 - `function generateRandomAddress` - Generate a random Sui address (for development only).
+- `function getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
-- `function shortenSuiAddress` - Shorten a Sui address.
+- `function removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
+- `function shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).
 - `function useSuiFaucet` - Send SUI to an address on localnet/devnet/testnet.
 - `function validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 

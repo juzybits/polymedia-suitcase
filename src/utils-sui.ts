@@ -60,7 +60,7 @@ export async function fetchAllDynamicFields(
 }
 
 /**
- * Generate a random Sui address (for development only)
+ * Generate a random Sui address (for development only).
  */
 export function generateRandomAddress() {
     // Function to generate a random byte in hexadecimal format
@@ -114,8 +114,16 @@ export function makeSuiExplorerUrl(
 }
 
 /**
- * Shorten a Sui address. Default format is '1234..5678' (given an address
- * like '0x1234000000000000000000000000000000000000000000000000000000005678')
+ * Remove leading zeros from a Sui address (lossless). For example it will turn
+ * '0x0000000000000000000000000000000000000000000000000000000000000002' into '0x2'.
+ */
+export function removeLeadingZeros(address: string): string {
+    return address.replaceAll(/0x0+/g, '0x');
+}
+
+/**
+ * Abbreviate a Sui address for display purposes (lossy). Default format is '1234..5678',
+ * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
  */
 export function shortenSuiAddress(address: string|null|undefined, start=4, end=4, prefix='', separator='..'): string {
     return !address ? '' : prefix + address.slice(2, 2+start) + separator + address.slice(-end);
