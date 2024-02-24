@@ -40,10 +40,7 @@ export class SuiMultiClient {
         rateLimitDelay?: number,
     ): SuiMultiClient {
         const endpoints = RPC_ENDPOINTS[network];
-        if (typeof rateLimitDelay === 'undefined') {
-            rateLimitDelay = network === 'localnet' ? 0 : 334;
-        }
-        return new SuiMultiClient(endpoints, rateLimitDelay);
+        return new SuiMultiClient(endpoints, rateLimitDelay ?? 334);
     }
 
     /**
@@ -187,11 +184,6 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
     ],
     'localnet': [
         // to simulate multiple RPC endpoints locally
-        getFullnodeUrl('localnet'),
-        getFullnodeUrl('localnet'),
-        getFullnodeUrl('localnet'),
-        getFullnodeUrl('localnet'),
-        getFullnodeUrl('localnet'),
         getFullnodeUrl('localnet'),
         getFullnodeUrl('localnet'),
         getFullnodeUrl('localnet'),
