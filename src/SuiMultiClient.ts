@@ -67,10 +67,10 @@ export class SuiMultiClient {
         const retries = new Array<InputType>();
         const batchSize = this.clients.length;
         const totalBatches = Math.ceil(inputs.length / batchSize);
-        console.log(`Executing ${inputs.length} operations in batches of ${batchSize}`);
+        console.debug(`[SuiMultiClient] Executing ${inputs.length} operations in batches of ${batchSize}`);
 
         for (let start = 0, batchNum = 1; start < inputs.length; start += batchSize, batchNum++) {
-            console.log(`Processing batch ${batchNum} of ${totalBatches}`);
+            console.debug(`[SuiMultiClient] Processing batch ${batchNum} of ${totalBatches}`);
 
             // Execute all operations in the current batch
             const batch = inputs.slice(start, start + batchSize);
@@ -88,6 +88,7 @@ export class SuiMultiClient {
                 if (result.status === 'fulfilled') {
                     results[start + index] = result.value;
                 } else {
+                    console.warn(`[SuiMultiClient] status: ${result.status}, reason:`, result.reason);
                     retries.push(batch[index]); // TODO: ignore failing RPC endpoints moving forward
                 }
             });
