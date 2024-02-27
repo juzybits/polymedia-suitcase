@@ -34,6 +34,7 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 ### Sui functions
 
 - `function devInspectAndGetResults` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
+- `function devInspectAndGetReturnValues` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
 - `function fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
 - `function generateRandomAddress` - Generate a random Sui address (for development only).
 - `function getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.

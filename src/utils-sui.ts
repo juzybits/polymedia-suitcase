@@ -1,5 +1,6 @@
 /* Sui utils */
 
+import { bcs } from '@mysten/sui.js/bcs';
 import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from '@mysten/sui.js/client';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
@@ -25,6 +26,44 @@ export async function devInspectAndGetResults(
             throw Error(`response has no results: ${JSON.stringify(resp, null, 2)}`);
         }
         return resp.results;
+    });
+}
+
+/**
+ * Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
+ * @returns An array with the deserialized return values of each transaction in the TransactionBlock.
+ */
+export async function devInspectAndGetReturnValues(
+    suiClient: SuiClient,
+    txb: TransactionBlock,
+    sender = '0x7777777777777777777777777777777777777777777777777777777777777777',
+): Promise<unknown[][]> {
+    return await devInspectAndGetResults(
+        suiClient,
+        txb,
+        sender,
+    ).then(results => {
+        /**
+         * The values returned from each of the transactions in the TransactionBlock.
+         */
+        const blockReturnValues: unknown[][] = [];
+        for (const txnResult of results) {
+            if (!txnResult.returnValues?.length) {
+                throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
+            }
+            /**
+             * The values returned from the transaction (a function can return multiple values).
+             */
+            const txnReturnValues: unknown[] = [];
+            for (const value of txnResult.returnValues) {
+                const valueData = Uint8Array.from(value[0]);
+                const valueType = value[1];
+                const valueDeserialized: unknown = bcs.de(valueType, valueData, 'hex');
+                txnReturnValues.push(valueDeserialized);
+            }
+            blockReturnValues.push(txnReturnValues);
+        }
+        return blockReturnValues;
     });
 }
 
