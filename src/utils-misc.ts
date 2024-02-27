@@ -72,6 +72,23 @@ export function log(level: 'log'|'info'|'debug'|'warn'|'error', ...data: unknown
 }
 
 /**
+ * Generate an array of ranges of a certain size between two numbers.
+ *
+ * For example, calling `makeRanges(0, 678, 250)` will return:
+ * ```
+ * [ [ 0, 250 ], [ 250, 500 ], [ 500, 678 ] ]
+ * ```
+ */
+export function makeRanges(from: number, to: number, size: number): number[][] {
+    const ranges: number[][] = [];
+    for (let start = from; start < to; start += size) {
+        const end = Math.min(start + size, to);
+        ranges.push([start, end]);
+    }
+    return ranges;
+}
+
+/**
  * Wait for a number of milliseconds.
  */
 export async function sleep(ms: number): Promise<void> {

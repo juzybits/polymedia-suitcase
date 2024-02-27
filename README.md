@@ -59,4 +59,5 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 - `function chunkArray` - Split an array into multiple chunks of a certain size.
 - `function formatNumber` - Format a number into a readable string.
 - `function log` - Log a message including the current date and time.
+- `function makeRanges` - Generate an array of ranges of a certain size between two numbers.
 - `function sleep` - Wait for a number of milliseconds.
