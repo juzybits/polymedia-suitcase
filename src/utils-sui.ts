@@ -2,7 +2,7 @@
 
 import { bcs } from '@mysten/sui.js/bcs';
 import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from '@mysten/sui.js/client';
-import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { TransactionBlock, TransactionResult } from '@mysten/sui.js/transactions';
 import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
 import { NetworkName, SuiExplorerItem } from './types.js';
 import { sleep } from './utils-misc.js';
@@ -109,6 +109,40 @@ export function generateRandomAddress() {
     const address = '0x' + Array.from({ length: 32 }, randomByteHex).join('');
 
     return address;
+}
+
+/**
+ * Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
+ * Assumes that the owner has enough balance.
+ */
+export async function getCoinOfValue(
+    suiClient: SuiClient,
+    ownerAddress: string,
+    coinType: string,
+    coinValue: number|bigint,
+    txb: TransactionBlock,
+): Promise<TransactionResult> {
+    let fundingCoin: TransactionResult;
+    coinType = removeLeadingZeros(coinType);
+    if (coinType === '0x2::sui::SUI') {
+        fundingCoin = txb.splitCoins(txb.gas, [txb.pure(coinValue)]);
+    }
+    else {
+        const paginatedCoins = await suiClient.getCoins({ owner: ownerAddress, coinType });
+        // if (paginatedCoins.hasNextPage) // TODO
+
+        // Merge all coins into one
+        const [firstCoin, ...otherCoins] = paginatedCoins.data;
+        const firstCoinInput = txb.object(firstCoin.coinObjectId);
+        if (otherCoins.length > 0) {
+            txb.mergeCoins(
+                firstCoinInput,
+                otherCoins.map(coin => txb.object(coin.coinObjectId))
+            );
+        }
+        fundingCoin = txb.splitCoins(firstCoinInput, [txb.pure(coinValue)]);
+    }
+    return fundingCoin;
 }
 
 /**

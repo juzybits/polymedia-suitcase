@@ -37,6 +37,7 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 - `function devInspectAndGetReturnValues` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
 - `function fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
 - `function generateRandomAddress` - Generate a random Sui address (for development only).
+- `function getCoinOfValue` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `function getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
 - `function removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).

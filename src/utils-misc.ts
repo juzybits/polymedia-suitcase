@@ -27,7 +27,7 @@ export function formatNumber(
     num: number | bigint,
     format: 'standard'|'compact' = 'standard'
 ): string {
-    num = num as number;
+    num = Number(num);
     if (format === 'standard') {
         return formatNumberStandard(num);
     } else {
