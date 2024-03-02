@@ -117,10 +117,10 @@ export function generateRandomAddress() {
  */
 export async function getCoinOfValue(
     suiClient: SuiClient,
+    txb: TransactionBlock,
     ownerAddress: string,
     coinType: string,
     coinValue: number|bigint,
-    txb: TransactionBlock,
 ): Promise<TransactionResult> {
     let fundingCoin: TransactionResult;
     coinType = removeLeadingZeros(coinType);
