@@ -41,8 +41,8 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 - `function getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
 - `function makeSuiExplorerUrl` - Build a Sui Explorer URL.
 - `function removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
+- `function requestSuiFromFaucet` - Get SUI from the faucet on localnet/devnet/testnet.
 - `function shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).
-- `function useSuiFaucet` - Send SUI to an address on localnet/devnet/testnet.
 - `function validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
 ### Classes

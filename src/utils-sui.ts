@@ -122,10 +122,10 @@ export async function getCoinOfValue(
     coinType: string,
     coinValue: number|bigint,
 ): Promise<TransactionResult> {
-    let fundingCoin: TransactionResult;
+    let coinOfValue: TransactionResult;
     coinType = removeLeadingZeros(coinType);
     if (coinType === '0x2::sui::SUI') {
-        fundingCoin = txb.splitCoins(txb.gas, [txb.pure(coinValue)]);
+        coinOfValue = txb.splitCoins(txb.gas, [txb.pure(coinValue)]);
     }
     else {
         const paginatedCoins = await suiClient.getCoins({ owner: ownerAddress, coinType });
@@ -140,9 +140,9 @@ export async function getCoinOfValue(
                 otherCoins.map(coin => txb.object(coin.coinObjectId))
             );
         }
-        fundingCoin = txb.splitCoins(firstCoinInput, [txb.pure(coinValue)]);
+        coinOfValue = txb.splitCoins(firstCoinInput, [txb.pure(coinValue)]);
     }
-    return fundingCoin;
+    return coinOfValue;
 }
 
 /**
@@ -195,17 +195,9 @@ export function removeLeadingZeros(address: string): string {
 }
 
 /**
- * Abbreviate a Sui address for display purposes (lossy). Default format is '1234..5678',
- * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
+ * Get SUI from the faucet on localnet/devnet/testnet.
  */
-export function shortenSuiAddress(address: string|null|undefined, start=4, end=4, prefix='', separator='..'): string {
-    return !address ? '' : prefix + address.slice(2, 2+start) + separator + address.slice(-end);
-}
-
-/**
- * Send SUI to an address on localnet/devnet/testnet.
- */
-export async function useSuiFaucet(network: 'localnet'|'devnet'|'testnet', address: string) {
+export async function requestSuiFromFaucet(network: 'localnet'|'devnet'|'testnet', address: string) {
     let faucetUrl: string;
     if (network == 'localnet') {
         faucetUrl='http://127.0.0.1:9123/gas';
@@ -226,6 +218,14 @@ export async function useSuiFaucet(network: 'localnet'|'devnet'|'testnet', addre
             }
         }),
     });
+}
+
+/**
+ * Abbreviate a Sui address for display purposes (lossy). Default format is '1234..5678',
+ * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
+ */
+export function shortenSuiAddress(address: string|null|undefined, start=4, end=4, prefix='', separator='..'): string {
+    return !address ? '' : prefix + address.slice(2, 2+start) + separator + address.slice(-end);
 }
 
 /**
