@@ -224,8 +224,21 @@ export async function requestSuiFromFaucet(network: 'localnet'|'devnet'|'testnet
  * Abbreviate a Sui address for display purposes (lossy). Default format is '1234..5678',
  * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
  */
-export function shortenSuiAddress(address: string|null|undefined, start=4, end=4, prefix='', separator='..'): string {
-    return !address ? '' : prefix + address.slice(2, 2+start) + separator + address.slice(-end);
+export function shortenSuiAddress(
+    text: string|null|undefined, start=4, end=4, prefix='0x', separator='..'
+): string {
+    if (!text) return '';
+
+    const addressRegex = /0[xX][a-fA-F0-9]{1,}/g;
+
+    return text.replace(addressRegex, (match) => {
+        // check if the address is too short to be abbreviated
+        if (match.length - prefix.length <= start + end) {
+            return match;
+        }
+        // otherwise, abbreviate the address
+        return prefix + match.slice(2, 2 + start) + separator + match.slice(-end);
+    });
 }
 
 /**
