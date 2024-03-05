@@ -13,6 +13,34 @@ export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
 }
 
 /**
+ * Convert a number to a bigint, scaled to the specified decimals.
+ */
+export function convertNumberToBigInt(num: number, decimals: number): bigint {
+    const numScaledAsString = (num * 10**decimals).toFixed(0);
+    return BigInt(numScaledAsString);
+  }
+
+/**
+ * Convert a bigint to a number, scaled down to the specified decimals.
+ */
+export function convertBigIntToNumber(big: bigint, decimals: number): number {
+    return Number(big) / 10**decimals;
+}
+
+/**
+ * Format a bigint into a readable string, scaled down to the specified decimals.
+ * @see formatNumber
+ */
+export function formatBigInt(
+    big: bigint,
+    decimals: number,
+    format: 'standard'|'compact' = 'standard'
+): string {
+    const num = convertBigIntToNumber(big, decimals);
+    return formatNumber(num, format);
+}
+
+/**
  * Format a number into a readable string.
  *
  * - 'standard' format:
@@ -24,10 +52,9 @@ export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
  *   - If the number is >= 1 million, use word notation (e.g. '540.23M', '20.05B')
  */
 export function formatNumber(
-    num: number | bigint,
+    num: number,
     format: 'standard'|'compact' = 'standard'
 ): string {
-    num = Number(num);
     if (format === 'standard') {
         return formatNumberStandard(num);
     } else {
@@ -36,7 +63,9 @@ export function formatNumber(
 }
 
 function formatNumberStandard(num: number): string {
-    if (num < 1000) {
+    if (num < 1) {
+        return String(num);
+    } else if (num < 1000) {
         return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     } else {
         return num.toLocaleString('en-US', { maximumFractionDigits: 0 });

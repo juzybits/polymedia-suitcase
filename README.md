@@ -58,6 +58,9 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 ### Misc functions
 
 - `function chunkArray` - Split an array into multiple chunks of a certain size.
+- `function convertNumberToBigInt` - Convert a number to a bigint, scaled to the specified decimals.
+- `function convertBigIntToNumber` - Convert a bigint to a number, scaled down to the specified decimals.
+- `function formatBigInt` - Format a bigint into a readable string, scaled down to the specified decimals.
 - `function formatNumber` - Format a number into a readable string.
 - `function log` - Log a message including the current date and time.
 - `function makeRanges` - Generate an array of ranges of a certain size between two numbers.

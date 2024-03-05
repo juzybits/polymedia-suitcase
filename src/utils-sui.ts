@@ -221,11 +221,11 @@ export async function requestSuiFromFaucet(network: 'localnet'|'devnet'|'testnet
 }
 
 /**
- * Abbreviate a Sui address for display purposes (lossy). Default format is '1234..5678',
+ * Abbreviate a Sui address for display purposes (lossy). Default format is '0x123..678',
  * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
  */
 export function shortenSuiAddress(
-    text: string|null|undefined, start=4, end=4, prefix='0x', separator='..'
+    text: string|null|undefined, start=3, end=3, prefix='0x', separator='..'
 ): string {
     if (!text) return '';
 
@@ -245,6 +245,9 @@ export function shortenSuiAddress(
  * Validate a Sui address and return its normalized form, or `null` if invalid.
  */
 export function validateAndNormalizeSuiAddress(address: string): string | null {
+    if (address.length === 0) {
+        return null;
+    }
     const normalizedAddr = normalizeSuiAddress(address);
     if (!isValidSuiAddress(normalizedAddr)) {
         return null;
