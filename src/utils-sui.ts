@@ -221,11 +221,11 @@ export async function requestSuiFromFaucet(network: 'localnet'|'devnet'|'testnet
 }
 
 /**
- * Abbreviate a Sui address for display purposes (lossy). Default format is '0x123..678',
+ * Abbreviate a Sui address for display purposes (lossy). Default format is '0x1234…5678',
  * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
  */
 export function shortenSuiAddress(
-    text: string|null|undefined, start=3, end=3, prefix='0x', separator='..'
+    text: string|null|undefined, start=4, end=4, separator='…', prefix='0x',
 ): string {
     if (!text) return '';
 
