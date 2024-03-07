@@ -15,18 +15,17 @@ export async function devInspectAndGetResults(
     txb: TransactionBlock,
     sender = '0x7777777777777777777777777777777777777777777777777777777777777777',
 ): Promise<SuiExecutionResult[]> {
-    return await suiClient.devInspectTransactionBlock({
+    const resp = await suiClient.devInspectTransactionBlock({
         sender: sender,
         transactionBlock: txb
-    }).then(resp => {
-        if (resp.error) {
-            throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-        }
-        if (!resp.results?.length) {
-            throw Error(`response has no results: ${JSON.stringify(resp, null, 2)}`);
-        }
-        return resp.results;
     });
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (!resp.results?.length) {
+        throw Error(`response has no results: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return resp.results;
 }
 
 /**
@@ -38,33 +37,24 @@ export async function devInspectAndGetReturnValues(
     txb: TransactionBlock,
     sender = '0x7777777777777777777777777777777777777777777777777777777777777777',
 ): Promise<unknown[][]> {
-    return await devInspectAndGetResults(
-        suiClient,
-        txb,
-        sender,
-    ).then(results => {
-        /**
-         * The values returned from each of the transactions in the TransactionBlock.
-         */
-        const blockReturnValues: unknown[][] = [];
-        for (const txnResult of results) {
-            if (!txnResult.returnValues?.length) {
-                throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
-            }
-            /**
-             * The values returned from the transaction (a function can return multiple values).
-             */
-            const txnReturnValues: unknown[] = [];
-            for (const value of txnResult.returnValues) {
-                const valueData = Uint8Array.from(value[0]);
-                const valueType = value[1];
-                const valueDeserialized: unknown = bcs.de(valueType, valueData, 'hex');
-                txnReturnValues.push(valueDeserialized);
-            }
-            blockReturnValues.push(txnReturnValues);
+    const results = await devInspectAndGetResults(suiClient, txb, sender);
+    /** The values returned from each of the transactions in the TransactionBlock. */
+    const blockReturnValues: unknown[][] = [];
+    for (const txnResult of results) {
+        if (!txnResult.returnValues?.length) {
+            throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
         }
-        return blockReturnValues;
-    });
+        /** The values returned from the transaction (a function can return multiple values). */
+        const txnReturnValues: unknown[] = [];
+        for (const value of txnResult.returnValues) {
+            const valueData = Uint8Array.from(value[0]);
+            const valueType = value[1];
+            const valueDeserialized: unknown = bcs.de(valueType, valueData, 'hex');
+            txnReturnValues.push(valueDeserialized);
+        }
+        blockReturnValues.push(txnReturnValues);
+    }
+    return blockReturnValues;
 }
 
 /**
