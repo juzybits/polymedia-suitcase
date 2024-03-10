@@ -1,8 +1,15 @@
 .DS_Store
 
 # TypeScript
+.turbo
 dist/
 node_modules/
 
+# Sui
+.coverage_map.mvcov
+.trace
+build/
+
 # App specific
+.auth.ts
 data/

@@ -1,6 +1,6 @@
 {
     "private": false,
-    "version": "0.0.33",
+    "version": "0.0.34",
     "name": "@polymedia/suits",
     "author": "@juzybits (https://polymedia.app)",
     "homepage": "https://github.com/juzybits/polymedia-suits",
@@ -18,7 +18,7 @@
     "scripts": {
         "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
         "clean": "rm -rf dist/ node_modules/",
-        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "lint": "eslint src/ --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "prepublishOnly": "rm -rf dist/ && pnpm build"
     },
     "dependencies": {

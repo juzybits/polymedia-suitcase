@@ -49,7 +49,14 @@ export async function devInspectAndGetReturnValues(
         for (const value of txnResult.returnValues) {
             const valueData = Uint8Array.from(value[0]);
             const valueType = value[1];
-            const valueDeserialized: unknown = bcs.de(valueType, valueData, 'hex');
+            let valueDeserialized: unknown;
+            if (valueType === '0x1::string::String') {
+                valueDeserialized = bcs.string().parse(valueData);
+            } else if (valueType === 'vector<0x1::string::String>') {
+                valueDeserialized = bcs.vector(bcs.string()).parse(valueData);
+            } else {
+                valueDeserialized = bcs.de(valueType, valueData, 'hex');
+            }
             txnReturnValues.push(valueDeserialized);
         }
         blockReturnValues.push(txnReturnValues);
