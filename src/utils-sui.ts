@@ -132,10 +132,7 @@ export async function getCoinOfValue(
         const [firstCoin, ...otherCoins] = paginatedCoins.data;
         const firstCoinInput = txb.object(firstCoin.coinObjectId);
         if (otherCoins.length > 0) {
-            txb.mergeCoins(
-                firstCoinInput,
-                otherCoins.map(coin => txb.object(coin.coinObjectId))
-            );
+            txb.mergeCoins(firstCoinInput, otherCoins.map(coin => coin.coinObjectId));
         }
         coinOfValue = txb.splitCoins(firstCoinInput, [txb.pure(coinValue)]);
     }
@@ -168,11 +165,11 @@ export function getSuiObjectResponseFields(
  * Build a Sui Explorer URL, like 'https://suiexplorer.com/address/0x123...456?network=testnet'
  */
 export function makeSuiExplorerUrl(
-    network: NetworkName,
+    network: NetworkName|string,
     kind: SuiExplorerItem,
     address: string,
 ): string {
-    const baseUrl = network === 'localnet'
+    const baseUrl = (network === 'localnet' || network == 'http://127.0.0.1:9000')
         ? 'http://localhost:3000'
         : 'https://suiexplorer.com';
     let url = `${baseUrl}/${kind}/${address}`;
