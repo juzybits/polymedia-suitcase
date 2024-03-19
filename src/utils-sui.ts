@@ -164,7 +164,7 @@ export function getSuiObjectResponseFields(
 /**
  * Build a Polymedia Explorer URL, like 'https://explorer.polymedia.app/address/0x123...456?network=testnet'
  */
-export function makeSuiExplorerUrl(
+export function makeExplorerUrl(
     network: NetworkName|string,
     kind: SuiExplorerItem,
     address: string,
