@@ -1,5 +1,4 @@
-import { EventId, SuiClient, SuiEvent, getFullnodeUrl } from '@mysten/sui.js/client';
-import { NetworkName } from './types.js';
+import { EventId, SuiClient, SuiEvent } from '@mysten/sui.js/client';
 import { sleep } from './utils-misc.js';
 
 /**
@@ -20,15 +19,15 @@ export class SuiEventFetcher<T> {
      * @param networkName   (optional) The network name. Defaults to 'mainnet'.
      */
     constructor(
+        suiClient: SuiClient,
         eventType: string,
         parseEvent: (suiEvent: SuiEvent) => T|null,
         nextCursor: EventId|null = null,
-        networkName: NetworkName = 'mainnet',
     ) {
         this.eventType = eventType;
         this.parseEvent = parseEvent;
         this.eventCursor = nextCursor;
-        this.suiClient = new SuiClient({ url: getFullnodeUrl(networkName)});
+        this.suiClient = suiClient
     }
 
     /**
