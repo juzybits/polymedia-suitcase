@@ -162,7 +162,7 @@ export function getSuiObjectResponseFields(
 }
 
 /**
- * Build a Sui Explorer URL, like 'https://suiexplorer.com/address/0x123...456?network=testnet'
+ * Build a Polymedia Explorer URL, like 'https://explorer.polymedia.app/address/0x123...456?network=testnet'
  */
 export function makeSuiExplorerUrl(
     network: NetworkName|string,
@@ -171,7 +171,7 @@ export function makeSuiExplorerUrl(
 ): string {
     const baseUrl = (network === 'localnet' || network == 'http://127.0.0.1:9000')
         ? 'http://localhost:3000'
-        : 'https://suiexplorer.com';
+        : 'https://explorer.polymedia.app';
     let url = `${baseUrl}/${kind}/${address}`;
     if (network !== 'mainnet') {
         const networkLabel = network === 'localnet' ? 'local' : network;

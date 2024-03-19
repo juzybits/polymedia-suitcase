@@ -25,7 +25,7 @@ import { validateAndNormalizeSuiAddress } from '@polymedia/suits';
 ### Types
 
 - `type NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
-- `type SuiExplorerItem` - A Sui Explorer item type (address/object/package/txblock).
+- `type SuiExplorerItem` - A Polymedia Explorer item type (address/object/package/txblock).
 
 ### API functions
 
