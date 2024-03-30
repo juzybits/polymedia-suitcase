@@ -4,7 +4,7 @@ import { bcs } from '@mysten/sui.js/bcs';
 import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from '@mysten/sui.js/client';
 import { TransactionBlock, TransactionResult } from '@mysten/sui.js/transactions';
 import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
-import { NetworkName, SuiExplorerItem } from './types.js';
+import { SuiExplorerItem } from './types.js';
 import { sleep } from './utils-misc.js';
 
 /**
@@ -165,7 +165,7 @@ export function getSuiObjectResponseFields(
  * Build a Polymedia Explorer URL, like 'https://explorer.polymedia.app/address/0x123...456?network=testnet'
  */
 export function makeExplorerUrl(
-    network: NetworkName|string,
+    network: string,
     kind: SuiExplorerItem,
     address: string,
 ): string {
