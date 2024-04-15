@@ -70,7 +70,7 @@ export async function devInspectAndGetReturnValues(
 export async function fetchAllDynamicFields(
     suiClient: SuiClient,
     parentId: string,
-    sleepBetweenRequests = 330, // milliseconds
+    sleepBetweenRequests = 333, // milliseconds
     verbose = false,
 ): Promise<DynamicFieldInfo[]> {
     const allFieldsInfo: DynamicFieldInfo[] = [];

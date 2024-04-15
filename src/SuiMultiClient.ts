@@ -17,7 +17,7 @@ export class SuiMultiClient {
      */
     constructor(
         endpointUrls: string[],
-        rateLimitDelay = 334
+        rateLimitDelay = 333,
     ) {
         this.clients = [];
         this.clientIdx = 0;
@@ -40,7 +40,7 @@ export class SuiMultiClient {
         rateLimitDelay?: number,
     ): SuiMultiClient {
         const endpoints = RPC_ENDPOINTS[network];
-        return new SuiMultiClient(endpoints, rateLimitDelay ?? 334);
+        return new SuiMultiClient(endpoints, rateLimitDelay);
     }
 
     /**
