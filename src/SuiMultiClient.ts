@@ -1,7 +1,7 @@
-import { SuiClient } from '@mysten/sui.js/client';
-import { NetworkName } from './types.js';
-import { sleep } from './utils-misc.js';
-import { RPC_ENDPOINTS } from './rpcs.js';
+import { SuiClient } from "@mysten/sui.js/client";
+import { NetworkName } from "./types.js";
+import { sleep } from "./utils-misc.js";
+import { RPC_ENDPOINTS } from "./rpcs.js";
 
 /**
  * A tool to make many RPC requests using multiple endpoints.
@@ -86,7 +86,7 @@ export class SuiMultiClient {
 
             // Process results and keep track of failed operations for retries
             batchResults.forEach((result, index) => {
-                if (result.status === 'fulfilled') {
+                if (result.status === "fulfilled") {
                     results[start + index] = result.value;
                 } else {
                     console.warn(`[SuiMultiClient] status: ${result.status}, reason:`, result.reason);
@@ -121,14 +121,14 @@ export class SuiMultiClient {
         operation: (client: SuiClientWithEndpoint) => Promise<void>
     ): Promise<void> {
         console.log(`testing ${this.clients.length} endpoints`);
-        console.time('total time');
+        console.time("total time");
         for (const client of this.clients) {
             console.time(`time: ${client.endpoint}`);
             await operation(client);
             console.timeEnd(`time: ${client.endpoint}`);
         }
-        console.log('');
-        console.timeEnd('total time');
+        console.log("");
+        console.timeEnd("total time");
     }
 }
 

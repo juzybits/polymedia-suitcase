@@ -1,11 +1,11 @@
 /* Sui utils */
 
-import { bcs } from '@mysten/sui.js/bcs';
-import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from '@mysten/sui.js/client';
-import { TransactionBlock, TransactionResult } from '@mysten/sui.js/transactions';
-import { isValidSuiAddress, normalizeSuiAddress } from '@mysten/sui.js/utils';
-import { SuiExplorerItem } from './types.js';
-import { sleep } from './utils-misc.js';
+import { bcs } from "@mysten/sui.js/bcs";
+import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from "@mysten/sui.js/client";
+import { TransactionBlock, TransactionResult } from "@mysten/sui.js/transactions";
+import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui.js/utils";
+import { SuiExplorerItem } from "./types.js";
+import { sleep } from "./utils-misc.js";
 
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the results.
@@ -13,7 +13,7 @@ import { sleep } from './utils-misc.js';
 export async function devInspectAndGetResults(
     suiClient: SuiClient,
     txb: TransactionBlock,
-    sender = '0x7777777777777777777777777777777777777777777777777777777777777777',
+    sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
 ): Promise<SuiExecutionResult[]> {
     const resp = await suiClient.devInspectTransactionBlock({
         sender: sender,
@@ -35,7 +35,7 @@ export async function devInspectAndGetResults(
 export async function devInspectAndGetReturnValues(
     suiClient: SuiClient,
     txb: TransactionBlock,
-    sender = '0x7777777777777777777777777777777777777777777777777777777777777777',
+    sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
 ): Promise<unknown[][]> {
     const results = await devInspectAndGetResults(suiClient, txb, sender);
     /** The values returned from each of the transactions in the TransactionBlock. */
@@ -50,12 +50,12 @@ export async function devInspectAndGetReturnValues(
             const valueData = Uint8Array.from(value[0]);
             const valueType = value[1];
             let valueDeserialized: unknown;
-            if (valueType === '0x1::string::String') {
+            if (valueType === "0x1::string::String") {
                 valueDeserialized = bcs.string().parse(valueData);
-            } else if (valueType === 'vector<0x1::string::String>') {
+            } else if (valueType === "vector<0x1::string::String>") {
                 valueDeserialized = bcs.vector(bcs.string()).parse(valueData);
             } else {
-                valueDeserialized = bcs.de(valueType, valueData, 'hex');
+                valueDeserialized = bcs.de(valueType, valueData, "hex");
             }
             txnReturnValues.push(valueDeserialized);
         }
@@ -100,10 +100,10 @@ export async function fetchAllDynamicFields(
  */
 export function generateRandomAddress() {
     // Function to generate a random byte in hexadecimal format
-    const randomByteHex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
+    const randomByteHex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, "0");
 
     // Generate 32 random bytes and convert each to hex
-    const address = '0x' + Array.from({ length: 32 }, randomByteHex).join('');
+    const address = "0x" + Array.from({ length: 32 }, randomByteHex).join("");
 
     return address;
 }
@@ -121,7 +121,7 @@ export async function getCoinOfValue(
 ): Promise<TransactionResult> {
     let coinOfValue: TransactionResult;
     coinType = removeLeadingZeros(coinType);
-    if (coinType === '0x2::sui::SUI') {
+    if (coinType === "0x2::sui::SUI") {
         coinOfValue = txb.splitCoins(txb.gas, [txb.pure(coinValue)]);
     }
     else {
@@ -152,7 +152,7 @@ export function getSuiObjectResponseFields(
     if (resp.error) {
         throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (resp.data?.content?.dataType !== 'moveObject') {
+    if (resp.data?.content?.dataType !== "moveObject") {
         throw Error(`content missing: ${JSON.stringify(resp, null, 2)}`);
     }
     if (typeRegex && !new RegExp(typeRegex).test(resp.data.content.type)) {
@@ -169,12 +169,12 @@ export function makeExplorerUrl(
     kind: SuiExplorerItem,
     address: string,
 ): string {
-    const baseUrl = (network === 'localnet' || network == 'http://127.0.0.1:9000')
-        ? 'http://localhost:3000'
-        : 'https://explorer.polymedia.app';
+    const baseUrl = (network === "localnet" || network == "http://127.0.0.1:9000")
+        ? "http://localhost:3000"
+        : "https://explorer.polymedia.app";
     let url = `${baseUrl}/${kind}/${address}`;
-    if (network !== 'mainnet') {
-        const networkLabel = network === 'localnet' ? 'local' : network;
+    if (network !== "mainnet") {
+        const networkLabel = network === "localnet" ? "local" : network;
         url += `?network=${networkLabel}`;
     }
     return url;
@@ -185,27 +185,27 @@ export function makeExplorerUrl(
  * '0x0000000000000000000000000000000000000000000000000000000000000002' into '0x2'.
  */
 export function removeLeadingZeros(address: string): string {
-    return address.replaceAll(/0x0+/g, '0x');
+    return address.replaceAll(/0x0+/g, "0x");
 }
 
 /**
  * Get SUI from the faucet on localnet/devnet/testnet.
  */
-export async function requestSuiFromFaucet(network: 'localnet'|'devnet'|'testnet', address: string) {
+export async function requestSuiFromFaucet(network: "localnet"|"devnet"|"testnet", address: string) {
     let faucetUrl: string;
-    if (network == 'localnet') {
-        faucetUrl='http://127.0.0.1:9123/gas';
+    if (network == "localnet") {
+        faucetUrl="http://127.0.0.1:9123/gas";
     }
-    else if (network == 'devnet') {
-        faucetUrl='https://faucet.devnet.sui.io/v1/gas';
+    else if (network == "devnet") {
+        faucetUrl="https://faucet.devnet.sui.io/v1/gas";
     }
     else { // network == 'testnet'
-        faucetUrl='https://faucet.testnet.sui.io/v1/gas';
+        faucetUrl="https://faucet.testnet.sui.io/v1/gas";
     }
 
     return fetch(faucetUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             FixedAmountRequest: {
                 recipient: address
@@ -219,9 +219,9 @@ export async function requestSuiFromFaucet(network: 'localnet'|'devnet'|'testnet
  * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
  */
 export function shortenSuiAddress(
-    text: string|null|undefined, start=4, end=4, separator='…', prefix='0x',
+    text: string|null|undefined, start=4, end=4, separator="…", prefix="0x",
 ): string {
-    if (!text) return '';
+    if (!text) return "";
 
     const addressRegex = /0[xX][a-fA-F0-9]{1,}/g;
 

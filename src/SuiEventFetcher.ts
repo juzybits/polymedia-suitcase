@@ -1,5 +1,5 @@
-import { EventId, SuiClient, SuiEvent } from '@mysten/sui.js/client';
-import { sleep } from './utils-misc.js';
+import { EventId, SuiClient, SuiEvent } from "@mysten/sui.js/client";
+import { sleep } from "./utils-misc.js";
 
 /**
  * A tool to fetch the latest Sui events and parse them into custom objects.
@@ -27,7 +27,7 @@ export class SuiEventFetcher<T> {
         this.eventType = eventType;
         this.parseEvent = parseEvent;
         this.eventCursor = nextCursor;
-        this.suiClient = suiClient
+        this.suiClient = suiClient;
     }
 
     /**
@@ -43,7 +43,7 @@ export class SuiEventFetcher<T> {
                 return await this.fetchEventsFromCursor();
             }
         } catch(error) {
-            console.error('[SuiEventFetcher]', error);
+            console.error("[SuiEventFetcher]", error);
             return [];
         }
     }
@@ -56,12 +56,12 @@ export class SuiEventFetcher<T> {
         const suiEvents = await this.suiClient.queryEvents({
             query: { MoveEventType: this.eventType },
             limit: 1,
-            order: 'descending',
+            order: "descending",
         });
 
         // update cursor
         if (!suiEvents.nextCursor) {
-            console.error(`[SuiEventFetcher] unexpected missing cursor`);
+            console.error("[SuiEventFetcher] unexpected missing cursor");
         } else {
             this.eventCursor = suiEvents.nextCursor;
         }
@@ -75,13 +75,13 @@ export class SuiEventFetcher<T> {
         const suiEvents = await this.suiClient.queryEvents({
             query: { MoveEventType: this.eventType },
             cursor: this.eventCursor,
-            order: 'ascending',
+            order: "ascending",
             // limit: 10,
         });
 
         // update cursor
         if (!suiEvents.nextCursor) {
-            console.error(`[SuiEventFetcher] unexpected missing cursor`);
+            console.error("[SuiEventFetcher] unexpected missing cursor");
             return [];
         }
         this.eventCursor = suiEvents.nextCursor;
