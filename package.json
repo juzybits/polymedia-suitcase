@@ -1,6 +1,6 @@
 {
     "private": false,
-    "version": "0.0.40",
+    "version": "0.0.41",
     "name": "@polymedia/suits",
     "author": "@juzybits (https://polymedia.app)",
     "homepage": "https://github.com/juzybits/polymedia-suits",
@@ -22,12 +22,12 @@
         "prepublishOnly": "rm -rf dist/ && pnpm build"
     },
     "dependencies": {
-        "@mysten/sui.js": "^0.51.2"
+        "@mysten/sui.js": "^0.52.0"
     },
     "devDependencies": {
-        "@stylistic/eslint-plugin": "^1.7.2",
-        "@typescript-eslint/eslint-plugin": "^7.7.1",
-        "@typescript-eslint/parser": "^7.7.1",
+        "@stylistic/eslint-plugin": "^1.8.0",
+        "@typescript-eslint/eslint-plugin": "^7.8.0",
+        "@typescript-eslint/parser": "^7.8.0",
         "eslint": "^8.57.0",
         "typescript": "^5.4.5"
     },
