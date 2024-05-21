@@ -1,5 +1,5 @@
-import { getFileName, parseArguments, setupSuiTransaction } from '@polymedia/commando';
-import { devInspectAndGetReturnValues } from '@polymedia/suits';
+import { getFileName, parseArguments, setupSuiTransaction } from "@polymedia/commando";
+import { devInspectAndGetReturnValues } from "@polymedia/suits";
 
 const usage = `Test @polymedia/suits devInspectAndGetReturnValues()
 
