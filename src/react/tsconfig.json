@@ -10,6 +10,5 @@
     "compilerOptions": {
         "rootDir": "src",
         "jsx": "react-jsx",
-        "resolveJsonModule": true,
     }
 }
