@@ -1,7 +1,7 @@
 import { NetworkName, makeExplorerUrl, shortenSuiAddress } from "@polymedia/suitcase-core";
 
 /**
- * Create an external link like:
+ * An external link like:
  * `<a target='_blank' rel='noopener noreferrer nofollow' href={href}>{text}</a>`
  */
 export const LinkExternal: React.FC<{
@@ -23,7 +23,7 @@ export const LinkExternal: React.FC<{
 };
 
 /**
- * Create an external link to an address the Sui Explorer
+ * An external link to an address the Sui Explorer
  */
 export const LinkToExplorerAddr: React.FC<{
     network: NetworkName;
@@ -38,7 +38,7 @@ export const LinkToExplorerAddr: React.FC<{
 };
 
 /**
- * Create an external link to an object the Sui Explorer
+ * An external link to an object the Sui Explorer
  */
 export const LinkToExplorerObj: React.FC<{
     network: NetworkName;
@@ -53,7 +53,7 @@ export const LinkToExplorerObj: React.FC<{
 };
 
 /**
- * Create an external link to a package the Sui Explorer
+ * An external link to a package the Sui Explorer
  */
 export const LinkToExplorerPkg: React.FC<{
     network: NetworkName;
@@ -69,7 +69,7 @@ export const LinkToExplorerPkg: React.FC<{
 
 
 /**
- * Create an external link to a transaction block the Sui Explorer
+ * An external link to a transaction block the Sui Explorer
  */
 export const LinkToExplorerTxn: React.FC<{
     network: NetworkName;

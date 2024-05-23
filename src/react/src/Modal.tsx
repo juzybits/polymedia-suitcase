@@ -1,5 +1,8 @@
 import "./Modal.css";
 
+/**
+ * A modal window.
+ */
 export const Modal: React.FC<{
     content: React.ReactNode;
     styleBackground?: React.CSSProperties;
