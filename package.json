@@ -1,51 +1,27 @@
 {
-    "private": false,
-    "version": "0.0.42",
-    "name": "@polymedia/suits",
-    "author": "@juzybits (https://polymedia.app)",
-    "homepage": "https://github.com/juzybits/polymedia-suits",
-    "description": "Sui TypeScript utilities",
+    "private": true,
+    "version": "0.0.0",
+    "name": "polymedia-suitcase-monorepo",
     "license": "Apache-2.0",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/juzybits/polymedia-suits"
-    },
-    "keywords": [
-        "polymedia",
-        "sui",
-        "utilities"
-    ],
     "scripts": {
-        "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
-        "clean": "rm -rf dist/ node_modules/",
-        "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
-        "prepublishOnly": "rm -rf dist/ && pnpm build"
+        "build": "turbo run build",
+        "clean": "turbo run clean && rm -rf dist/ node_modules/ .turbo/",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint"
     },
     "dependencies": {
-        "@mysten/sui.js": "^0.54.1"
     },
     "devDependencies": {
+        "@eslint/compat": "^1.0.1",
         "@eslint/js": "^9.3.0",
         "@stylistic/eslint-plugin": "^2.1.0",
         "eslint": "^9.3.0",
+        "eslint-plugin-react": "^7.34.1",
+        "turbo": "^1.13.3",
         "typescript": "^5.4.5",
         "typescript-eslint": "^7.10.0"
     },
-    "type": "module",
-    "sideEffects": false,
-    "publishConfig": {
-        "access": "public"
-    },
-    "files": [
-        "dist/"
-    ],
-    "types": "./dist/cjs/index.d.ts",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.js",
-    "exports": {
-        ".": {
-            "require": "./dist/cjs/index.js",
-            "import": "./dist/esm/index.js"
-        }
+    "engines": {
+        "node": ">=18"
     }
 }
