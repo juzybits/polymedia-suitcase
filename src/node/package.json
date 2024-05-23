@@ -24,8 +24,7 @@
         "prepublishOnly": "rm -rf dist/ && pnpm build"
     },
     "dependencies": {
-        "@polymedia/suitcase-core": "workspace:*",
-        "dotenv": "^16.4.5"
+        "@polymedia/suitcase-core": "workspace:*"
     },
     "peerDependencies": {
         "@mysten/sui.js": "^0.54.1"
