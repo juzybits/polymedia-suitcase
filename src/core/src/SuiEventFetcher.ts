@@ -2,7 +2,7 @@ import { EventId, SuiClient, SuiEvent } from "@mysten/sui.js/client";
 import { sleep } from "./utils-misc.js";
 
 /**
- * A tool to fetch the latest Sui events and parse them into custom objects.
+ * Fetch Sui events and parse them into custom objects.
  * @see SuiEventFetcher.fetchEvents
  */
 export class SuiEventFetcher<T> {

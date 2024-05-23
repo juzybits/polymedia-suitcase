@@ -11,53 +11,53 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - Installation: `pnpm add @polymedia/suitcase-core`
 - Source code: [src/core](./src/core)
 
-### Constants
+### Classes
 
-- `const ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
-- `const RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.
+- `SuiEventFetcher` - Fetch Sui events and parse them into custom objects.
+    - `fetchEvents` - Fetch the latest events. Every time the function is called it looks
+        for events that took place since the last call.
 
-### Types
-
-- `type NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
-- `type SuiExplorerItem` - A Polymedia Explorer item type (address/object/package/txblock).
-
-### API functions
-
-- `function apiRequestIndexer` - Make a request to the Indexer.xyz API (NFTs).
+- `SuiMultiClient` - Make many RPC requests using multiple endpoints.
+    - `executeInBatches` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
+    - `testEndpoints` - Test the latency of various Sui RPC endpoints.
 
 ### Sui functions
 
-- `function devInspectAndGetResults` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
-- `function devInspectAndGetReturnValues` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
-- `function fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
-- `function generateRandomAddress` - Generate a random Sui address (for development only).
-- `function getCoinOfValue` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
-- `function getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
-- `function makeExplorerUrl` - Build a Polymedia Explorer URL.
-- `function removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
-- `function requestSuiFromFaucet` - Get SUI from the faucet on localnet/devnet/testnet.
-- `function shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).
-- `function validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
+- `devInspectAndGetResults` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
+- `devInspectAndGetReturnValues` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
+- `fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
+- `generateRandomAddress` - Generate a random Sui address (for development only).
+- `getCoinOfValue` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
+- `getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
+- `makeExplorerUrl` - Build a Polymedia Explorer URL.
+- `removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
+- `requestSuiFromFaucet` - Get SUI from the faucet on localnet/devnet/testnet.
+- `shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).
+- `validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
-### Classes
+### API functions
 
-- `class SuiEventFetcher` - A tool to fetch the latest Sui events and parse them into custom objects.
-    - `function fetchEvents` - Fetch the latest events. Every time the function is called it looks
-        for events that took place since the last call.
-
-- `class SuiMultiClient` - A tool to make many RPC requests using multiple endpoints.
-    - `function executeInBatches` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
-    - `function testEndpoints` - Test the latency of various Sui RPC endpoints.
+- `apiRequestIndexer` - Make a request to the Indexer.xyz API (NFTs).
 
 ### Misc functions
 
-- `function chunkArray` - Split an array into multiple chunks of a certain size.
-- `function convertNumberToBigInt` - Convert a number to a bigint, scaled to the specified decimals.
-- `function convertBigIntToNumber` - Convert a bigint to a number, scaled down to the specified decimals.
-- `function formatBigInt` - Format a bigint into a readable string, scaled down to the specified decimals.
-- `function formatNumber` - Format a number into a readable string.
-- `function makeRanges` - Generate an array of ranges of a certain size between two numbers.
-- `function sleep` - Wait for a number of milliseconds.
+- `chunkArray` - Split an array into multiple chunks of a certain size.
+- `convertNumberToBigInt` - Convert a number to a bigint, scaled to the specified decimals.
+- `convertBigIntToNumber` - Convert a bigint to a number, scaled down to the specified decimals.
+- `formatBigInt` - Format a bigint into a readable string, scaled down to the specified decimals.
+- `formatNumber` - Format a number into a readable string.
+- `makeRanges` - Generate an array of ranges of a certain size between two numbers.
+- `sleep` - Wait for a number of milliseconds.
+
+### Constants
+
+- `ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
+- `RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.
+
+### Types
+
+- `NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
+- `SuiExplorerItem` - A Polymedia Explorer item type (address/object/package/txblock).
 
 # Node
 
@@ -68,10 +68,10 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 
 ### Sui functions
 
-- `function getActiveAddressKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
-- `function getActiveEnv` - Get the active Sui environment from `sui client active-env`.
-- `function setupSuiTransaction` - Initialize objects to execute Sui transactions blocks using the current Sui active network and address.
-- `function executeSuiTransaction` - Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.
+- `getActiveAddressKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
+- `getActiveEnv` - Get the active Sui environment from `sui client active-env`.
+- `setupSuiTransaction` - Initialize objects to execute Sui transactions blocks using the current Sui active network and address.
+- `executeSuiTransaction` - Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.
 
 ### File functions
 
@@ -103,4 +103,4 @@ The `suitcase-react` package provides components for React web apps.
 - `LinkToExplorerPkg` - An external link to a package the Sui Explorer.
 - `LinkToExplorerTxn` - An external link to a transaction block the Sui Explorer.
 - `Modal` - A modal window.
-- `NetworkSelector` - A dropdown selector to choose between mainnet/testnet/devnet/localnet.
+- `NetworkSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.

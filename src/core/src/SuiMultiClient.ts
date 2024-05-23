@@ -4,7 +4,7 @@ import { sleep } from "./utils-misc.js";
 import { RPC_ENDPOINTS } from "./rpcs.js";
 
 /**
- * A tool to make many RPC requests using multiple endpoints.
+ * Make many RPC requests using multiple endpoints.
  * @see SuiMultiClient.executeInBatches()
  */
 export class SuiMultiClient {

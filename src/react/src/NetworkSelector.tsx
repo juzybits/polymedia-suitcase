@@ -3,7 +3,7 @@ import { BaseNetworkName, switchNetwork } from "./network";
 import { useClickOutside } from "./useClickOutside";
 
 /**
- * A dropdown selector to choose between mainnet/testnet/devnet/localnet.
+ * A dropdown menu to choose between mainnet/testnet/devnet/localnet.
  */
 export function NetworkSelector<NetworkName extends BaseNetworkName>({
     currentNetwork,
