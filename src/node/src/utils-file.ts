@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// TODO: add TSV functions from polymedia-coinmeta
+
 /**
  * Check if a file exists in the filesystem.
  */
@@ -65,7 +67,7 @@ export function readCsvFile<T>(filename: string, parseLine: ParseCsvLine<T>, rev
  */
 export function readJsonFile<T>(filename: string): T {
     const fileContent = fs.readFileSync(filename, "utf8");
-    const jsonData: T = JSON.parse(fileContent);
+    const jsonData = JSON.parse(fileContent) as T;
     return jsonData;
 }
 
@@ -75,7 +77,7 @@ export function readJsonFile<T>(filename: string): T {
  * Note that this is not a generic CSV writing solution and it will break if the input
  * CSV data contains commas or newlines.
  */
-export function writeCsvFile(filename: string, data: any[][]): void {
+export function writeCsvFile(filename: string, data: unknown[][]): void {
     const csvRows = data.map(row => {
         return row.map(value => {
             const escapedValue = ("" + String(value)).replace(/"/g, '\\"');
@@ -92,7 +94,7 @@ export function writeCsvFile(filename: string, data: any[][]): void {
 /**
  * Write an object's JSON representation into a file.
  */
-export function writeJsonFile(filename: string, contents: any): void {
+export function writeJsonFile(filename: string, contents: unknown): void {
     writeTextFile(
         filename,
         JSON.stringify(contents, null, 4)
