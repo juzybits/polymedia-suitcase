@@ -23,7 +23,7 @@
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
         "prepublishOnly": "rm -rf dist/ && pnpm build"
     },
-    "dependencies": {
+    "peerDependencies": {
         "@mysten/sui.js": "^0.54.1"
     },
     "type": "module",
