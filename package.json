@@ -5,6 +5,7 @@
     "license": "Apache-2.0",
     "scripts": {
         "build": "turbo run build",
+        "bump-version": "node src/dev/bump-version.mjs",
         "clean": "turbo run clean && rm -rf dist/ node_modules/ .turbo/",
         "dev": "turbo run dev",
         "lint": "turbo run lint"
