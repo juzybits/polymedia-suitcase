@@ -1,4 +1,11 @@
-import { NetworkName, makePolymediaUrl, shortenSuiAddress } from "@polymedia/suitcase-core";
+import {
+    NetworkName,
+    SuiExplorerItem,
+    makePolymediaUrl,
+    makeSuiscanUrl,
+    makeSuivisionUrl,
+    shortenSuiAddress,
+} from "@polymedia/suitcase-core";
 
 /**
  * An external link like:
@@ -23,62 +30,53 @@ export const LinkExternal: React.FC<{
 };
 
 /**
- * An external link to an address the Sui Explorer
+ * A link to explorer.polymedia.app.
  */
-export const LinkToExplorerAddr: React.FC<{
+export const LinkToPolymedia: React.FC<{
     network: NetworkName;
+    kind: SuiExplorerItem;
     addr: string;
 }> = ({
     network,
+    kind,
     addr,
 }) => {
-    return <LinkExternal href={makePolymediaUrl(network, "address", addr)}>
+    return <LinkExternal href={makePolymediaUrl(network, kind, addr)}>
         {shortenSuiAddress(addr)}
     </LinkExternal>;
 };
 
 /**
- * An external link to an object the Sui Explorer
+ * A link to suiscan.xyz.
  */
-export const LinkToExplorerObj: React.FC<{
+export const LinkToSuiscan: React.FC<{
     network: NetworkName;
-    objId: string;
+    kind: SuiExplorerItem;
+    addr: string;
 }> = ({
     network,
-    objId,
+    kind,
+    addr,
 }) => {
-    return <LinkExternal href={makePolymediaUrl(network, "object", objId)}>
-        {shortenSuiAddress(objId)}
-    </LinkExternal>;
-};
-
-/**
- * An external link to a package the Sui Explorer
- */
-export const LinkToExplorerPkg: React.FC<{
-    network: NetworkName;
-    pkgId: string;
-}> = ({
-    network,
-    pkgId,
-}) => {
-    return <LinkExternal href={makePolymediaUrl(network, "package", pkgId)}>
-        {shortenSuiAddress(pkgId)}
+    return <LinkExternal href={makeSuiscanUrl(network, kind, addr)}>
+        {shortenSuiAddress(addr)}
     </LinkExternal>;
 };
 
 
 /**
- * An external link to a transaction block the Sui Explorer
+ * A link to suivision.xyz.
  */
-export const LinkToExplorerTxn: React.FC<{
+export const LinkToSuivision: React.FC<{
     network: NetworkName;
-    txnId: string;
+    kind: SuiExplorerItem;
+    addr: string;
 }> = ({
     network,
-    txnId,
+    kind,
+    addr,
 }) => {
-    return <LinkExternal href={makePolymediaUrl(network, "txblock", txnId)}>
-        {shortenSuiAddress(txnId)}
+    return <LinkExternal href={makeSuivisionUrl(network, kind, addr)}>
+        {shortenSuiAddress(addr)}
     </LinkExternal>;
 };

@@ -102,9 +102,8 @@ The `suitcase-react` package provides components for React web apps.
 ### Components
 
 - `LinkExternal` - An external link.
-- `LinkToExplorerAddr` - An external link to an address the Sui Explorer.
-- `LinkToExplorerObj` - An external link to an object the Sui Explorer.
-- `LinkToExplorerPkg` - An external link to a package the Sui Explorer.
-- `LinkToExplorerTxn` - An external link to a transaction block the Sui Explorer.
+- `LinkToPolymedia` - A link to explorer.polymedia.app.
+- `LinkToSuiscan` - A link to suiscan.xyz.
+- `LinkToSuivision` - A link to suivision.xyz.
 - `Modal` - A modal window.
 - `NetworkSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.
