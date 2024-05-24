@@ -8,12 +8,12 @@ const inputData = [
 type DataLine = [ string, string, string ];
 const parseLine: ParseLine<DataLine> = (values) => [ values[0], values[1], values[2] ];
 
-const csvFile = 'test.csv';
+const csvFile = "test.csv";
 writeCsvFile(csvFile, inputData);
 const csvData = readCsvFile(csvFile, parseLine);
 console.log(csvData);
 
-const tsvFile = 'test.tsv';
+const tsvFile = "test.tsv";
 writeTsvFile(tsvFile, inputData);
 const tsvData = readTsvFile(tsvFile, parseLine);
 console.log(tsvData);

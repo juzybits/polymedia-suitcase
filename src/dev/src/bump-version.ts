@@ -33,7 +33,7 @@ function bumpVersion(packageJsonPath: string) {
     try {
         // Read and parse the package.json file
         const packageJson = fs.readFileSync(packageJsonPath, "utf8");
-        const packageData = JSON.parse(packageJson);
+        const packageData = JSON.parse(packageJson) as { version: string };
 
         // Increment and replace the version
         const newVersion = incrementVersion(packageData.version);

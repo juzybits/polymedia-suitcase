@@ -213,7 +213,7 @@ export function makeSuiscanUrl(
         path = kind;
     }
 
-    let url = `${baseUrl}/${path}/${address}`;
+    const url = `${baseUrl}/${path}/${address}`;
     return url;
 }
 
@@ -239,7 +239,7 @@ export function makeSuivisionUrl(
         path = kind;
     }
 
-    let url = `${baseUrl}/${path}/${address}`;
+    const url = `${baseUrl}/${path}/${address}`;
     return url;
 }
 
