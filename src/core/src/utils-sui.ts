@@ -163,16 +163,24 @@ export function getSuiObjectResponseFields(
 }
 
 /**
- * Build a Polymedia Explorer URL, like 'https://explorer.polymedia.app/address/0x123...456?network=testnet'
+ * Build an explorer.polymedia.app URL.
  */
-export function makeExplorerUrl(
+export function makePolymediaUrl(
     network: string,
     kind: SuiExplorerItem,
     address: string,
 ): string {
-    const baseUrl = (network === "localnet" || network == "http://127.0.0.1:9000")
+    const baseUrl = isLocalnet(network)
         ? "http://localhost:3000"
         : "https://explorer.polymedia.app";
+
+    if (kind === "package") {
+        kind = "object";
+    } else if (kind === "coin") {
+        kind = "object";
+        address = address.split("::")[0];
+    }
+
     let url = `${baseUrl}/${kind}/${address}`;
     if (network !== "mainnet") {
         const networkLabel = network === "localnet" ? "local" : network;
@@ -182,11 +190,57 @@ export function makeExplorerUrl(
 }
 
 /**
- * Remove leading zeros from a Sui address (lossless). For example it will turn
- * '0x0000000000000000000000000000000000000000000000000000000000000002' into '0x2'.
+ * Build a suiscan.xyz URL.
  */
-export function removeLeadingZeros(address: string): string {
-    return address.replaceAll(/0x0+/g, "0x");
+export function makeSuiscanUrl(
+    network: string,
+    kind: SuiExplorerItem,
+    address: string,
+): string {
+    if (isLocalnet(network)) {
+        return makePolymediaUrl(network, kind, address);
+    }
+    const baseUrl = `https://suiscan.xyz/${network}`;
+
+    let path: string;
+    if (kind === "address") {
+        path = "account";
+    } else if (kind === "txblock") {
+        path = "tx";
+    } else if (kind === "package") {
+        path = "object";
+    } else {
+        path = kind;
+    }
+
+    let url = `${baseUrl}/${path}/${address}`;
+    return url;
+}
+
+/**
+ * Build a suivision.xyz URL.
+ */
+export function makeSuivisionUrl(
+    network: string,
+    kind: SuiExplorerItem,
+    address: string,
+): string {
+    if (isLocalnet(network)) {
+        return makePolymediaUrl(network, kind, address);
+    }
+    const baseUrl = network === "mainnet"
+        ? "https://suivision.xyz"
+        : `https://${network}.suivision.xyz`;
+
+    let path: string;
+    if (kind === "address") {
+        path = "account";
+    } else {
+        path = kind;
+    }
+
+    let url = `${baseUrl}/${path}/${address}`;
+    return url;
 }
 
 /**
@@ -208,6 +262,16 @@ export async function requestSuiFromFaucet(
     }
 
     return requestSuiFromFaucetV1({ host, recipient });
+}
+
+/**
+ * Remove leading zeros from a Sui address (lossless). For example it will turn
+ * '0x0000000000000000000000000000000000000000000000000000000000000002' into '0x2'.
+ */
+export function removeLeadingZeros(
+    address: string,
+): string {
+    return address.replaceAll(/0x0+/g, "0x");
 }
 
 /**
@@ -234,7 +298,9 @@ export function shortenSuiAddress(
 /**
  * Validate a Sui address and return its normalized form, or `null` if invalid.
  */
-export function validateAndNormalizeSuiAddress(address: string): string | null {
+export function validateAndNormalizeSuiAddress(
+    address: string,
+): string | null {
     if (address.length === 0) {
         return null;
     }
@@ -243,4 +309,8 @@ export function validateAndNormalizeSuiAddress(address: string): string | null {
         return null;
     }
     return normalizedAddr;
+}
+
+function isLocalnet(network: string): boolean {
+    return network === "localnet" || network == "http://127.0.0.1:9000";
 }

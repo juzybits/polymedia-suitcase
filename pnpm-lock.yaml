@@ -41,6 +41,9 @@ importers:
 
   src/dev:
     dependencies:
+      '@polymedia/suitcase-core':
+        specifier: workspace:*
+        version: link:../core
       '@polymedia/suitcase-node':
         specifier: workspace:*
         version: link:../node

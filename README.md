@@ -29,9 +29,11 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `generateRandomAddress` - Generate a random Sui address (for development only).
 - `getCoinOfValue` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
-- `makeExplorerUrl` - Build a Polymedia Explorer URL.
-- `removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
+- `makePolymediaUrl` - Build an explorer.polymedia.app URL.
+- `makeSuiscanUrl` - Build a suiscan.xyz URL.
+- `makeSuivisionUrl` - Build a suivision.xyz URL.
 - `requestSuiFromFaucet` - Get SUI from the faucet on localnet/devnet/testnet.
+- `removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
 - `shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).
 - `validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 

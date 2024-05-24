@@ -10,6 +10,7 @@
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0"
     },
     "dependencies": {
+        "@polymedia/suitcase-core": "workspace:*",
         "@polymedia/suitcase-node": "workspace:*"
     },
     "peerDependencies": {

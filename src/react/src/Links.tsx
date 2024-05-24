@@ -1,4 +1,4 @@
-import { NetworkName, makeExplorerUrl, shortenSuiAddress } from "@polymedia/suitcase-core";
+import { NetworkName, makePolymediaUrl, shortenSuiAddress } from "@polymedia/suitcase-core";
 
 /**
  * An external link like:
@@ -32,7 +32,7 @@ export const LinkToExplorerAddr: React.FC<{
     network,
     addr,
 }) => {
-    return <LinkExternal href={makeExplorerUrl(network, "address", addr)}>
+    return <LinkExternal href={makePolymediaUrl(network, "address", addr)}>
         {shortenSuiAddress(addr)}
     </LinkExternal>;
 };
@@ -47,7 +47,7 @@ export const LinkToExplorerObj: React.FC<{
     network,
     objId,
 }) => {
-    return <LinkExternal href={makeExplorerUrl(network, "object", objId)}>
+    return <LinkExternal href={makePolymediaUrl(network, "object", objId)}>
         {shortenSuiAddress(objId)}
     </LinkExternal>;
 };
@@ -62,7 +62,7 @@ export const LinkToExplorerPkg: React.FC<{
     network,
     pkgId,
 }) => {
-    return <LinkExternal href={makeExplorerUrl(network, "package", pkgId)}>
+    return <LinkExternal href={makePolymediaUrl(network, "package", pkgId)}>
         {shortenSuiAddress(pkgId)}
     </LinkExternal>;
 };
@@ -78,7 +78,7 @@ export const LinkToExplorerTxn: React.FC<{
     network,
     txnId,
 }) => {
-    return <LinkExternal href={makeExplorerUrl(network, "txblock", txnId)}>
+    return <LinkExternal href={makePolymediaUrl(network, "txblock", txnId)}>
         {shortenSuiAddress(txnId)}
     </LinkExternal>;
 };
