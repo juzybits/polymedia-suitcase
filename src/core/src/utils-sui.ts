@@ -2,6 +2,7 @@
 
 import { bcs } from "@mysten/sui.js/bcs";
 import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from "@mysten/sui.js/client";
+import { requestSuiFromFaucetV1 } from "@mysten/sui.js/faucet";
 import { TransactionBlock, TransactionResult } from "@mysten/sui.js/transactions";
 import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui.js/utils";
 import { SuiExplorerItem } from "./types.js";
@@ -191,27 +192,22 @@ export function removeLeadingZeros(address: string): string {
 /**
  * Get SUI from the faucet on localnet/devnet/testnet.
  */
-export async function requestSuiFromFaucet(network: "localnet"|"devnet"|"testnet", address: string) {
-    let faucetUrl: string;
+export async function requestSuiFromFaucet(
+    network: "localnet"|"devnet"|"testnet",
+    recipient: string,
+) {
+    let host: string;
     if (network == "localnet") {
-        faucetUrl="http://127.0.0.1:9123/gas";
+        host = "http://127.0.0.1:9123/gas";
     }
     else if (network == "devnet") {
-        faucetUrl="https://faucet.devnet.sui.io/v1/gas";
+        host = "https://faucet.devnet.sui.io/v1/gas";
     }
-    else { // network == 'testnet'
-        faucetUrl="https://faucet.testnet.sui.io/v1/gas";
+    else {
+        host = "https://faucet.testnet.sui.io/v1/gas";
     }
 
-    return fetch(faucetUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            FixedAmountRequest: {
-                recipient: address
-            }
-        }),
-    });
+    return requestSuiFromFaucetV1({ host, recipient });
 }
 
 /**
