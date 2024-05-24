@@ -68,7 +68,8 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 
 ### Sui functions
 
-- `getActiveAddressKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
+- `getActiveAddress` - Get the current active address (sui client active-address).
+- `getActiveKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
 - `getActiveEnv` - Get the active Sui environment from `sui client active-env`.
 - `setupSuiTransaction` - Initialize objects to execute Sui transactions blocks using the current Sui active network and address.
 - `executeSuiTransaction` - Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.

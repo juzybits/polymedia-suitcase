@@ -7,15 +7,27 @@ import { Signer } from "@mysten/sui.js/cryptography";
 import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { fromB64 } from "@mysten/sui.js/utils";
-import { NetworkName } from "@polymedia/suitcase-core";
+import { NetworkName, validateAndNormalizeSuiAddress } from "@polymedia/suitcase-core";
 import { readJsonFile } from "./utils-file.js";
+
+/**
+ * Get the current active address (sui client active-address).
+ */
+export function getActiveAddress(): string {
+    const sender = execSync("sui client active-address", { encoding: "utf8" }).trim();
+    const address = validateAndNormalizeSuiAddress(sender);
+    if (!address) {
+        throw new Error("No active address was found");
+    }
+    return address;
+}
 
 /**
  * Build a `Ed25519Keypair` object for the current active address
  * by loading the secret key from ~/.sui/sui_config/sui.keystore
  */
-export function getActiveAddressKeypair(): Ed25519Keypair {
-    const sender = execSync("sui client active-address", { encoding: "utf8" }).trim();
+export function getActiveKeypair(): Ed25519Keypair {
+    const sender = getActiveAddress();
 
     const signer = (() => {
         const keystorePath = path.join(homedir(), ".sui", "sui_config", "sui.keystore");
@@ -55,7 +67,7 @@ export function setupSuiTransaction() {
     const network = getActiveEnv();
     const suiClient = new SuiClient({ url: getFullnodeUrl(network) });
     const txb = new TransactionBlock();
-    const signer = getActiveAddressKeypair();
+    const signer = getActiveKeypair();
     return { network, suiClient, txb, signer };
 }
 
