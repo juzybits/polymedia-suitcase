@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// TODO: add TSV functions from polymedia-coinmeta
+// ===== Generic file functions =====
 
 /**
  * Check if a file exists in the filesystem.
@@ -25,6 +25,39 @@ export function getFileName(importMetaUrl: string): string {
 }
 
 /**
+ * Write a string into a file.
+ */
+export function writeTextFile(filename: string, contents: string): void {
+    fs.writeFileSync(
+        filename,
+        contents + "\n"
+    );
+}
+
+// ===== JSON files =====
+
+/**
+ * Read a JSON file and parse its contents into an object.
+ */
+export function readJsonFile<T>(filename: string): T {
+    const fileContent = fs.readFileSync(filename, "utf8");
+    const jsonData = JSON.parse(fileContent) as T;
+    return jsonData;
+}
+
+/**
+ * Write an object's JSON representation into a file.
+ */
+export function writeJsonFile(filename: string, contents: unknown): void {
+    writeTextFile(
+        filename,
+        JSON.stringify(contents, null, 4)
+    );
+}
+
+// ===== CSV files =====
+
+/**
  * A generic function to transform a CSV line into an object.
  */
 export type ParseCsvLine<T> = (values: string[]) => T | null;
@@ -32,7 +65,11 @@ export type ParseCsvLine<T> = (values: string[]) => T | null;
 /**
  * Read a CSV file and parse each line into an object.
  */
-export function readCsvFile<T>(filename: string, parseLine: ParseCsvLine<T>, reverse = false): T[] {
+export function readCsvFile<T>(
+    filename: string,
+    parseLine: ParseCsvLine<T>,
+    reverse = false,
+): T[] {
     const results: T[] = [];
     const fileContent = fs.readFileSync(filename, "utf8");
 
@@ -63,22 +100,13 @@ export function readCsvFile<T>(filename: string, parseLine: ParseCsvLine<T>, rev
 }
 
 /**
- * Read a JSON file and parse its contents into an object.
- */
-export function readJsonFile<T>(filename: string): T {
-    const fileContent = fs.readFileSync(filename, "utf8");
-    const jsonData = JSON.parse(fileContent) as T;
-    return jsonData;
-}
-
-/**
  * Write objects into a CSV file.
  *
  * Note that this is not a generic CSV writing solution and it will break if the input
  * CSV data contains commas or newlines.
  */
 export function writeCsvFile(filename: string, data: unknown[][]): void {
-    const csvRows = data.map(row => {
+    const rows = data.map(row => {
         return row.map(value => {
             const escapedValue = ("" + String(value)).replace(/"/g, '\\"');
             return `"${escapedValue}"`;
@@ -87,26 +115,6 @@ export function writeCsvFile(filename: string, data: unknown[][]): void {
 
     writeTextFile(
         filename,
-        csvRows.join("\n")
-    );
-}
-
-/**
- * Write an object's JSON representation into a file.
- */
-export function writeJsonFile(filename: string, contents: unknown): void {
-    writeTextFile(
-        filename,
-        JSON.stringify(contents, null, 4)
-    );
-}
-
-/**
- * Write a string into a file.
- */
-export function writeTextFile(filename: string, contents: string): void {
-    fs.writeFileSync(
-        filename,
-        contents + "\n"
+        rows.join("\n")
     );
 }
