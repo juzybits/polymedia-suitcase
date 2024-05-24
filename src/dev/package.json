@@ -1,0 +1,22 @@
+{
+    "private": true,
+    "version": "0.0.0",
+    "name": "polymedia-suitcase-dev",
+    "license": "Apache-2.0",
+    "scripts": {
+        "build": "tsc",
+        "clean": "rm -rf dist/ node_modules/ .turbo/",
+        "dev": "tsc --watch",
+        "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0"
+    },
+    "dependencies": {
+        "@polymedia/suitcase-node": "workspace:*"
+    },
+    "peerDependencies": {
+    },
+    "devDependencies": {
+        "@types/node": "^20.12.12"
+    },
+    "type": "module",
+    "sideEffects": false
+}

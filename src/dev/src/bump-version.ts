@@ -15,13 +15,13 @@ const currentDir = path.dirname(currentFile);
 
 // Paths to the package.json files relative to the script
 const packagePaths = [
-    path.resolve(currentDir, "../core/package.json"),
-    path.resolve(currentDir, "../node/package.json"),
-    path.resolve(currentDir, "../react/package.json")
+    path.resolve(currentDir, "../../core/package.json"),
+    path.resolve(currentDir, "../../node/package.json"),
+    path.resolve(currentDir, "../../react/package.json")
 ];
 
 // Increment the version number from 0.0.[N] to 0.0.[N+1]
-function incrementVersion(version) {
+function incrementVersion(version: string) {
     const versionParts = version.split(".");
     const patchNumber = parseInt(versionParts[2]);
     versionParts[2] = (patchNumber + 1).toString();
@@ -29,7 +29,7 @@ function incrementVersion(version) {
 }
 
 // Function to increment the version number in a given package.json file
-function bumpVersion(packageJsonPath) {
+function bumpVersion(packageJsonPath: string) {
     try {
         // Read and parse the package.json file
         const packageJson = fs.readFileSync(packageJsonPath, "utf8");

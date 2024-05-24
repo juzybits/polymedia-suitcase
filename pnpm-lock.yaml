@@ -39,6 +39,16 @@ importers:
         specifier: ^0.54.1
         version: 0.54.1(svelte@4.2.17)(typescript@5.4.5)
 
+  src/dev:
+    dependencies:
+      '@polymedia/suitcase-node':
+        specifier: workspace:*
+        version: link:../node
+    devDependencies:
+      '@types/node':
+        specifier: ^20.12.12
+        version: 20.12.12
+
   src/node:
     dependencies:
       '@mysten/sui.js':
