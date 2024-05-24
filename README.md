@@ -78,11 +78,12 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 
 - `fileExists` - Check if a file exists in the filesystem.
 - `getFileName` - Extract the file name from a module URL, without path or extension.
-- `readCsvFile` - Read a CSV file and parse each line into an object.
-- `readJsonFile` - Read a JSON file and parse its contents into an object.
-- `writeCsvFile` - Write objects into a CSV file.
 - `writeJsonFile` - Write an object's JSON representation into a file.
-- `writeTextFile` - Write a string into a file.
+- `readJsonFile` - Read a JSON file and parse its contents into an object.
+- `writeTsvFile` - Write objects into a TSV file.
+- `readTsvFile` - Read a TSV file and parse each line into an object.
+- `writeCsvFile` - Write objects into a CSV file.
+- `readCsvFile` - Read a CSV file and parse each line into an object.
 
 ### Misc functions
 
