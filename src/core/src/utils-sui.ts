@@ -296,6 +296,60 @@ export function shortenSuiAddress(
 }
 
 /**
+ * A result returned by `testRpcLatency`.
+ */
+export type RpcTest = {
+    endpoint: string;
+    latency?: number;
+    error?: string;
+};
+
+/**
+ * Measure RPC latency.
+ */
+export async function testRpcLatency({
+    endpoints,
+    testType = "getLatestSuiSystemState",
+}: {
+    endpoints: string[];
+    testType?: "getLatestSuiSystemState" | "getAllBalances" | "getAllCoins";
+}): Promise<RpcTest[]> {
+    const promises = endpoints.map(async (url) =>
+    {
+        const suiClient = new SuiClient({ url });
+        const startTime = performance.now();
+
+        if (testType === "getLatestSuiSystemState") {
+            await suiClient.getLatestSuiSystemState();
+        }
+        else if (testType === "getAllBalances") {
+            await suiClient.getAllBalances({ owner: "0x0" });
+        }
+        else if (testType === "getAllCoins") {
+            await suiClient.getAllCoins({ owner: "0x0" });
+        }
+
+        const latency = performance.now() - startTime;
+        return { endpoint: url, latency };
+    });
+
+    const results = await Promise.allSettled(promises);
+    return results.map(result =>
+    {
+        if (result.status === "fulfilled") {
+            return result.value;
+        } else {
+            return {
+                /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+                endpoint: result.reason.url || "Unknown endpoint",
+                error: result.reason.message || "Unknown error",
+                /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+            };
+        }
+    });
+}
+
+/**
  * Validate a Sui address and return its normalized form, or `null` if invalid.
  */
 export function validateAndNormalizeSuiAddress(
