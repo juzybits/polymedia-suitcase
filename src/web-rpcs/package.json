@@ -36,8 +36,8 @@
         "@vitejs/plugin-react-swc": "^3.7.0",
         "less": "^4.2.0",
         "localtunnel": "^2.0.2",
-        "vite": "^5.2.11",
-        "wrangler": "^3.57.1"
+        "vite": "^5.2.12",
+        "wrangler": "^3.57.2"
     },
     "type": "module",
     "sideEffects": false
