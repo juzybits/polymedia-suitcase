@@ -39,31 +39,40 @@ export const PageHome: React.FC = () =>
 
     <h1><span className="rainbow">Sui RPC test</span></h1>
 
-    <h2><span className="rainbow">RPCs</span></h2>
+    <div className="section">
+        <h2><span className="rainbow">RPCs</span></h2>
 
-    <div id="rpc-selector">
-    {rpcs.map(rpc => (
-        <div key={rpc.url} className="rpc">
-        <label>
-            <input
-                type="checkbox"
-                checked={rpc.enabled}
-                onChange={() => onRpcCheckboxChange(rpc.url)}
-            />
-            {rpc.url}
-        </label>
+        <div id="rpc-selector">
+        {rpcs.map(rpc => (
+            <div key={rpc.url} className="rpc">
+            <label>
+                <input
+                    type="checkbox"
+                    checked={rpc.enabled}
+                    onChange={() => onRpcCheckboxChange(rpc.url)}
+                />
+                {rpc.url}
+            </label>
+            </div>
+        ))}
         </div>
-    ))}
+
+        <button className="btn" onClick={runTest} disabled={isRunning}>
+            {isRunning ? "RUNNING" : "TEST"}
+        </button>
     </div>
 
-    <button className="btn" onClick={runTest} disabled={isRunning}>TEST</button>
-
     {results.length > 0 &&
-    <div id="results">
-        <h2><span className="rainbow">RESULTS</span></h2>
-        {results.map(result =>
-            <TestResult result={result} key={result.endpoint} />
-        )}
+    <div className="section">
+
+        <h2><span className={`rainbow ${isRunning ? "running" : ""}`}>RESULTS</span></h2>
+
+        <div id="results" className={isRunning ? "running" : ""}>
+            {results.map(result =>
+                <TestResult result={result} key={result.endpoint} />
+            )}
+        </div>
+
     </div>}
 
     </>;
@@ -76,7 +85,7 @@ export const TestResult: React.FC<{
 }) => {
     const content = result.latency ? <>
         <span className="endpoint">{result.endpoint}</span>
-        <span>{result.latency}ms</span>
+        <span className="latency">{result.latency}ms</span>
     </> : <>
         <span className="endpoint">{result.endpoint}</span>
         <span className="text-red">Error</span>

@@ -1,12 +1,25 @@
 @import "./.shared.constants.less";
 
+header {
+    padding-bottom: 2rem;
+}
 
-#rpc-selector {
+#page-content {
+    gap: 1.5rem;
+    h1 {
+        padding: 0;
+    }
+}
+
+#rpc-selector, #results {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
     padding-bottom: 1rem;
+}
+
+#rpc-selector {
     .rpc {
         *:hover {
             cursor: pointer;
@@ -14,15 +27,10 @@
         input[type=checkbox] {
             margin-right: 0.5rem;
         }
-        word-break: break-all;
     }
 }
 
 #results {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-top: 1rem;
     .result {
         display: flex;
         flex-direction: row;
@@ -32,5 +40,17 @@
         .endpoint {
             word-break: break-all;
         }
+        .latency {
+            font-family: @font-mono;
+        }
     }
+    &.running * {
+        color: rgb(170, 170, 170);
+    }
+}
+
+.rainbow.running {
+    color: rgb(150, 150, 150);
+    background: none;
+    -webkit-text-fill-color: unset;
 }
