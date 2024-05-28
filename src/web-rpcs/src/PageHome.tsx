@@ -1,4 +1,5 @@
 import { RPC_ENDPOINTS, RpcLatencyResult, measureRpcLatency } from "@polymedia/suitcase-core";
+import { LinkExternal } from "@polymedia/suitcase-react";
 import React, { useState } from "react";
 
 export const PageHome: React.FC = () =>
@@ -35,7 +36,7 @@ export const PageHome: React.FC = () =>
 
     return <>
 
-    <h1><span className="rainbow">Sui RPC test</span></h1>
+    <h1><span className="rainbow">Sui RPC tools</span></h1>
 
     <div className="section">
         <h2><span className="rainbow">RPCs</span></h2>
@@ -72,6 +73,19 @@ export const PageHome: React.FC = () =>
         </div>
 
     </div>}
+
+    <div className="section">
+        <h2><span className="rainbow">DEV TOOLS</span></h2>
+
+        <p>
+            The NPM package <b><i>@polymedia/suitcase-core</i></b> provides functions to measure RPC latency and instantiate <i>SuiClient</i> using the lowest latency endpoint for each user: <b><i>measureRpcLatency()</i></b> and <b><i>newLowLatencySuiClient()</i></b>.
+        </p>
+        <p>
+            <LinkExternal href="https://github.com/juzybits/polymedia-suitcase/blob/main/src/core/src/utils-sui.ts" follow={true}>
+                Read the code
+            </LinkExternal>
+        </p>
+    </div>
 
     </>;
 };
