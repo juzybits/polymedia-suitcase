@@ -22,8 +22,7 @@ export const AppRouter: React.FC = () => {
 
 /* App */
 
-export type AppContext = {
-};
+export type AppContext = Record<string, never>;
 
 const App: React.FC = () =>
 {

@@ -316,21 +316,26 @@ export async function testRpcLatency({
 }): Promise<RpcTestResult[]> {
     const promises = endpoints.map(async (url) =>
     {
-        const suiClient = new SuiClient({ url });
-        const startTime = performance.now();
+        try {
+            const suiClient = new SuiClient({ url });
+            const startTime = performance.now();
 
-        if (testType === "getLatestSuiSystemState") {
-            await suiClient.getLatestSuiSystemState();
-        }
-        else if (testType === "getAllBalances") {
-            await suiClient.getAllBalances({ owner: "0x0" });
-        }
-        else if (testType === "getAllCoins") {
-            await suiClient.getAllCoins({ owner: "0x0" });
-        }
+            if (testType === "getLatestSuiSystemState") {
+                await suiClient.getLatestSuiSystemState();
+            }
+            else if (testType === "getAllBalances") {
+                await suiClient.getAllBalances({ owner: "0x0" });
+            }
+            else if (testType === "getAllCoins") {
+                await suiClient.getAllCoins({ owner: "0x0" });
+            }
 
-        const latency = performance.now() - startTime;
-        return { endpoint: url, latency };
+            const latency = performance.now() - startTime;
+            return { endpoint: url, latency };
+        }
+        catch (err) {
+            return { endpoint: url, error: String(err) };
+        }
     });
 
     const results = await Promise.allSettled(promises);
@@ -338,12 +343,10 @@ export async function testRpcLatency({
     {
         if (result.status === "fulfilled") {
             return result.value;
-        } else {
+        } else { // should never happen
             return {
-                /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
-                endpoint: result.reason.url || "Unknown endpoint",
-                error: result.reason.message || "Unknown error",
-                /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+                endpoint: "Unknown endpoint",
+                error: result.reason.message || "Unknown error", // eslint-disable-line
             };
         }
     });

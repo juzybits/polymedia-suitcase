@@ -19,9 +19,10 @@ export const PageHome: React.FC = () =>
         const newResults = await testRpcLatency({
             endpoints: rpcs.filter(rpc => rpc.enabled).map(rpc => rpc.url),
         });
+        newResults.sort((a, b) => (a.latency ?? 99999) - (b.latency ?? 99999));
         setResults(newResults);
         setIsRunning(false);
-    }
+    };
 
     const onRpcCheckboxChange = (url: string) => {
         setRpcs(prevRpcs =>
