@@ -244,6 +244,45 @@ export function makeSuivisionUrl(
 }
 
 /**
+ * Measure RPC latency by making a request to various endpoints.
+ */
+export async function measureRpcLatency({
+    endpoints,
+    rpcRequest = async (client: SuiClient) => { await client.getObject({ id: "0x123" }); }
+}: {
+    endpoints: string[];
+    rpcRequest?: (client: SuiClient) => Promise<void>;
+}): Promise<RpcTestResult[]>
+{
+    const promises = endpoints.map(async (url) =>
+    {
+        try {
+            const suiClient = new SuiClient({ url });
+            const startTime = performance.now();
+            await rpcRequest(suiClient);
+            const latency = performance.now() - startTime;
+            return { endpoint: url, latency };
+        }
+        catch (err) {
+            return { endpoint: url, error: String(err) };
+        }
+    });
+
+    const results = await Promise.allSettled(promises);
+    return results.map(result =>
+    {
+        if (result.status === "fulfilled") {
+            return result.value;
+        } else { // should never happen
+            return {
+                endpoint: "Unknown endpoint",
+                error: result.reason.message || "Unknown error", // eslint-disable-line
+            };
+        }
+    });
+}
+
+/**
  * Get SUI from the faucet on localnet/devnet/testnet.
  */
 export async function requestSuiFromFaucet(
@@ -303,63 +342,6 @@ export type RpcTestResult = {
     latency?: number;
     error?: string;
 };
-
-/**
- * Measure RPC latency.
- */
-export async function testRpcLatency({
-    endpoints,
-    testType = "getLatestSuiSystemState",
-    objectOrAddress,
-}: {
-    endpoints: string[];
-    testType?: "getLatestSuiSystemState" | "getAllBalances" | "getAllCoins" | "getObject";
-    objectOrAddress?: string;
-}): Promise<RpcTestResult[]>
-{
-    const promises = endpoints.map(async (url) =>
-    {
-        try {
-            const suiClient = new SuiClient({ url });
-            const startTime = performance.now();
-
-            if (testType === "getLatestSuiSystemState") {
-                await suiClient.getLatestSuiSystemState();
-            }
-            else if (testType === "getAllBalances") {
-                const owner = objectOrAddress ?? "0xb871a42470b59c7184033a688f883cf24eb5e66eae1db62319bab27adb30d031";
-                await suiClient.getAllBalances({ owner });
-            }
-            else if (testType === "getAllCoins") {
-                const owner = objectOrAddress ?? "0xb871a42470b59c7184033a688f883cf24eb5e66eae1db62319bab27adb30d031";
-                await suiClient.getAllCoins({ owner });
-            }
-            else if (testType === "getObject") {
-                const id = objectOrAddress ?? "0x2";
-                await suiClient.getObject({ id });
-            }
-
-            const latency = performance.now() - startTime;
-            return { endpoint: url, latency };
-        }
-        catch (err) {
-            return { endpoint: url, error: String(err) };
-        }
-    });
-
-    const results = await Promise.allSettled(promises);
-    return results.map(result =>
-    {
-        if (result.status === "fulfilled") {
-            return result.value;
-        } else { // should never happen
-            return {
-                endpoint: "Unknown endpoint",
-                error: result.reason.message || "Unknown error", // eslint-disable-line
-            };
-        }
-    });
-}
 
 /**
  * Validate a Sui address and return its normalized form, or `null` if invalid.
