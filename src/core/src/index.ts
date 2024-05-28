@@ -1,6 +1,7 @@
 export * from "./SuiEventFetcher.js";
 export * from "./SuiMultiClient.js";
 export * from "./constants.js";
+export * from "./rpcs.js";
 export * from "./types.js";
 export * from "./utils-api.js";
 export * from "./utils-misc.js";

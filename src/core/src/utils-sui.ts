@@ -298,7 +298,7 @@ export function shortenSuiAddress(
 /**
  * A result returned by `testRpcLatency`.
  */
-export type RpcTest = {
+export type RpcTestResult = {
     endpoint: string;
     latency?: number;
     error?: string;
@@ -313,7 +313,7 @@ export async function testRpcLatency({
 }: {
     endpoints: string[];
     testType?: "getLatestSuiSystemState" | "getAllBalances" | "getAllCoins";
-}): Promise<RpcTest[]> {
+}): Promise<RpcTestResult[]> {
     const promises = endpoints.map(async (url) =>
     {
         const suiClient = new SuiClient({ url });
