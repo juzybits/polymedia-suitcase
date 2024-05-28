@@ -33,6 +33,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `makeSuiscanUrl` - Build a suiscan.xyz URL.
 - `makeSuivisionUrl` - Build a suivision.xyz URL.
 - `measureRpcLatency` - Measure RPC latency by making a request to various endpoints.
+- `newLowLatencySuiClient` - Instantiate SuiClient using the RPC endpoint with the lowest latency.
 - `requestSuiFromFaucet` - Get SUI from the faucet on localnet/devnet/testnet.
 - `removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
 - `shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).

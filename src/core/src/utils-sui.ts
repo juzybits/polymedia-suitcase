@@ -292,6 +292,22 @@ export async function measureRpcLatency({
 }
 
 /**
+ * Instantiate SuiClient using the RPC endpoint with the lowest latency.
+ */
+export async function newLowLatencySuiClient({
+    endpoints,
+    rpcRequest,
+}: {
+    endpoints: string[];
+    rpcRequest?: (client: SuiClient) => Promise<void>;
+}): Promise<SuiClient>
+{
+    const results = await measureRpcLatency({endpoints, rpcRequest});
+    const suiClient = new SuiClient({ url: results[0].endpoint });
+    return suiClient;
+}
+
+/**
  * Get SUI from the faucet on localnet/devnet/testnet.
  */
 export async function requestSuiFromFaucet(
