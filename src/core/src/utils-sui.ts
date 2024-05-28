@@ -244,6 +244,15 @@ export function makeSuivisionUrl(
 }
 
 /**
+ * A result returned by `measureRpcLatency`.
+ */
+export type RpcLatencyResult = {
+    endpoint: string;
+    latency?: number;
+    error?: string;
+};
+
+/**
  * Measure RPC latency by making a request to various endpoints.
  */
 export async function measureRpcLatency({
@@ -252,7 +261,7 @@ export async function measureRpcLatency({
 }: {
     endpoints: string[];
     rpcRequest?: (client: SuiClient) => Promise<void>;
-}): Promise<RpcTestResult[]>
+}): Promise<RpcLatencyResult[]>
 {
     const promises = endpoints.map(async (url) =>
     {
@@ -276,10 +285,10 @@ export async function measureRpcLatency({
         } else { // should never happen
             return {
                 endpoint: "Unknown endpoint",
-                error: result.reason.message || "Unknown error", // eslint-disable-line
+                error: String(result.reason.message) || "Unknown error", // eslint-disable-line
             };
         }
-    });
+    }).sort((a, b) => (a.latency ?? 999_999) - (b.latency ?? 999_999));
 }
 
 /**
@@ -333,15 +342,6 @@ export function shortenSuiAddress(
         return prefix + match.slice(2, 2 + start) + separator + match.slice(-end);
     });
 }
-
-/**
- * A result returned by `testRpcLatency`.
- */
-export type RpcTestResult = {
-    endpoint: string;
-    latency?: number;
-    error?: string;
-};
 
 /**
  * Validate a Sui address and return its normalized form, or `null` if invalid.

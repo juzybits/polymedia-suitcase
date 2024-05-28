@@ -1,4 +1,4 @@
-import { RPC_ENDPOINTS, RpcTestResult, measureRpcLatency } from "@polymedia/suitcase-core";
+import { RPC_ENDPOINTS, RpcLatencyResult, measureRpcLatency } from "@polymedia/suitcase-core";
 import React, { useState } from "react";
 
 export const PageHome: React.FC = () =>
@@ -9,7 +9,7 @@ export const PageHome: React.FC = () =>
     const [ rpcs, setRpcs ] = useState<RpcUrl[]>(
         RPC_ENDPOINTS[network].map(url => ( { url, enabled: true } ))
     );
-    const [ results, setResults ] = useState<RpcTestResult[]>([]);
+    const [ results, setResults ] = useState<RpcLatencyResult[]>([]);
     const [ isRunning, setIsRunning ] = useState<boolean>(false);
 
     /* Functions */
@@ -19,7 +19,6 @@ export const PageHome: React.FC = () =>
         const newResults = await measureRpcLatency({
             endpoints: rpcs.filter(rpc => rpc.enabled).map(rpc => rpc.url),
         });
-        newResults.sort((a, b) => (a.latency ?? 99999) - (b.latency ?? 99999));
         setResults(newResults);
         setIsRunning(false);
     };
@@ -78,7 +77,7 @@ export const PageHome: React.FC = () =>
 };
 
 export const TestResult: React.FC<{
-    result: RpcTestResult;
+    result: RpcLatencyResult;
 }> = ({
     result,
 }) => {
