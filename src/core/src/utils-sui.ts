@@ -310,10 +310,13 @@ export type RpcTestResult = {
 export async function testRpcLatency({
     endpoints,
     testType = "getLatestSuiSystemState",
+    objectOrAddress,
 }: {
     endpoints: string[];
-    testType?: "getLatestSuiSystemState" | "getAllBalances" | "getAllCoins";
-}): Promise<RpcTestResult[]> {
+    testType?: "getLatestSuiSystemState" | "getAllBalances" | "getAllCoins" | "getObject";
+    objectOrAddress?: string;
+}): Promise<RpcTestResult[]>
+{
     const promises = endpoints.map(async (url) =>
     {
         try {
@@ -324,10 +327,16 @@ export async function testRpcLatency({
                 await suiClient.getLatestSuiSystemState();
             }
             else if (testType === "getAllBalances") {
-                await suiClient.getAllBalances({ owner: "0x0" });
+                const owner = objectOrAddress ?? "0xb871a42470b59c7184033a688f883cf24eb5e66eae1db62319bab27adb30d031";
+                await suiClient.getAllBalances({ owner });
             }
             else if (testType === "getAllCoins") {
-                await suiClient.getAllCoins({ owner: "0x0" });
+                const owner = objectOrAddress ?? "0xb871a42470b59c7184033a688f883cf24eb5e66eae1db62319bab27adb30d031";
+                await suiClient.getAllCoins({ owner });
+            }
+            else if (testType === "getObject") {
+                const id = objectOrAddress ?? "0x2";
+                await suiClient.getObject({ id });
             }
 
             const latency = performance.now() - startTime;

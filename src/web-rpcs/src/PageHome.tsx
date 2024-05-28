@@ -18,6 +18,7 @@ export const PageHome: React.FC = () =>
         setIsRunning(true);
         const newResults = await testRpcLatency({
             endpoints: rpcs.filter(rpc => rpc.enabled).map(rpc => rpc.url),
+            testType: "getObject",
         });
         newResults.sort((a, b) => (a.latency ?? 99999) - (b.latency ?? 99999));
         setResults(newResults);
