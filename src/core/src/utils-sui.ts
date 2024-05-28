@@ -253,7 +253,7 @@ export type RpcLatencyResult = {
 };
 
 /**
- * Measure RPC latency by making a request to various endpoints.
+ * Measure Sui RPC latency by making requests to various endpoints.
  */
 export async function measureRpcLatency({
     endpoints,

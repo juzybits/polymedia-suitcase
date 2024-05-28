@@ -39,7 +39,7 @@ export const PageHome: React.FC = () =>
     <h1><span className="rainbow">Sui RPC tools</span></h1>
 
     <div className="section">
-        <h2><span className="rainbow">RPCs</span></h2>
+        <h2><span className="rainbow">RPC TEST</span></h2>
 
         <div id="rpc-selector">
         {rpcs.map(rpc => (
