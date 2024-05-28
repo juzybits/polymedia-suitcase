@@ -1,1 +1,36 @@
 @import "./.shared.constants.less";
+
+
+#rpc-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    .rpc {
+        *:hover {
+            cursor: pointer;
+        }
+        input[type=checkbox] {
+            margin-right: 0.5rem;
+        }
+        word-break: break-all;
+    }
+}
+
+#results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    .result {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1rem;
+        text-align: left;
+        .endpoint {
+            word-break: break-all;
+        }
+    }
+}

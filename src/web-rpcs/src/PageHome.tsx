@@ -38,8 +38,9 @@ export const PageHome: React.FC = () =>
 
     <h1><span className="rainbow">Sui RPC test</span></h1>
 
-    <h2>RPCs</h2>
+    <h2><span className="rainbow">RPCs</span></h2>
 
+    <div id="rpc-selector">
     {rpcs.map(rpc => (
         <div key={rpc.url} className="rpc">
         <label>
@@ -52,24 +53,38 @@ export const PageHome: React.FC = () =>
         </label>
         </div>
     ))}
+    </div>
 
     <button className="btn" onClick={runTest} disabled={isRunning}>TEST</button>
 
-    {results.length > 0 && <>
-
-        <h2>Results</h2>
-
+    {results.length > 0 &&
+    <div id="results">
+        <h2><span className="rainbow">RESULTS</span></h2>
         {results.map(result =>
-        <div key={result.endpoint}>
-            <div>Endpoint: {result.endpoint}</div>
-            <div>Result: {result.latency ?? result.error}</div>
-        </div>)}
-
-    </>}
-
+            <TestResult result={result} key={result.endpoint} />
+        )}
+    </div>}
 
     </>;
 };
+
+export const TestResult: React.FC<{
+    result: RpcTestResult;
+}> = ({
+    result,
+}) => {
+    const content = result.latency ? <>
+        <span className="endpoint">{result.endpoint}</span>
+        <span>{result.latency}ms</span>
+    </> : <>
+        <span className="endpoint">{result.endpoint}</span>
+        <span className="text-red">Error</span>
+    </>;
+    return <div className="result">
+        {content}
+    </div>;
+}
+
 
 export type RpcUrl = {
     url: string;
