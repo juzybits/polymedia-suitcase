@@ -116,7 +116,7 @@ export const PageHome: React.FC = () =>
 
         <div id="results" className={isRunning ? "running" : ""}>
             {results.map(result =>
-                <TestResult result={result} key={result.endpoint} />
+                <ResultRow result={result} key={result.endpoint} />
             )}
         </div>
     </div>}
@@ -136,20 +136,22 @@ export const PageHome: React.FC = () =>
     </>;
 };
 
-export const TestResult: React.FC<{
+export const ResultRow: React.FC<{
     result: ProcessedResult;
 }> = ({
     result,
 }) => {
-    const content = !result.error ? <>
-        <span className="endpoint">{result.endpoint}</span>
-        <span className="latency">Avg: {result.average}ms, P50: {result.p50}ms, P90: {result.p90}ms</span>
-    </> : <>
-        <span className="endpoint">{result.endpoint}</span>
-        <span className="text-red">Error</span>
-    </>;
     return <div className="result">
-        {content}
+        <div className="endpoint">{result.endpoint}</div>
+        {!result.error ? <>
+            <div className="latency">{result.average.toFixed(0)}</div>
+            <div className="latency">{result.p50.toFixed(0)}</div>
+            <div className="latency">{result.p90.toFixed(0)}</div>
+        </> : <>
+            <div className="latency"></div>
+            <div className="latency"></div>
+            <div className="latency text-red">Error</div>
+        </>}
     </div>;
 };
 

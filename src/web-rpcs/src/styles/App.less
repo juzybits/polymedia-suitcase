@@ -9,14 +9,22 @@ header {
     h1 {
         padding: 0;
     }
+    align-items: stretch;
 }
 
 #rpc-selector, #results {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
     padding-top: 0.5rem;
     padding-bottom: 1rem;
+    .rpc > label, .result {
+        display: inline-block;
+        padding: 0.5rem 0.2rem;
+        border-radius: 4px;
+        &:hover {
+            background-color: @color-blue-6;
+        }
+    }
 }
 
 #rpc-selector {
@@ -36,11 +44,15 @@ header {
         flex-direction: row;
         justify-content: space-between;
         gap: 1rem;
-        text-align: left;
+        align-items: center;
         .endpoint {
+            flex: 1 1 auto;
             word-break: break-all;
+            text-align: left;
         }
         .latency {
+            flex: 0 0 10%;
+            text-align: right;
             font-family: @font-mono;
         }
     }
