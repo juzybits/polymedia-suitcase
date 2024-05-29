@@ -18,7 +18,6 @@ header {
     padding-top: 0.5rem;
     padding-bottom: 1rem;
     .rpc > label, .result {
-        display: inline-block;
         padding: 0.5rem 0.2rem;
         border-radius: 4px;
         &:hover {
@@ -32,8 +31,11 @@ header {
         *:hover {
             cursor: pointer;
         }
-        input[type=checkbox] {
-            margin-right: 0.5rem;
+        label {
+            display: inline-block;
+            input[type=checkbox] {
+                margin-right: 0.5rem;
+            }
         }
     }
 }
@@ -54,6 +56,17 @@ header {
             flex: 0 0 10%;
             text-align: right;
             font-family: @font-mono;
+        }
+        &.header {
+            * {
+                font-family: @font-mono;
+                font-weight: 900;
+                text-decoration: underline;
+                padding-bottom: 0.2rem;
+            }
+            &:hover {
+                background-color: unset;
+            }
         }
     }
     &.running * {

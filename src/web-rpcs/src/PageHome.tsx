@@ -115,6 +115,12 @@ export const PageHome: React.FC = () =>
         <h2><span className={`rainbow ${isRunning ? "running" : ""}`}>RESULTS</span></h2>
 
         <div id="results" className={isRunning ? "running" : ""}>
+        <div className="result header">
+            <div className="endpoint">ENDPOINT</div>
+            <div className="latency">AVG</div>
+            <div className="latency">P50</div>
+            <div className="latency">P90</div>
+        </div>
             {results.map(result =>
                 <ResultRow result={result} key={result.endpoint} />
             )}
