@@ -288,7 +288,7 @@ export async function measureRpcLatency({
                 error: String(result.reason.message) || "Unknown error", // eslint-disable-line
             };
         }
-    }).sort((a, b) => (a.latency ?? 999_999) - (b.latency ?? 999_999));
+    });
 }
 
 /**
