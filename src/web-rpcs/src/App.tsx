@@ -89,7 +89,7 @@ const App: React.FC = () =>
                 <LinkExternal href="https://polymedia.app" follow={true}>
                     <img alt="polymedia" src="https://assets.polymedia.app/img/all/logo-nomargin-transparent-512x512.webp" className="icon" />
                 </LinkExternal>
-                <LinkExternal href="https://github.com/juzybits/polymedia-suitcase" follow={true}>
+                <LinkExternal href="https://github.com/juzybits/polymedia-suitcase/tree/main/src/web-rpcs" follow={true}>
                     <GitHubLogo />
                 </LinkExternal>
             </div>

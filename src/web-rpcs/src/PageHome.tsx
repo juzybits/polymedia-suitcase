@@ -202,7 +202,7 @@ export type AggregateResult = {
     error: boolean;
 };
 
-/* Utility Functions */
+/* Functions */
 
 function calculateAverage(latencies: number[]): number {
     const sum = latencies.reduce((acc, curr) => acc + curr, 0);
