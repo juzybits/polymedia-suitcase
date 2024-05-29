@@ -4,10 +4,12 @@ import { LinkExternal } from "@polymedia/suitcase-react";
 import React, { useState } from "react";
 
 export const PageHome: React.FC = () =>
-{
-    /* State */
+    {
+        /* State */
 
     const network = "mainnet";
+    const numRounds = 11; // the 1st round is discarded due to DNS and TLS overhead
+
     const [ rpcs, setRpcs ] = useState<RpcUrl[]>(
         RPC_ENDPOINTS[network].map(url => ( { url, enabled: true } ))
     );
@@ -20,7 +22,6 @@ export const PageHome: React.FC = () =>
     {
         setIsRunning(true);
 
-        const numRounds = 11;
         const allResults: RpcLatencyResult[][] = [];
         const endpoints = rpcs.filter(rpc => rpc.enabled).map(rpc => rpc.url);
         const rpcRequest = async (client: SuiClient) => {
@@ -133,6 +134,16 @@ export const PageHome: React.FC = () =>
             )}
         </div>
     </div>}
+
+    <div className="section">
+        <h2><span className="rainbow">ABOUT</span></h2>
+        <div className="tight">
+            <p>▸ The app sends {numRounds-1} requests to each RPC and measures the response times (latency). The results are shown in milliseconds.</p>
+            <p>▸ "AVG" is the average latency of all requests sent to the RPC.</p>
+            <p>▸ "P50" is the 50th percentile (median) latency for the RPC. This means 50% of the requests were faster.</p>
+            <p>▸ "P90" is the 90th percentile latency for the RPC. This means 90% of the requests were faster.</p>
+        </div>
+    </div>
 
     <div className="section">
         <h2><span className="rainbow">DEV TOOLS</span></h2>
