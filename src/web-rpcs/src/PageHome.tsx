@@ -11,7 +11,7 @@ export const PageHome: React.FC = () =>
     const [ rpcs, setRpcs ] = useState<RpcUrl[]>(
         RPC_ENDPOINTS[network].map(url => ( { url, enabled: true } ))
     );
-    const [ results, setResults ] = useState<ProcessedResult[]>([]);
+    const [ results, setResults ] = useState<AggregateResult[]>([]);
     const [ isRunning, setIsRunning ] = useState<boolean>(false);
 
     /* Functions */
@@ -34,7 +34,7 @@ export const PageHome: React.FC = () =>
         }
 
         // Calculate average/P50/P90 latency for each endpoint
-        const processedResults: ProcessedResult[] = endpoints.map((endpoint, i) =>
+        const aggregateResults: AggregateResult[] = endpoints.map((endpoint, i) =>
         {
             const latencies: number[] = [];
             let hasError = false;
@@ -68,9 +68,16 @@ export const PageHome: React.FC = () =>
                     error: true,
                 };
             }
-        }).sort((a, b) => a.average - b.average);
+        })
 
-        setResults(processedResults);
+        // Sort the results from fastest to slowest
+        aggregateResults.sort((a, b) => {
+            if (a.error && !b.error) return 1;
+            if (!a.error && b.error) return -1;
+            return a.average - b.average;
+        })
+
+        setResults(aggregateResults);
         setIsRunning(false);
     };
 
@@ -143,7 +150,7 @@ export const PageHome: React.FC = () =>
 };
 
 export const ResultRow: React.FC<{
-    result: ProcessedResult;
+    result: AggregateResult;
 }> = ({
     result,
 }) => {
@@ -168,7 +175,7 @@ export type RpcUrl = {
     enabled: boolean;
 };
 
-export type ProcessedResult = {
+export type AggregateResult = {
     endpoint: string;
     average: number;
     p50: number;
