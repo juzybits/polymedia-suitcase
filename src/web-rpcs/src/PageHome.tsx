@@ -1,4 +1,5 @@
-import { RPC_ENDPOINTS, RpcLatencyResult, measureRpcLatency } from "@polymedia/suitcase-core";
+import { SuiClient } from "@mysten/sui.js/client";
+import { RPC_ENDPOINTS, RpcLatencyResult, generateRandomAddress, measureRpcLatency } from "@polymedia/suitcase-core";
 import { LinkExternal } from "@polymedia/suitcase-react";
 import React, { useState } from "react";
 
@@ -19,6 +20,9 @@ export const PageHome: React.FC = () =>
         setIsRunning(true);
         const newResults = await measureRpcLatency({
             endpoints: rpcs.filter(rpc => rpc.enabled).map(rpc => rpc.url),
+            rpcRequest: async (client: SuiClient) => {
+                await client.getObject({ id: generateRandomAddress() });
+            },
         });
         setResults(newResults);
         setIsRunning(false);
