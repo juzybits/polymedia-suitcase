@@ -15,12 +15,14 @@ export const PageHome: React.FC = () =>
     );
     const [ results, setResults ] = useState<AggregateResult[]>([]);
     const [ isRunning, setIsRunning ] = useState<boolean>(false);
+    const [ progress, setProgress ] = useState<number>(0);
 
     /* Functions */
 
     const runTest = async () =>
     {
         setIsRunning(true);
+        setProgress(0.5 / numRounds * 100);
 
         const allResults: RpcLatencyResult[][] = [];
         const endpoints = rpcs.filter(rpc => rpc.enabled).map(rpc => rpc.url);
@@ -32,6 +34,7 @@ export const PageHome: React.FC = () =>
         for (let i = 0; i < numRounds; i++) {
             const newResults = await measureRpcLatency({ endpoints, rpcRequest });
             allResults.push(newResults);
+            setProgress((i + 1.5) / numRounds * 100);
         }
 
         // Calculate average/P50/P90 latency for each endpoint
@@ -113,9 +116,14 @@ export const PageHome: React.FC = () =>
         ))}
         </div>
 
-        <button className="btn" onClick={runTest} disabled={isRunning}>
-            {isRunning ? "RUNNING" : "TEST"}
+        {!isRunning
+        ? <button className="btn" onClick={runTest} disabled={isRunning}>
+            TEST
         </button>
+        : <div className="progress-bar-container">
+            <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
+        </div>
+        }
     </div>
 
     {results.length > 0 &&
