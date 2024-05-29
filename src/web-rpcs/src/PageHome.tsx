@@ -20,7 +20,7 @@ export const PageHome: React.FC = () =>
     {
         setIsRunning(true);
 
-        const numRounds = 5;
+        const numRounds = 11;
         const allResults: RpcLatencyResult[][] = [];
         const endpoints = rpcs.filter(rpc => rpc.enabled).map(rpc => rpc.url);
         const rpcRequest = async (client: SuiClient) => {
@@ -55,8 +55,8 @@ export const PageHome: React.FC = () =>
                 return {
                     endpoint,
                     average: calculateAverage(latencies),
-                    p50: calculatePercentile(latencies, 50),
-                    p90: calculatePercentile(latencies, 90),
+                    p50: calculatePercentile(latencies, 0.5),
+                    p90: calculatePercentile(latencies, 0.9),
                     error: false,
                 };
             } else {
@@ -183,8 +183,26 @@ function calculateAverage(latencies: number[]): number {
     return sum / latencies.length;
 }
 
-function calculatePercentile(latencies: number[], percentile: number): number {
-    latencies.sort((a, b) => a - b);
-    const index = Math.floor((percentile / 100) * latencies.length);
-    return latencies[index];
+function calculatePercentile(data: number[], percentile: number): number {
+    if (data.length === 0) return NaN;
+
+    // Sort the data
+    data.sort((a, b) => a - b);
+
+    // Calculate rank
+    const rank = percentile * (data.length - 1);
+    const lowerIndex = Math.floor(rank);
+    const upperIndex = Math.ceil(rank);
+
+    // If rank is an integer, return the value at that rank
+    if (lowerIndex === upperIndex) {
+        return data[lowerIndex];
+    }
+
+    // Interpolate between the closest ranks
+    const lowerValue = data[lowerIndex];
+    const upperValue = data[upperIndex];
+    const weight = rank - lowerIndex;
+
+    return lowerValue + (upperValue - lowerValue) * weight;
 }
