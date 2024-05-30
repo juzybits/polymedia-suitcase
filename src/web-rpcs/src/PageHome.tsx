@@ -99,8 +99,11 @@ export const PageHome: React.FC = () =>
     <h1><span className="rainbow">Sui RPC tools</span></h1>
 
     <div className="section">
-        <h2><span className="rainbow">RPC TEST</span></h2>
+        <h2><span className="rainbow">LATENCY TEST</span></h2>
 
+        <p style={{paddingBottom: "0.5rem"}}>Select the RPCs you want to test:</p>
+
+        <div id="rpc-wrap">
         <div id="rpc-selector">
         {rpcs.map(rpc => (
             <div key={rpc.url} className="rpc">
@@ -115,15 +118,18 @@ export const PageHome: React.FC = () =>
             </div>
         ))}
         </div>
-
-        {!isRunning
-        ? <button className="btn" onClick={runTest} disabled={isRunning}>
-            TEST
-        </button>
-        : <div className="progress-bar-container">
-            <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
         </div>
+
+        <div id="btnOrProgress">
+        {!isRunning
+            ? <button className="btn" onClick={runTest} disabled={isRunning}>
+                TEST
+            </button>
+            : <div className="progress-bar-container">
+                <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
+            </div>
         }
+        </div>
     </div>
 
     {results.length > 0 &&

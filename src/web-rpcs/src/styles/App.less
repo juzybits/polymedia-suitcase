@@ -15,8 +15,6 @@ header {
 #rpc-selector, #results {
     display: flex;
     flex-direction: column;
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
     .rpc > label, .result {
         padding: 0.5rem 0.2rem;
         border-radius: 4px;
@@ -26,13 +24,36 @@ header {
     }
 }
 
+#rpc-wrap {
+    max-height: 341px;
+    overflow-y: scroll;
+    margin: 1rem 0;
+    border: 1px solid @color-blue-6;
+    border-radius: 4px;
+    &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+
+        background: @color-blue-5;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: @color-blue-2;
+    }
+}
+
 #rpc-selector {
+    padding: 0.7rem 1rem;
+    text-align: left;
     .rpc {
         *:hover {
             cursor: pointer;
         }
         label {
-            display: inline-block;
+            display: block;
             input[type=checkbox] {
                 margin-right: 0.5rem;
             }
@@ -41,6 +62,8 @@ header {
 }
 
 #results {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
     .result {
         display: flex;
         flex-direction: row;
@@ -87,7 +110,6 @@ header {
     background-color: #f3f3f3;
     border-radius: 8px;
     overflow: hidden;
-    margin: 1.65rem auto;
 }
 
 .progress-bar-fill {
@@ -95,4 +117,15 @@ header {
     background-color: #4caf50;
     width: 0;
     transition: width 0.3s ease-in-out;
+}
+
+#btnOrProgress {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    .btn {
+        margin: 0;
+    }
 }
