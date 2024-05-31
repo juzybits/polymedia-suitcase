@@ -13,10 +13,8 @@
         "@polymedia/suitcase-core": "workspace:*",
         "@polymedia/suitcase-node": "workspace:*"
     },
-    "peerDependencies": {
-    },
     "devDependencies": {
-        "@types/node": "^20.12.12"
+        "@types/node": "^20.12.13"
     },
     "type": "module",
     "sideEffects": false

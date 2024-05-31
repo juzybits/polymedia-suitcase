@@ -24,7 +24,7 @@
         "prepublishOnly": "rm -rf dist/ && pnpm build"
     },
     "peerDependencies": {
-        "@mysten/sui.js": "^0.54.1"
+        "@mysten/sui": "^1.0.3"
     },
     "type": "module",
     "sideEffects": false,
