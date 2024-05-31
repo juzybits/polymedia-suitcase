@@ -1,4 +1,4 @@
-import { getFullnodeUrl } from "@mysten/sui.js/client";
+import { getFullnodeUrl } from "@mysten/sui/client";
 import { NetworkName } from "./types";
 
 /**

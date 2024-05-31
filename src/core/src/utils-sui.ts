@@ -1,10 +1,9 @@
 /* Sui utils */
 
-import { bcs } from "@mysten/sui.js/bcs";
-import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from "@mysten/sui.js/client";
-import { requestSuiFromFaucetV1 } from "@mysten/sui.js/faucet";
-import { TransactionBlock, TransactionResult } from "@mysten/sui.js/transactions";
-import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui.js/utils";
+import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from "@mysten/sui/client";
+import { requestSuiFromFaucetV1 } from "@mysten/sui/faucet";
+import { Transaction } from "@mysten/sui/transactions";
+import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui/utils";
 import { SuiExplorerItem } from "./types.js";
 import { sleep } from "./utils-misc.js";
 
@@ -13,12 +12,12 @@ import { sleep } from "./utils-misc.js";
  */
 export async function devInspectAndGetResults(
     suiClient: SuiClient,
-    txb: TransactionBlock,
+    tx: Transaction,
     sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
 ): Promise<SuiExecutionResult[]> {
     const resp = await suiClient.devInspectTransactionBlock({
         sender: sender,
-        transactionBlock: txb
+        transactionBlock: tx,
     });
     if (resp.error) {
         throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
@@ -32,20 +31,20 @@ export async function devInspectAndGetResults(
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
  * @returns An array with the deserialized return values of each transaction in the TransactionBlock.
- */
-export async function devInspectAndGetReturnValues(
+ *
+export async function devInspectAndGetReturnValues( // TODO
     suiClient: SuiClient,
-    txb: TransactionBlock,
+    tx: Transaction,
     sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
 ): Promise<unknown[][]> {
-    const results = await devInspectAndGetResults(suiClient, txb, sender);
-    /** The values returned from each of the transactions in the TransactionBlock. */
+    const results = await devInspectAndGetResults(suiClient, tx, sender);
+    // The values returned from each of the transactions in the TransactionBlock
     const blockReturnValues: unknown[][] = [];
     for (const txnResult of results) {
         if (!txnResult.returnValues?.length) {
             throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
         }
-        /** The values returned from the transaction (a function can return multiple values). */
+        // The values returned from the transaction (a function can return multiple values)
         const txnReturnValues: unknown[] = [];
         for (const value of txnResult.returnValues) {
             const valueData = Uint8Array.from(value[0]);
@@ -64,6 +63,7 @@ export async function devInspectAndGetReturnValues(
     }
     return blockReturnValues;
 }
+*/
 
 /**
  * Get all dynamic object fields owned by an object.
@@ -107,37 +107,6 @@ export function generateRandomAddress() {
     const address = "0x" + Array.from({ length: 32 }, randomByteHex).join("");
 
     return address;
-}
-
-/**
- * Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
- * Assumes that the owner has enough balance.
- */
-export async function getCoinOfValue(
-    suiClient: SuiClient,
-    txb: TransactionBlock,
-    ownerAddress: string,
-    coinType: string,
-    coinValue: number|bigint,
-): Promise<TransactionResult> {
-    let coinOfValue: TransactionResult;
-    coinType = removeLeadingZeros(coinType);
-    if (coinType === "0x2::sui::SUI") {
-        coinOfValue = txb.splitCoins(txb.gas, [txb.pure(coinValue)]);
-    }
-    else {
-        const paginatedCoins = await suiClient.getCoins({ owner: ownerAddress, coinType });
-        // if (paginatedCoins.hasNextPage) // TODO
-
-        // Merge all coins into one
-        const [firstCoin, ...otherCoins] = paginatedCoins.data;
-        const firstCoinInput = txb.object(firstCoin.coinObjectId);
-        if (otherCoins.length > 0) {
-            txb.mergeCoins(firstCoinInput, otherCoins.map(coin => coin.coinObjectId));
-        }
-        coinOfValue = txb.splitCoins(firstCoinInput, [txb.pure(coinValue)]);
-    }
-    return coinOfValue;
 }
 
 /**

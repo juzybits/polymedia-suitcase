@@ -1,4 +1,4 @@
-import { EventId, SuiClient, SuiEvent } from "@mysten/sui.js/client";
+import { EventId, SuiClient, SuiEvent } from "@mysten/sui/client";
 import { sleep } from "./utils-misc.js";
 
 /**

@@ -2,11 +2,11 @@ import { execSync } from "child_process";
 import { homedir } from "os";
 import path from "path";
 
-import { getFullnodeUrl, SuiClient, SuiTransactionBlockResponse } from "@mysten/sui.js/client";
-import { Signer } from "@mysten/sui.js/cryptography";
-import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
-import { fromB64 } from "@mysten/sui.js/utils";
+import { getFullnodeUrl, SuiClient, SuiTransactionBlockResponse } from "@mysten/sui/client";
+import { Signer } from "@mysten/sui/cryptography";
+import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
+import { Transaction } from "@mysten/sui/transactions";
+import { fromB64 } from "@mysten/sui/utils";
 import { NetworkName, validateAndNormalizeSuiAddress } from "@polymedia/suitcase-core";
 import { readJsonFile } from "./utils-file.js";
 
@@ -66,9 +66,9 @@ export function getActiveEnv(): NetworkName {
 export function setupSuiTransaction() {
     const network = getActiveEnv();
     const suiClient = new SuiClient({ url: getFullnodeUrl(network) });
-    const txb = new TransactionBlock();
+    const tx = new Transaction();
     const signer = getActiveKeypair();
-    return { network, suiClient, txb, signer };
+    return { network, suiClient, tx, signer };
 }
 
 /**
@@ -76,13 +76,13 @@ export function setupSuiTransaction() {
  */
 export async function executeSuiTransaction(
     suiClient: SuiClient,
-    txb: TransactionBlock,
+    tx: Transaction,
     signer: Signer,
 
 ): Promise<SuiTransactionBlockResponse> {
-    return await suiClient.signAndExecuteTransactionBlock({
+    return await suiClient.signAndExecuteTransaction({
         signer,
-        transactionBlock: txb,
+        transaction: tx,
         options: {
             showEffects: true,
             showObjectChanges: true,

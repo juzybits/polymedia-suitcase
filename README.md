@@ -24,10 +24,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Sui functions
 
 - `devInspectAndGetResults` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
-- `devInspectAndGetReturnValues` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
 - `fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
 - `generateRandomAddress` - Generate a random Sui address (for development only).
-- `getCoinOfValue` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
 - `makePolymediaUrl` - Build an explorer.polymedia.app URL.
 - `makeSuiscanUrl` - Build a suiscan.xyz URL.

@@ -1,4 +1,4 @@
-import { SuiClient } from "@mysten/sui.js/client";
+import { SuiClient } from "@mysten/sui/client";
 import { NetworkName } from "./types.js";
 import { sleep } from "./utils-misc.js";
 import { RPC_ENDPOINTS } from "./rpcs.js";
