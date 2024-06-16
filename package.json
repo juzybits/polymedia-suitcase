@@ -11,16 +11,17 @@
         "lint": "turbo run lint"
     },
     "devDependencies": {
-        "@eslint/compat": "^1.0.3",
-        "@eslint/js": "^9.3.0",
-        "@stylistic/eslint-plugin": "^2.1.0",
-        "eslint": "^9.3.0",
+        "@eslint/compat": "^1.1.0",
+        "@eslint/js": "^9.5.0",
+        "@stylistic/eslint-plugin": "^2.2.0",
+        "eslint": "^9.5.0",
         "eslint-plugin-react": "^7.34.2",
-        "turbo": "^1.13.3",
+        "turbo": "^2.0.4",
         "typescript": "^5.4.5",
-        "typescript-eslint": "^7.11.0"
+        "typescript-eslint": "^7.13.0"
     },
     "engines": {
         "node": ">=18"
-    }
+    },
+    "packageManager": "pnpm@9.2.0"
 }
