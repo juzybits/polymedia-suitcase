@@ -40,6 +40,7 @@ export default [
             "@typescript-eslint/restrict-template-expressions": "off",
             "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
             "no-constant-condition": "off",
+            "react/display-name": "off",
             "react/no-unescaped-entities": "off",
             "react/prop-types": "off",
             "react/react-in-jsx-scope": "off",

@@ -35,66 +35,44 @@ export const LinkExternal: React.FC<{
     </a>;
 };
 
-/**
- * A link to explorer.polymedia.app.
- */
-export const LinkToPolymedia: React.FC<{
+type ExplorerLinkProps = {
     network: NetworkName;
     kind: SuiExplorerItem;
     addr: string;
     className?: string;
     id?: string;
-}> = ({
-    network,
-    kind,
-    addr,
-    className,
-    id,
-}) => {
-    return <LinkExternal href={makePolymediaUrl(network, kind, addr)} className={className} id={id}>
-        {shortenSuiAddress(addr)}
-    </LinkExternal>;
+    children?: React.ReactNode;
 };
+
+type ExplorerUrlMaker = (
+    network: NetworkName,
+    kind: SuiExplorerItem,
+    addr: string,
+) => string;
+
+/**
+ * Higher-Order Component to create external links for explorers.
+ */
+const createExplorerLinkComponent = (
+    makeUrl: ExplorerUrlMaker,
+): React.FC<ExplorerLinkProps> =>
+    ({ network, kind, addr, className, id, children }) => (
+        <LinkExternal href={makeUrl(network, kind, addr)} className={className} id={id}>
+            {children || shortenSuiAddress(addr)}
+        </LinkExternal>
+    );
+
+/**
+ * A link to explorer.polymedia.app.
+ */
+export const LinkToPolymedia = createExplorerLinkComponent(makePolymediaUrl);
 
 /**
  * A link to suiscan.xyz.
  */
-export const LinkToSuiscan: React.FC<{
-    network: NetworkName;
-    kind: SuiExplorerItem;
-    addr: string;
-    className?: string;
-    id?: string;
-}> = ({
-    network,
-    kind,
-    addr,
-    className,
-    id,
-}) => {
-    return <LinkExternal href={makeSuiscanUrl(network, kind, addr)} className={className} id={id}>
-        {shortenSuiAddress(addr)}
-    </LinkExternal>;
-};
-
+export const LinkToSuiscan = createExplorerLinkComponent(makeSuiscanUrl);
 
 /**
  * A link to suivision.xyz.
  */
-export const LinkToSuivision: React.FC<{
-    network: NetworkName;
-    kind: SuiExplorerItem;
-    addr: string;
-    className?: string;
-    id?: string;
-}> = ({
-    network,
-    kind,
-    addr,
-    className,
-    id,
-}) => {
-    return <LinkExternal href={makeSuivisionUrl(network, kind, addr)} className={className} id={id}>
-        {shortenSuiAddress(addr)}
-    </LinkExternal>;
-};
+export const LinkToSuivision = createExplorerLinkComponent(makeSuivisionUrl);
