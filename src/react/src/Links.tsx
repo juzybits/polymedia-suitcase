@@ -13,17 +13,23 @@ import {
  */
 export const LinkExternal: React.FC<{
     href: string;
-    follow?: boolean;
     children: React.ReactNode;
+    follow?: boolean;
+    className?: string;
+    id?: string;
 }> = ({
     href,
-    follow = false,
     children,
+    follow = true,
+    className,
+    id,
 }) => {
     return <a
         target="_blank"
         rel={`noopener noreferrer ${follow ? "" : "nofollow"}`}
         href={href}
+        className={className}
+        id={id}
     >
         {children}
     </a>;
@@ -36,12 +42,16 @@ export const LinkToPolymedia: React.FC<{
     network: NetworkName;
     kind: SuiExplorerItem;
     addr: string;
+    className?: string;
+    id?: string;
 }> = ({
     network,
     kind,
     addr,
+    className,
+    id,
 }) => {
-    return <LinkExternal href={makePolymediaUrl(network, kind, addr)}>
+    return <LinkExternal href={makePolymediaUrl(network, kind, addr)} className={className} id={id}>
         {shortenSuiAddress(addr)}
     </LinkExternal>;
 };
@@ -53,12 +63,16 @@ export const LinkToSuiscan: React.FC<{
     network: NetworkName;
     kind: SuiExplorerItem;
     addr: string;
+    className?: string;
+    id?: string;
 }> = ({
     network,
     kind,
     addr,
+    className,
+    id,
 }) => {
-    return <LinkExternal href={makeSuiscanUrl(network, kind, addr)}>
+    return <LinkExternal href={makeSuiscanUrl(network, kind, addr)} className={className} id={id}>
         {shortenSuiAddress(addr)}
     </LinkExternal>;
 };
@@ -71,12 +85,16 @@ export const LinkToSuivision: React.FC<{
     network: NetworkName;
     kind: SuiExplorerItem;
     addr: string;
+    className?: string;
+    id?: string;
 }> = ({
     network,
     kind,
     addr,
+    className,
+    id,
 }) => {
-    return <LinkExternal href={makeSuivisionUrl(network, kind, addr)}>
+    return <LinkExternal href={makeSuivisionUrl(network, kind, addr)} className={className} id={id}>
         {shortenSuiAddress(addr)}
     </LinkExternal>;
 };
