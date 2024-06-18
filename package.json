@@ -8,7 +8,8 @@
         "bump-version": "node src/dev/dist/bump-version.js",
         "clean": "turbo run clean && rm -rf dist/ node_modules/ .turbo/",
         "dev": "turbo run dev",
-        "lint": "turbo run lint"
+        "lint": "turbo run lint",
+        "typecheck": "turbo run typecheck"
     },
     "devDependencies": {
         "@eslint/compat": "^1.1.0",
