@@ -1,4 +1,11 @@
 {
+    "include": [
+        "${configDir}/src",
+    ],
+    "exclude": [
+        "${configDir}/dist",
+        "${configDir}/node_modules",
+    ],
     "compilerOptions": {
         /* Language and Environment */
         "target": "ESNext",                                 /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
@@ -9,14 +16,14 @@
         /* Modules */
         "module": "ESNext",                                 /* Specify what module code is generated. */
         "moduleResolution": "node",                         /* Specify how TypeScript looks up a file from a given module specifier. */
-        // "rootDir": "src",                                   /* Specify the root folder within your source files. */
+        "rootDir": "${configDir}/src",                      /* Specify the root folder within your source files. */
         // "resolveJsonModule": true,                          /* Enable importing .json files. */
 
         /* Emit */
         // "noEmit": true,                                     /* Disable emitting files from a compilation. */
         "declaration": true,                                /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
         "sourceMap": true,                                  /* Create source map files for emitted JavaScript files. */
-        // "outDir": "dist",                                   /* Specify an output folder for all emitted files. */
+        "outDir": "${configDir}/dist",                      /* Specify an output folder for all emitted files. */
 
         /* Interop Constraints */
         "isolatedModules": true,                            /* Ensure that each file can be safely transpiled without relying on other imports. */
