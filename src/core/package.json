@@ -43,5 +43,8 @@
             "require": "./dist/cjs/index.js",
             "import": "./dist/esm/index.js"
         }
+    },
+    "devDependencies": {
+        "typescript": "^5.5.2"
     }
 }
