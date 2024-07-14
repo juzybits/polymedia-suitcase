@@ -45,6 +45,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Misc functions
 
 - `chunkArray` - Split an array into multiple chunks of a certain size.
+- `chunkString` - Split a string into multiple chunks of a certain size.
 - `convertNumberToBigInt` - Convert a number to a bigint, scaled to the specified decimals.
 - `convertBigIntToNumber` - Convert a bigint to a number, scaled down to the specified decimals.
 - `formatBigInt` - Format a bigint into a readable string, scaled down to the specified decimals.

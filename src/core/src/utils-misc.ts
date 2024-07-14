@@ -13,6 +13,17 @@ export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
 }
 
 /**
+ * Split a string into multiple chunks of a certain size.
+ */
+export function chunkString(input: string, chunkSize: number): string[] {
+    const chunks = [];
+    for (let i = 0; i < input.length; i += chunkSize) {
+        chunks.push(input.slice(i, i + chunkSize));
+    }
+    return chunks;
+}
+
+/**
  * Convert a number to a bigint, scaled to the specified decimals.
  */
 export function convertNumberToBigInt(num: number, decimals: number): bigint {
