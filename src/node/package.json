@@ -31,8 +31,8 @@
         "@mysten/sui": "^1.0.3"
     },
     "devDependencies": {
-        "@types/node": "^20.14.9",
-        "typescript": "^5.5.2"
+        "@types/node": "^20.14.10",
+        "typescript": "^5.5.3"
     },
     "type": "module",
     "sideEffects": false,
