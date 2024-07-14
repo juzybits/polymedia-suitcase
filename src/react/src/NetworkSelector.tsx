@@ -10,13 +10,15 @@ export function NetworkSelector<NetworkName extends BaseNetworkName>({
     supportedNetworks,
     onSwitch,
     disabled = false,
-    classes = ""
+    className = "",
+    id,
 }: {
     currentNetwork: NetworkName;
     supportedNetworks: readonly NetworkName[];
     onSwitch?: (newNetwork: NetworkName) => void;
     disabled?: boolean;
-    classes?: string;
+    className?: string;
+    id?: string;
 }) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -54,7 +56,8 @@ export function NetworkSelector<NetworkName extends BaseNetworkName>({
     };
 
     return <div
-        className={"network-selector " + (disabled ? "disabled" : "") + classes}
+        id={id}
+        className={"network-selector " + (disabled ? "disabled " : "") + className}
         ref={selectorRef}
         onMouseLeave={() => {setIsOpen(false);}}
     >
