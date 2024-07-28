@@ -33,6 +33,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `makeSuivisionUrl` - Build a suivision.xyz URL.
 - `measureRpcLatency` - Measure Sui RPC latency by making requests to various endpoints.
 - `newLowLatencySuiClient` - Instantiate SuiClient using the RPC endpoint with the lowest latency.
+- `objectArg` - Build an object argument for `Transaction.moveCall()`.
+- `pairFromSecretKey` - Build a `Ed25519Keypair` from a secret key string like `suiprivkey1...`.
 - `requestSuiFromFaucet` - Get SUI from the faucet on localnet/devnet/testnet.
 - `removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
 - `shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).
@@ -61,7 +63,9 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Types
 
 - `NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
-- `SuiExplorerItem` - A Polymedia Explorer item type (address/object/package/txblock).
+- `ObjectArg` - An object argument for `Transaction.moveCall()`.
+- `SignTransaction` - A function that can sign a `Transaction`.
+- `SuiExplorerItem` - A Sui explorer item type (address/object/package/txblock).
 
 # Node
 

@@ -1,10 +1,18 @@
 /* Sui utils */
 
-import { DynamicFieldInfo, SuiClient, SuiExecutionResult, SuiObjectResponse } from "@mysten/sui/client";
+import {
+    DynamicFieldInfo,
+    SuiClient,
+    SuiExecutionResult,
+    SuiObjectRef,
+    SuiObjectResponse,
+} from "@mysten/sui/client";
+import { decodeSuiPrivateKey } from "@mysten/sui/cryptography";
 import { requestSuiFromFaucetV1 } from "@mysten/sui/faucet";
+import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
 import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui/utils";
-import { SuiExplorerItem } from "./types.js";
+import { ObjectArg, SuiExplorerItem } from "./types.js";
 import { sleep } from "./utils-misc.js";
 
 /**
@@ -305,6 +313,35 @@ export async function newLowLatencySuiClient({
     const results = await measureRpcLatency({endpoints, rpcRequest});
     const suiClient = new SuiClient({ url: results[0].endpoint });
     return suiClient;
+}
+
+/**
+ * Build an object argument for `Transaction.moveCall()`.
+ */
+export function objectArg(
+    tx: Transaction,
+    obj: ObjectArg,
+) {
+    return isSuiObjectRef(obj)
+        ? tx.objectRef(obj)
+        : tx.object(obj);
+}
+
+/* eslint-disable */
+function isSuiObjectRef(obj: any): obj is SuiObjectRef {
+    return obj
+        && typeof obj.objectId !== "undefined"
+        && typeof obj.version !== "undefined"
+        && typeof obj.digest !== "undefined";
+}
+/* eslint-enable */
+
+/**
+ * Build a `Ed25519Keypair` from a secret key string like `suiprivkey1...`.
+ */
+export function pairFromSecretKey(secretKey: string): Ed25519Keypair {
+    const parsedPair = decodeSuiPrivateKey(secretKey);
+    return Ed25519Keypair.fromSecretKey(parsedPair.secretKey);
 }
 
 /**
