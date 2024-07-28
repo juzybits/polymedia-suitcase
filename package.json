@@ -21,13 +21,13 @@
     },
     "devDependencies": {
         "@eslint/compat": "^1.1.1",
-        "@eslint/js": "^9.7.0",
-        "@stylistic/eslint-plugin": "^2.3.0",
-        "eslint": "^9.7.0",
-        "eslint-plugin-react": "^7.34.4",
-        "turbo": "^2.0.6",
-        "typescript": "^5.5.3",
-        "typescript-eslint": "^7.16.0"
+        "@eslint/js": "^9.8.0",
+        "@stylistic/eslint-plugin": "^2.4.0",
+        "eslint": "^9.8.0",
+        "eslint-plugin-react": "^7.35.0",
+        "turbo": "^2.0.9",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^7.17.0"
     },
     "engines": {
         "node": ">=18"
