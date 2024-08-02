@@ -149,6 +149,25 @@ export async function getCoinOfValue(
 }
 
 /**
+ * Fetch the latest version of an object and return its `SuiObjectRef`.
+ */
+export async function getSuiObjectRef(
+    suiClient: SuiClient,
+    objectId: string,
+): Promise<SuiObjectRef>
+{
+    const resp = await suiClient.getObject({ id: objectId });
+    if (resp.error || !resp.data) {
+        throw new Error(`[getSuiObjectRef] failed to fetch objectId | error: ${JSON.stringify(resp.error)}`);
+    }
+    return {
+        objectId: resp.data.objectId,
+        digest: resp.data.digest,
+        version: resp.data.version,
+    }
+}
+
+/**
  * Validate a SuiObjectResponse and return its content.
  * @param resp A `SuiObjectResponse` from `SuiClient.getObject()` / `.multiGetObjects()` / `.getDynamicFieldObject()`
  * @param typeRegex (optional) A regular expression to check that `resp.data.content.type` has the right type
