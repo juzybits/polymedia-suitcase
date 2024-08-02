@@ -65,6 +65,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
 - `ObjectArg` - An object argument for `Transaction.moveCall()`.
+- `ReceivingRef` - The return type of `Transaction.receivingRef()`.
 - `SignTransaction` - A function that can sign a `Transaction`.
 - `SuiExplorerItem` - A Sui explorer item type (address/object/package/txblock).
 

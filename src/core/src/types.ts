@@ -13,6 +13,11 @@ export type NetworkName =  "mainnet" | "testnet" | "devnet" | "localnet";
 export type ObjectArg = TransactionObjectInput | SuiObjectRef;
 
 /**
+ * The return type of `Transaction.receivingRef()`.
+ */
+export type ReceivingRef = ReturnType<InstanceType<typeof Transaction>["receivingRef"]>;
+
+/**
  * A function that can sign a `Transaction`.
  *
  * For a webapp that uses `@mysten/dapp-kit` to sign with a Sui wallet:
