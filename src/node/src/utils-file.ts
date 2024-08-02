@@ -11,7 +11,7 @@ export function fileExists(filename: string): boolean {
     try {
         fs.accessSync(filename);
         return true;
-    } catch (error) {
+    } catch (_err) {
         return false;
     }
 }
@@ -49,6 +49,7 @@ export function writeJsonFile(filename: string, contents: unknown): void {
 /**
  * Read a JSON file and parse its contents into an object.
  */
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function readJsonFile<T>(filename: string): T {
     const fileContent = fs.readFileSync(filename, "utf8");
     const jsonData = JSON.parse(fileContent) as T;
