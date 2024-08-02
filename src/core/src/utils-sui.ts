@@ -171,6 +171,18 @@ export function getSuiObjectResponseFields(
 }
 
 /**
+ * Check if a given object conforms to the `SuiObjectRef` interface.
+ */
+/* eslint-disable */
+export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
+    return obj
+        && typeof obj.objectId !== "undefined"
+        && typeof obj.version !== "undefined"
+        && typeof obj.digest !== "undefined";
+}
+/* eslint-enable */
+
+/**
  * Build an explorer.polymedia.app URL.
  */
 export function makePolymediaUrl(
@@ -326,15 +338,6 @@ export function objectArg(
         ? tx.objectRef(obj)
         : tx.object(obj);
 }
-
-/* eslint-disable */
-function isSuiObjectRef(obj: any): obj is SuiObjectRef {
-    return obj
-        && typeof obj.objectId !== "undefined"
-        && typeof obj.version !== "undefined"
-        && typeof obj.digest !== "undefined";
-}
-/* eslint-enable */
 
 /**
  * Build a `Ed25519Keypair` from a secret key string like `suiprivkey1...`.
