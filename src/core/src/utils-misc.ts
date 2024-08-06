@@ -128,17 +128,28 @@ export function bigintToString(value: bigint, decimals: number): string
         return "0";
     }
 
-    const valStr = value.toString();
+    const isNegative = value < 0n;
+    const absoluteValue = isNegative ? -value : value;
 
-    // separate the integer and fractional parts
-    const integerPart = valStr.slice(0, valStr.length - decimals) || "0";
-    const fractionalPart = valStr.slice(valStr.length - decimals).padStart(decimals, "0");
+    const valStr = absoluteValue.toString();
 
-    // combine integer and fractional parts, trimming any trailing zeros in the fractional part
-    const result = fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
+    if (decimals === 0) {
+        // If no decimals, simply return the value as a string
+        return (isNegative ? "-" : "") + valStr;
+    }
 
-    // remove trailing zeros from the fractional part
-    return result.replace(/\.?0+$/, "");
+    // Pad the string to ensure it has enough digits
+    const paddedValStr = valStr.padStart(decimals + 1, '0');
+    const integerPart = paddedValStr.slice(0, -decimals) || "0";
+    const fractionalPart = paddedValStr.slice(-decimals).padEnd(decimals, "0");
+
+    // Combine integer and fractional parts
+    let result = `${integerPart}.${fractionalPart}`;
+
+    // Remove unnecessary trailing zeros after the decimal point
+    result = result.replace(/\.?0+$/, '');
+
+    return isNegative ? `-${result}` : result;
 }
 
 /**
