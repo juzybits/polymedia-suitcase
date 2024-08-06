@@ -122,7 +122,7 @@ export async function sleep(ms: number): Promise<void> {
 /**
  * Convert a bigint to a string, scaled down to the specified decimals.
  */
-export function bigintToString(value: bigint, decimals: number): string
+export function balanceToString(value: bigint, decimals: number): string
 {
     if (value === 0n) {
         return "0";
@@ -134,20 +134,20 @@ export function bigintToString(value: bigint, decimals: number): string
     const valStr = absoluteValue.toString();
 
     if (decimals === 0) {
-        // If no decimals, simply return the value as a string
+        // if no decimals, return the value as a string
         return (isNegative ? "-" : "") + valStr;
     }
 
-    // Pad the string to ensure it has enough digits
-    const paddedValStr = valStr.padStart(decimals + 1, '0');
+    // pad the string to ensure it has enough digits
+    const paddedValStr = valStr.padStart(decimals + 1, "0");
     const integerPart = paddedValStr.slice(0, -decimals) || "0";
     const fractionalPart = paddedValStr.slice(-decimals).padEnd(decimals, "0");
 
-    // Combine integer and fractional parts
+    // combine integer and fractional parts
     let result = `${integerPart}.${fractionalPart}`;
 
-    // Remove unnecessary trailing zeros after the decimal point
-    result = result.replace(/\.?0+$/, '');
+    // remove unnecessary trailing zeros after the decimal point
+    result = result.replace(/\.?0+$/, "");
 
     return isNegative ? `-${result}` : result;
 }
@@ -155,7 +155,7 @@ export function bigintToString(value: bigint, decimals: number): string
 /**
  * Convert a string to a bigint, scaled to the specified decimals.
  */
-export function stringToBigint(value: string, decimals: number): bigint
+export function stringToBalance(value: string, decimals: number): bigint
 {
     value = value.trim();
 
