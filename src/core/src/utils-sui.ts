@@ -164,7 +164,7 @@ export async function getSuiObjectRef(
         objectId: resp.data.objectId,
         digest: resp.data.digest,
         version: resp.data.version,
-    }
+    };
 }
 
 /**

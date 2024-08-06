@@ -138,7 +138,7 @@ export function bigintToString(value: bigint, decimals: number): string
     const result = fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
 
     // remove trailing zeros from the fractional part
-    return result.replace(/\.?0+$/, '');
+    return result.replace(/\.?0+$/, "");
 }
 
 /**
@@ -157,10 +157,10 @@ export function stringToBigint(value: string, decimals: number): bigint
         throw new Error("Invalid input");
     }
 
-    let [integerPart, decimalPart = ""] = value.split(".");
+    const [integerPart, rawDecimalPart = ""] = value.split(".");
 
     // truncate the decimal part if it has more places than the specified decimals
-    decimalPart = decimalPart.slice(0, decimals);
+    const decimalPart = rawDecimalPart.slice(0, decimals);
 
     // pad the decimal part with zeros if it's shorter than the specified decimals
     const fullNumber = integerPart + decimalPart.padEnd(decimals, "0");
