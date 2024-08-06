@@ -146,10 +146,24 @@ export function bigintToString(value: bigint, decimals: number): string
  */
 export function stringToBigint(value: string, decimals: number): bigint
 {
+    value = value.trim();
+
     if (value === "" || value === ".") {
         return 0n;
     }
-    const [integerPart, decimalPart = ""] = value.split(".");
+
+    // validate the input format
+    if (!/^-?\d*\.?\d*$/.test(value)) {
+        throw new Error("Invalid input");
+    }
+
+    let [integerPart, decimalPart = ""] = value.split(".");
+
+    // truncate the decimal part if it has more places than the specified decimals
+    decimalPart = decimalPart.slice(0, decimals);
+
+    // pad the decimal part with zeros if it's shorter than the specified decimals
     const fullNumber = integerPart + decimalPart.padEnd(decimals, "0");
+
     return BigInt(fullNumber);
 }
