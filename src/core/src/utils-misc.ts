@@ -118,3 +118,38 @@ export function makeRanges(from: number, to: number, size: number): number[][] {
 export async function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+/**
+ * Convert a bigint to a string, scaled down to the specified decimals.
+ */
+export function bigintToString(value: bigint, decimals: number): string
+{
+    if (value === 0n) {
+        return "0";
+    }
+
+    const valStr = value.toString();
+
+    // separate the integer and fractional parts
+    const integerPart = valStr.slice(0, valStr.length - decimals) || "0";
+    const fractionalPart = valStr.slice(valStr.length - decimals).padStart(decimals, "0");
+
+    // combine integer and fractional parts, trimming any trailing zeros in the fractional part
+    const result = fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
+
+    // remove trailing zeros from the fractional part
+    return result.replace(/\.?0+$/, '');
+}
+
+/**
+ * Convert a string to a bigint, scaled to the specified decimals.
+ */
+export function stringToBigint(value: string, decimals: number): bigint
+{
+    if (value === "" || value === ".") {
+        return 0n;
+    }
+    const [integerPart, decimalPart = ""] = value.split(".");
+    const fullNumber = integerPart + decimalPart.padEnd(decimals, "0");
+    return BigInt(fullNumber);
+}
