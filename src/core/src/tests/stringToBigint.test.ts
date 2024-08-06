@@ -30,6 +30,7 @@ describe('stringToBigint', () => {
 
     it('should return 0n for an empty string or a string with only a decimal point', () => {
         expect(stringToBigint('', 3)).toBe(0n);
+        expect(stringToBigint('  ', 3)).toBe(0n);
         expect(stringToBigint('.', 3)).toBe(0n);
     });
 
@@ -57,6 +58,8 @@ describe('stringToBigint', () => {
     it('should correctly handle negative values', () => {
         expect(stringToBigint('-123.456', 3)).toBe(-123456n);
         expect(stringToBigint('-0.001', 3)).toBe(-1n);
+        expect(stringToBigint('-0', 3)).toBe(0n);
+        expect(stringToBigint('-0.000', 3)).toBe(0n);
     });
 
     it('should handle no decimals input correctly', () => {
@@ -66,6 +69,38 @@ describe('stringToBigint', () => {
 
     it('should handle edge case where value is just the decimal separator', () => {
         expect(stringToBigint('.', 5)).toBe(0n);
+    });
+
+    it('should handle maximum safe integer value', () => {
+        const maxSafeInteger = Number.MAX_SAFE_INTEGER.toString();
+        expect(stringToBigint(maxSafeInteger, 0)).toBe(BigInt(maxSafeInteger));
+    });
+
+    it('should handle exceedingly long inputs', () => {
+        const longInput = '1'.repeat(100) + '.' + '9'.repeat(50);
+        const expectedOutput = BigInt('1'.repeat(100) + '9'.repeat(9));
+        expect(stringToBigint(longInput, 9)).toBe(expectedOutput);
+    });
+
+    it('should throw an error for inputs with special characters or symbols', () => {
+        expect(() => stringToBigint('+123.456', 3)).toThrow("Invalid input");
+        expect(() => stringToBigint('123$456', 3)).toThrow("Invalid input");
+        expect(() => stringToBigint('#123.456', 3)).toThrow("Invalid input");
+    });
+
+    it('should handle multiple leading zeros in integer part', () => {
+        expect(stringToBigint('0000123.456', 3)).toBe(123456n);
+    });
+
+    it('should handle different decimals values correctly', () => {
+        expect(stringToBigint('123.456', 0)).toBe(123n);
+        expect(stringToBigint('123', 6)).toBe(123000000n);
+        expect(stringToBigint('1.234567', 8)).toBe(123456700n);
+    });
+
+    it('should handle inputs with leading and trailing whitespace', () => {
+        expect(stringToBigint('  123.456  ', 3)).toBe(123456n);
+        expect(stringToBigint('  123.456  ', 6)).toBe(123456000n);
     });
 
 });
