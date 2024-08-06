@@ -17,8 +17,7 @@
             "outputs": []
         },
         "test": {
-            "dependsOn": [ "^build" ],
-            "outputs": []
+
         },
         "typecheck": {
             "dependsOn": [ "^typecheck" ],

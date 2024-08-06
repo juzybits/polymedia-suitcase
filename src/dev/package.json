@@ -7,7 +7,8 @@
         "build": "tsc",
         "clean": "rm -rf dist/ node_modules/ .turbo/",
         "dev": "tsc --watch",
-        "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0"
+        "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
+        "test": "jest --passWithNoTests"
     },
     "dependencies": {
         "@polymedia/suitcase-core": "workspace:*",
