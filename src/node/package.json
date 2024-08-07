@@ -21,7 +21,7 @@
         "clean": "rm -rf dist/ node_modules/ .turbo/",
         "dev": "tsc --watch -p tsconfig.esm.json",
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
-        "prepublishOnly": "rm -rf dist/ && pnpm build",
+        "publish": "pnpm publish",
         "test": "jest --verbose --passWithNoTests",
         "typecheck": "tsc -p tsconfig.esm.json"
     },
