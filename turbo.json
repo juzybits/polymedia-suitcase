@@ -16,6 +16,9 @@
         "lint": {
             "outputs": []
         },
+        "test": {
+            "outputs": []
+        },
         "typecheck": {
             "dependsOn": [ "^typecheck" ],
             "outputs": []
