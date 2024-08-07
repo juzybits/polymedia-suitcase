@@ -1,4 +1,4 @@
-import { getFullnodeUrl } from "@mysten/sui/client";
+import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { NetworkName } from "./types";
 
 /**
@@ -54,3 +54,67 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         getFullnodeUrl("localnet") + "?localnet-5",
     ],
 };
+
+/**
+ * A result returned by `measureRpcLatency`.
+ */
+export type RpcLatencyResult = {
+    endpoint: string;
+    latency?: number;
+    error?: string;
+};
+
+/**
+ * Measure Sui RPC latency by making requests to various endpoints.
+ */
+export async function measureRpcLatency({ // TODO: average, p-50, p-90
+    endpoints,
+    rpcRequest = async (client: SuiClient) => { await client.getObject({ id: "0x123" }); }
+}: {
+    endpoints: string[];
+    rpcRequest?: (client: SuiClient) => Promise<void>;
+}): Promise<RpcLatencyResult[]>
+{
+    const promises = endpoints.map(async (url) =>
+    {
+        try {
+            const suiClient = new SuiClient({ url });
+            const startTime = performance.now();
+            await rpcRequest(suiClient);
+            const latency = performance.now() - startTime;
+            return { endpoint: url, latency };
+        }
+        catch (err) {
+            return { endpoint: url, error: String(err) };
+        }
+    });
+
+    const results = await Promise.allSettled(promises);
+    return results.map(result =>
+    {
+        if (result.status === "fulfilled") {
+            return result.value;
+        } else { // should never happen
+            return {
+                endpoint: "Unknown endpoint",
+                error: String(result.reason.message) || "Unknown error", // eslint-disable-line
+            };
+        }
+    });
+}
+
+/**
+ * Instantiate SuiClient using the RPC endpoint with the lowest latency.
+ */
+export async function newLowLatencySuiClient({
+    endpoints,
+    rpcRequest,
+}: {
+    endpoints: string[];
+    rpcRequest?: (client: SuiClient) => Promise<void>;
+}): Promise<SuiClient>
+{
+    const results = await measureRpcLatency({endpoints, rpcRequest});
+    const suiClient = new SuiClient({ url: results[0].endpoint });
+    return suiClient;
+}

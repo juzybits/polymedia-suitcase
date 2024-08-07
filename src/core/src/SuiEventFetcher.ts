@@ -1,5 +1,5 @@
 import { EventId, SuiClient, SuiEvent } from "@mysten/sui/client";
-import { sleep } from "./utils-misc.js";
+import { sleep } from "./misc.js";
 
 /**
  * Fetch Sui events and parse them into custom objects.

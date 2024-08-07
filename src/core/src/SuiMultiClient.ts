@@ -1,7 +1,7 @@
 import { SuiClient } from "@mysten/sui/client";
 import { NetworkName } from "./types.js";
-import { sleep } from "./utils-misc.js";
-import { RPC_ENDPOINTS } from "./rpcs.js";
+import { sleep } from "./misc.js";
+import { RPC_ENDPOINTS } from "./rpc.js";
 
 /**
  * Make many RPC requests using multiple endpoints.

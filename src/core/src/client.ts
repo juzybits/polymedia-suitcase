@@ -5,13 +5,11 @@ import {
     SuiObjectRef,
     SuiObjectResponse,
 } from "@mysten/sui/client";
-import { decodeSuiPrivateKey } from "@mysten/sui/cryptography";
-import { requestSuiFromFaucetV1 } from "@mysten/sui/faucet";
-import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
-import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui/utils";
-import { ObjectArg, SuiExplorerItem } from "./types.js";
-import { sleep } from "./utils-misc.js";
+import { removeAddressLeadingZeros } from "./address.js";
+import { sleep } from "./misc.js";
+import { measureRpcLatency } from "./rpc.js";
+import { ObjectArg } from "./types.js";
 
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the results.
@@ -103,19 +101,6 @@ export async function fetchAllDynamicFields(
 }
 
 /**
- * Generate a random Sui address (for development only).
- */
-export function generateRandomAddress() {
-    // Function to generate a random byte in hexadecimal format
-    const randomByteHex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, "0");
-
-    // Generate 32 random bytes and convert each to hex
-    const address = "0x" + Array.from({ length: 32 }, randomByteHex).join("");
-
-    return address;
-}
-
-/**
  * Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
  * Assumes that the owner has enough balance.
  */
@@ -127,7 +112,7 @@ export async function getCoinOfValue(
     coinValue: number|bigint,
 ): Promise<TransactionResult> {
     let coinOfValue: TransactionResult;
-    coinType = removeLeadingZeros(coinType);
+    coinType = removeAddressLeadingZeros(coinType);
     if (coinType === "0x2::sui::SUI") {
         coinOfValue = tx.splitCoins(tx.gas, [tx.pure.u64(coinValue)]);
     }
@@ -200,151 +185,6 @@ export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
 /* eslint-enable */
 
 /**
- * Build an explorer.polymedia.app URL.
- */
-export function makePolymediaUrl(
-    network: string,
-    kind: SuiExplorerItem,
-    address: string,
-): string {
-    const baseUrl = isLocalnet(network)
-        ? "http://localhost:3000"
-        : "https://explorer.polymedia.app";
-
-    if (kind === "package") {
-        kind = "object";
-    } else if (kind === "coin") {
-        kind = "object";
-        address = address.split("::")[0];
-    }
-
-    let url = `${baseUrl}/${kind}/${address}`;
-    if (network !== "mainnet") {
-        const networkLabel = network === "localnet" ? "local" : network;
-        url += `?network=${networkLabel}`;
-    }
-    return url;
-}
-
-/**
- * Build a suiscan.xyz URL.
- */
-export function makeSuiscanUrl(
-    network: string,
-    kind: SuiExplorerItem,
-    address: string,
-): string {
-    if (isLocalnet(network)) {
-        return makePolymediaUrl(network, kind, address);
-    }
-    const baseUrl = `https://suiscan.xyz/${network}`;
-
-    let path: string;
-    if (kind === "address") {
-        path = "account";
-    } else if (kind === "txblock") {
-        path = "tx";
-    } else if (kind === "package") {
-        path = "object";
-    } else {
-        path = kind;
-    }
-
-    const url = `${baseUrl}/${path}/${address}`;
-    return url;
-}
-
-/**
- * Build a suivision.xyz URL.
- */
-export function makeSuivisionUrl(
-    network: string,
-    kind: SuiExplorerItem,
-    address: string,
-): string {
-    if (isLocalnet(network)) {
-        return makePolymediaUrl(network, kind, address);
-    }
-    const baseUrl = network === "mainnet"
-        ? "https://suivision.xyz"
-        : `https://${network}.suivision.xyz`;
-
-    let path: string;
-    if (kind === "address") {
-        path = "account";
-    } else {
-        path = kind;
-    }
-
-    const url = `${baseUrl}/${path}/${address}`;
-    return url;
-}
-
-/**
- * A result returned by `measureRpcLatency`.
- */
-export type RpcLatencyResult = {
-    endpoint: string;
-    latency?: number;
-    error?: string;
-};
-
-/**
- * Measure Sui RPC latency by making requests to various endpoints.
- */
-export async function measureRpcLatency({
-    endpoints,
-    rpcRequest = async (client: SuiClient) => { await client.getObject({ id: "0x123" }); }
-}: {
-    endpoints: string[];
-    rpcRequest?: (client: SuiClient) => Promise<void>;
-}): Promise<RpcLatencyResult[]>
-{
-    const promises = endpoints.map(async (url) =>
-    {
-        try {
-            const suiClient = new SuiClient({ url });
-            const startTime = performance.now();
-            await rpcRequest(suiClient);
-            const latency = performance.now() - startTime;
-            return { endpoint: url, latency };
-        }
-        catch (err) {
-            return { endpoint: url, error: String(err) };
-        }
-    });
-
-    const results = await Promise.allSettled(promises);
-    return results.map(result =>
-    {
-        if (result.status === "fulfilled") {
-            return result.value;
-        } else { // should never happen
-            return {
-                endpoint: "Unknown endpoint",
-                error: String(result.reason.message) || "Unknown error", // eslint-disable-line
-            };
-        }
-    });
-}
-
-/**
- * Instantiate SuiClient using the RPC endpoint with the lowest latency.
- */
-export async function newLowLatencySuiClient({
-    endpoints,
-    rpcRequest,
-}: {
-    endpoints: string[];
-    rpcRequest?: (client: SuiClient) => Promise<void>;
-}): Promise<SuiClient>
-{
-    const results = await measureRpcLatency({endpoints, rpcRequest});
-    const suiClient = new SuiClient({ url: results[0].endpoint });
-    return suiClient;
-}
-
-/**
  * Build an object argument for `Transaction.moveCall()`.
  */
 export function objectArg(
@@ -354,84 +194,4 @@ export function objectArg(
     return isSuiObjectRef(obj)
         ? tx.objectRef(obj)
         : tx.object(obj);
-}
-
-/**
- * Build a `Ed25519Keypair` from a secret key string like `suiprivkey1...`.
- */
-export function pairFromSecretKey(secretKey: string): Ed25519Keypair {
-    const parsedPair = decodeSuiPrivateKey(secretKey);
-    return Ed25519Keypair.fromSecretKey(parsedPair.secretKey);
-}
-
-/**
- * Get SUI from the faucet on localnet/devnet/testnet.
- */
-export async function requestSuiFromFaucet(
-    network: "localnet"|"devnet"|"testnet",
-    recipient: string,
-) {
-    let host: string;
-    if (network == "localnet") {
-        host = "http://127.0.0.1:9123/gas";
-    }
-    else if (network == "devnet") {
-        host = "https://faucet.devnet.sui.io/v1/gas";
-    }
-    else {
-        host = "https://faucet.testnet.sui.io/v1/gas";
-    }
-
-    return requestSuiFromFaucetV1({ host, recipient });
-}
-
-/**
- * Remove leading zeros from a Sui address (lossless). For example it will turn
- * '0x0000000000000000000000000000000000000000000000000000000000000002' into '0x2'.
- */
-export function removeLeadingZeros(
-    address: string,
-): string {
-    return address.replaceAll(/0x0+/g, "0x");
-}
-
-/**
- * Abbreviate a Sui address for display purposes (lossy). Default format is '0x1234…5678',
- * given an address like '0x1234000000000000000000000000000000000000000000000000000000005678'.
- */
-export function shortenSuiAddress(
-    text: string|null|undefined, start=4, end=4, separator="…", prefix="0x",
-): string {
-    if (!text) return "";
-
-    const addressRegex = /0[xX][a-fA-F0-9]{1,}/g;
-
-    return text.replace(addressRegex, (match) => {
-        // check if the address is too short to be abbreviated
-        if (match.length - prefix.length <= start + end) {
-            return match;
-        }
-        // otherwise, abbreviate the address
-        return prefix + match.slice(2, 2 + start) + separator + match.slice(-end);
-    });
-}
-
-/**
- * Validate a Sui address and return its normalized form, or `null` if invalid.
- */
-export function validateAndNormalizeSuiAddress(
-    address: string,
-): string | null {
-    if (address.length === 0) {
-        return null;
-    }
-    const normalizedAddr = normalizeSuiAddress(address);
-    if (!isValidSuiAddress(normalizedAddr)) {
-        return null;
-    }
-    return normalizedAddr;
-}
-
-function isLocalnet(network: string): boolean {
-    return network === "localnet" || network == "http://127.0.0.1:9000";
 }

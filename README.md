@@ -11,66 +11,79 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - Installation: `pnpm add @polymedia/suitcase-core`
 - Source code: [src/core](./src/core)
 
+### Addresses
+
+- `const NORMALIZED_ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
+- `generateRandomAddress()` - Generate a random Sui address (for development only).
+- `removeAddressLeadingZeros()` - Remove leading zeros from a Sui address (lossless).
+- `shortenAddress()` - Abbreviate a Sui address for display purposes (lossy).
+- `validateAndNormalizeSuiAddress()` - Validate a Sui address and return its normalized form, or `null` if invalid.
+
+### APIs
+
+- `apiRequestIndexer()` - Make a request to the Indexer.xyz API (NFTs).
+
+### Balances
+
+- `balanceToString()` - Convert a bigint to a string, scaled down to the specified decimals.
+- `stringToBalance()` - Convert a string to a bigint, scaled up to the specified decimals.
+- `formatBigInt()` - Format a bigint into a readable string, scaled down to the specified decimals.
+- `formatNumber()` - Format a number into a readable string.
+
 ### Classes
 
-- `SuiEventFetcher` - Fetch Sui events and parse them into custom objects.
-    - `fetchEvents` - Fetch the latest events. Every time the function is called it looks
+- `class SuiEventFetcher` - Fetch Sui events and parse them into custom objects.
+    - `fetchEvents()` - Fetch the latest events. Every time the function is called it looks
         for events that took place since the last call.
 
-- `SuiMultiClient` - Make many RPC requests using multiple endpoints.
-    - `executeInBatches` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
-    - `testEndpoints` - Test the latency of various Sui RPC endpoints.
+- `class SuiMultiClient` - Make many RPC requests using multiple endpoints.
+    - `executeInBatches()` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
+    - `testEndpoints()` - Test the latency of various Sui RPC endpoints.
 
-### Sui functions
+### Client
 
-- `devInspectAndGetResults` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
-- `fetchAllDynamicFields` - Get all dynamic object fields owned by an object.
-- `generateRandomAddress` - Generate a random Sui address (for development only).
-- `getCoinOfValue` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
-- `getSuiObjectRef` - Fetch the latest version of an object and return its `SuiObjectRef`.
-- `getSuiObjectResponseFields` - Validate a SuiObjectResponse and return its content.
-- `isSuiObjectRef` - Check if a given object conforms to the `SuiObjectRef` interface.
-- `makePolymediaUrl` - Build an explorer.polymedia.app URL.
-- `makeSuiscanUrl` - Build a suiscan.xyz URL.
-- `makeSuivisionUrl` - Build a suivision.xyz URL.
-- `measureRpcLatency` - Measure Sui RPC latency by making requests to various endpoints.
-- `newLowLatencySuiClient` - Instantiate SuiClient using the RPC endpoint with the lowest latency.
-- `objectArg` - Build an object argument for `Transaction.moveCall()`.
+- `devInspectAndGetResults()` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
+- `fetchAllDynamicFields()` - Get all dynamic object fields owned by an object.
+- `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
+- `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
+- `getSuiObjectResponseFields()` - Validate a SuiObjectResponse and return its content.
+- `isSuiObjectRef()` - Check if a given object conforms to the `SuiObjectRef` interface.
+- `objectArg()` - Build an object argument for `Transaction.moveCall()`.
+
+### Faucet
+
+- `requestSuiFromFaucet()` - Get SUI from the faucet on localnet/devnet/testnet.
+
+### Misc
+
+- `chunkArray()` - Split an array into multiple chunks of a certain size.
+- `chunkString()` - Split a string into multiple chunks of a certain size.
+- `makeRanges()` - Generate an array of ranges of a certain size between two numbers.
+- `sleep()` - Wait for a number of milliseconds.
+
+### Keypairs
+
 - `pairFromSecretKey` - Build a `Ed25519Keypair` from a secret key string like `suiprivkey1...`.
-- `requestSuiFromFaucet` - Get SUI from the faucet on localnet/devnet/testnet.
-- `removeLeadingZeros` - Remove leading zeros from a Sui address (lossless).
-- `shortenSuiAddress` - Abbreviate a Sui address for display purposes (lossy).
-- `validateAndNormalizeSuiAddress` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
-### API functions
+### RPCs
 
-- `apiRequestIndexer` - Make a request to the Indexer.xyz API (NFTs).
-
-### Number functions
-
-- `balanceToString` - Convert a bigint to a string, scaled down to the specified decimals.
-- `stringToBalance` - Convert a string to a bigint, scaled up to the specified decimals.
-- `formatBigInt` - Format a bigint into a readable string, scaled down to the specified decimals.
-- `formatNumber` - Format a number into a readable string.
-
-### Misc functions
-- `chunkArray` - Split an array into multiple chunks of a certain size.
-- `chunkString` - Split a string into multiple chunks of a certain size.
-- `makeRanges` - Generate an array of ranges of a certain size between two numbers.
-- `sleep` - Wait for a number of milliseconds.
-
-### Constants
-
-- `ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
-- `RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.
+- `const RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.
+- `measureRpcLatency()` - Measure Sui RPC latency by making requests to various endpoints.
+- `newLowLatencySuiClient()` - Instantiate SuiClient using the RPC endpoint with the lowest latency.
 
 ### Types
 
-- `NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
-- `ObjectArg` - An object argument for `Transaction.moveCall()`.
-- `ReceivingRef` - The return type of `Transaction.receivingRef()`.
-- `SignTransaction` - A function that can sign a `Transaction`.
-- `SuiExplorerItem` - A Sui explorer item type (address/object/package/txblock).
+- `type NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
+- `type ObjectArg` - An object argument for `Transaction.moveCall()`.
+- `type ReceivingRef` - The return type of `Transaction.receivingRef()`.
+- `type SignTransaction` - A function that can sign a `Transaction`.
+
+### URLs
+
+- `type SuiExplorerItem` - A Sui explorer item type (address/object/package/txblock).
+- `makePolymediaUrl()` - Build an explorer.polymedia.app URL.
+- `makeSuiscanUrl()` - Build a suiscan.xyz URL.
+- `makeSuivisionUrl()` - Build a suivision.xyz URL.
 
 # Node
 
