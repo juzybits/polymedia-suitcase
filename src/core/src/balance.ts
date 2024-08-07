@@ -1,7 +1,7 @@
 /**
  * Convert a bigint to a string, scaled down to the specified decimals.
  */
-export function balanceToString(value: bigint, decimals: number): string
+export function balanceToString(value: bigint, coinDecimals: number): string
 {
     if (value === 0n) {
         return "0";
@@ -12,15 +12,15 @@ export function balanceToString(value: bigint, decimals: number): string
 
     const valStr = absoluteValue.toString();
 
-    if (decimals === 0) {
+    if (coinDecimals === 0) {
         // if no decimals, return the value as a string
         return (isNegative ? "-" : "") + valStr;
     }
 
     // pad the string to ensure it has enough digits
-    const paddedValStr = valStr.padStart(decimals + 1, "0");
-    const integerPart = paddedValStr.slice(0, -decimals);
-    const fractionalPart = paddedValStr.slice(-decimals);
+    const paddedValStr = valStr.padStart(coinDecimals + 1, "0");
+    const integerPart = paddedValStr.slice(0, -coinDecimals);
+    const fractionalPart = paddedValStr.slice(-coinDecimals);
 
     // combine integer and fractional parts
     let result = `${integerPart}.${fractionalPart}`;
@@ -34,7 +34,7 @@ export function balanceToString(value: bigint, decimals: number): string
 /**
  * Convert a string to a bigint, scaled up to the specified decimals.
  */
-export function stringToBalance(value: string, decimals: number): bigint
+export function stringToBalance(value: string, coinDecimals: number): bigint
 {
     value = value.trim();
 
@@ -46,25 +46,12 @@ export function stringToBalance(value: string, decimals: number): bigint
     const [integerPart, rawDecimalPart = ""] = value.split(".");
 
     // truncate the decimal part if it has more places than the specified decimals
-    const decimalPart = rawDecimalPart.slice(0, decimals);
+    const decimalPart = rawDecimalPart.slice(0, coinDecimals);
 
     // pad the decimal part with zeros if it's shorter than the specified decimals
-    const fullNumber = integerPart + decimalPart.padEnd(decimals, "0");
+    const fullNumber = integerPart + decimalPart.padEnd(coinDecimals, "0");
 
     return BigInt(fullNumber);
-}
-
-/**
- * Format a bigint into a readable string, scaled down to the specified decimals.
- * @see formatNumber
- */
-export function formatBigInt(
-    big: bigint,
-    decimals: number,
-    format: "standard"|"compact" = "standard"
-): string {
-    const num = convertBigIntToNumber(big, decimals);
-    return formatNumber(num, format);
 }
 
 /**
@@ -109,6 +96,19 @@ function formatNumberCompact(num: number): string {
     } else {
         return formatNumberStandard(num / 1_000_000_000_000) + "T";
     }
+}
+
+/**
+ * Format a bigint into a readable string, scaled down to the specified decimals.
+ * @deprecated
+ */
+export function formatBigInt(
+    big: bigint,
+    decimals: number,
+    format: "standard"|"compact" = "standard"
+): string {
+    const num = convertBigIntToNumber(big, decimals);
+    return formatNumber(num, format);
 }
 
 /**
