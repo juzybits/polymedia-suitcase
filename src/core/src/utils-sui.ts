@@ -1,5 +1,3 @@
-/* Sui utils */
-
 import {
     DynamicFieldInfo,
     SuiClient,

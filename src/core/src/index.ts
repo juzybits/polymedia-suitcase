@@ -3,6 +3,7 @@ export * from "./SuiMultiClient.js";
 export * from "./constants.js";
 export * from "./rpcs.js";
 export * from "./types.js";
-export * from "./utils-api.js";
+export * from "./utils-apis.js";
 export * from "./utils-misc.js";
+export * from "./utils-numbers.js";
 export * from "./utils-sui.js";

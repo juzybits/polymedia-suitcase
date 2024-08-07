@@ -1,4 +1,4 @@
-import { balanceToString } from "../utils-misc";
+import { balanceToString } from "../utils-numbers";
 
 describe("balanceToString", () => {
 

@@ -1,5 +1,3 @@
-/* API utils */
-
 /**
  * Make a request to the Indexer.xyz API (NFTs).
  */

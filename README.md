@@ -46,14 +46,16 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `apiRequestIndexer` - Make a request to the Indexer.xyz API (NFTs).
 
-### Misc functions
+### Number functions
 
-- `chunkArray` - Split an array into multiple chunks of a certain size.
-- `chunkString` - Split a string into multiple chunks of a certain size.
-- `convertNumberToBigInt` - Convert a number to a bigint, scaled to the specified decimals.
-- `convertBigIntToNumber` - Convert a bigint to a number, scaled down to the specified decimals.
+- `balanceToString` - Convert a bigint to a string, scaled down to the specified decimals.
+- `stringToBalance` - Convert a string to a bigint, scaled up to the specified decimals.
 - `formatBigInt` - Format a bigint into a readable string, scaled down to the specified decimals.
 - `formatNumber` - Format a number into a readable string.
+
+### Misc functions
+- `chunkArray` - Split an array into multiple chunks of a certain size.
+- `chunkString` - Split a string into multiple chunks of a certain size.
 - `makeRanges` - Generate an array of ranges of a certain size between two numbers.
 - `sleep` - Wait for a number of milliseconds.
 
