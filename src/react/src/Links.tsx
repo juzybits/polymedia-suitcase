@@ -4,7 +4,7 @@ import {
     makePolymediaUrl,
     makeSuiscanUrl,
     makeSuivisionUrl,
-    shortenSuiAddress,
+    shortenAddress,
 } from "@polymedia/suitcase-core";
 
 /**
@@ -58,7 +58,7 @@ const createExplorerLinkComponent = (
 ): React.FC<ExplorerLinkProps> =>
     ({ network, kind, addr, className, id, children }) => (
         <LinkExternal href={makeUrl(network, kind, addr)} className={className} id={id}>
-            {children || shortenSuiAddress(addr)}
+            {children || shortenAddress(addr)}
         </LinkExternal>
     );
 

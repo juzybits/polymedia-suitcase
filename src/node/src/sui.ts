@@ -8,7 +8,7 @@ import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { Transaction } from "@mysten/sui/transactions";
 import { fromB64 } from "@mysten/sui/utils";
 import { NetworkName, validateAndNormalizeSuiAddress } from "@polymedia/suitcase-core";
-import { readJsonFile } from "./utils-file.js";
+import { readJsonFile } from "./file.js";
 
 /**
  * Get the current active address (sui client active-address).

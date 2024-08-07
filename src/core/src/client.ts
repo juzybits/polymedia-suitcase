@@ -8,7 +8,6 @@ import {
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
 import { removeAddressLeadingZeros } from "./address.js";
 import { sleep } from "./misc.js";
-import { measureRpcLatency } from "./rpc.js";
 import { ObjectArg } from "./types.js";
 
 /**

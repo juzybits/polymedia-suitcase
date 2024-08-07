@@ -111,6 +111,14 @@ function formatNumberCompact(num: number): string {
     }
 }
 
+/**
+ * Convert a bigint to a number, scaled down to the specified decimals.
+ * @deprecated
+ * @see balanceToString
+ */
+export function convertBigIntToNumber(big: bigint, decimals: number): number {
+    return Number(big) / 10**decimals;
+}
 
 /**
  * Convert a number to a bigint, scaled to the specified decimals.
@@ -120,13 +128,4 @@ function formatNumberCompact(num: number): string {
 export function convertNumberToBigInt(num: number, decimals: number): bigint {
     const numScaledAsString = (num * 10**decimals).toFixed(0);
     return BigInt(numScaledAsString);
-  }
-
-/**
- * Convert a bigint to a number, scaled down to the specified decimals.
- * @deprecated
- * @see balanceToString
- */
-export function convertBigIntToNumber(big: bigint, decimals: number): number {
-    return Number(big) / 10**decimals;
 }

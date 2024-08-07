@@ -92,29 +92,29 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 - Installation: `pnpm add @polymedia/suitcase-node`
 - Source code: [src/node](./src/node)
 
-### Sui functions
+### Sui
 
-- `getActiveAddress` - Get the current active address (sui client active-address).
-- `getActiveKeypair` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
-- `getActiveEnv` - Get the active Sui environment from `sui client active-env`.
-- `setupSuiTransaction` - Initialize objects to execute Sui transactions blocks using the current Sui active network and address.
-- `executeSuiTransaction` - Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.
+- `getActiveAddress()` - Get the current active address (sui client active-address).
+- `getActiveKeypair()` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
+- `getActiveEnv()` - Get the active Sui environment from `sui client active-env`.
+- `setupSuiTransaction()` - Initialize objects to execute Sui transactions blocks using the current Sui active network and address.
+- `executeSuiTransaction()` - Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.
 
-### File functions
+### Files
 
-- `fileExists` - Check if a file exists in the filesystem.
-- `getFileName` - Extract the file name from a module URL, without path or extension.
-- `writeJsonFile` - Write an object's JSON representation into a file.
-- `readJsonFile` - Read a JSON file and parse its contents into an object.
-- `writeTsvFile` - Write objects into a TSV file.
-- `readTsvFile` - Read a TSV file and parse each line into an object.
-- `writeCsvFile` - Write objects into a CSV file.
-- `readCsvFile` - Read a CSV file and parse each line into an object.
+- `fileExists()` - Check if a file exists in the filesystem.
+- `getFileName()` - Extract the file name from a module URL, without path or extension.
+- `writeJsonFile()` - Write an object's JSON representation into a file.
+- `readJsonFile()` - Read a JSON file and parse its contents into an object.
+- `writeTsvFile()` - Write objects into a TSV file.
+- `readTsvFile()` - Read a TSV file and parse each line into an object.
+- `writeCsvFile()` - Write objects into a CSV file.
+- `readCsvFile()` - Read a CSV file and parse each line into an object.
 
-### Misc functions
+### CLI
 
-- `parseArguments` - Parse command line arguments and show usage instructions.
-- `promptUser` - Display a query to the user and wait for their input. Return true if the user enters `y`.
+- `parseArguments()` - Parse command line arguments and show usage instructions.
+- `promptUser()` - Display a query to the user and wait for their input. Return true if the user enters `y`.
 
 # React
 
