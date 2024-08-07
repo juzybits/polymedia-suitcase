@@ -140,8 +140,8 @@ export function balanceToString(value: bigint, decimals: number): string
 
     // pad the string to ensure it has enough digits
     const paddedValStr = valStr.padStart(decimals + 1, "0");
-    const integerPart = paddedValStr.slice(0, -decimals) || "0";
-    const fractionalPart = paddedValStr.slice(-decimals).padEnd(decimals, "0");
+    const integerPart = paddedValStr.slice(0, -decimals);
+    const fractionalPart = paddedValStr.slice(-decimals);
 
     // combine integer and fractional parts
     let result = `${integerPart}.${fractionalPart}`;
@@ -159,12 +159,8 @@ export function stringToBalance(value: string, decimals: number): bigint
 {
     value = value.trim();
 
-    if (value === "" || value === ".") {
-        return 0n;
-    }
-
-    // validate the input format
-    if (!/^-?\d*\.?\d*$/.test(value)) {
+    // validate the input
+    if (["", ".", "-", "-."].includes(value) || !/^-?\d*\.?\d*$/.test(value)) {
         throw new Error("Invalid input");
     }
 

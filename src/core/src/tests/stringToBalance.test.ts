@@ -28,12 +28,6 @@ describe("stringToBalance", () => {
         expect(stringToBalance("123.45678", 3)).toBe(123456n); // Truncate to 123.456
     });
 
-    it("should return 0n for an empty string or a string with only a decimal point", () => {
-        expect(stringToBalance("", 3)).toBe(0n);
-        expect(stringToBalance("  ", 3)).toBe(0n);
-        expect(stringToBalance(".", 3)).toBe(0n);
-    });
-
     it("should handle large numbers correctly", () => {
         expect(stringToBalance("123456789012345678901234567890", 0)).toBe(123456789012345678901234567890n);
         expect(stringToBalance("123456789012345678901234567890.123456789", 9)).toBe(123456789012345678901234567890123456789n);
@@ -49,7 +43,14 @@ describe("stringToBalance", () => {
         expect(stringToBalance("0.000", 3)).toBe(0n);
     });
 
-    it("should throw an error for invalid input (non-numeric characters)", () => {
+    it("should throw an error for invalid inputs", () => {
+        expect(() => stringToBalance("", 3)).toThrow();
+        expect(() => stringToBalance("  ", 3)).toThrow();
+        expect(() => stringToBalance(".", 3)).toThrow();
+        expect(() => stringToBalance("-", 3)).toThrow();
+        expect(() => stringToBalance("-.", 3)).toThrow();
+        expect(() => stringToBalance("1-2", 3)).toThrow();
+        expect(() => stringToBalance("1..2", 3)).toThrow();
         expect(() => stringToBalance("123abc", 3)).toThrow();
         expect(() => stringToBalance("abc", 3)).toThrow();
         expect(() => stringToBalance("123.456.789", 3)).toThrow(); // Invalid format with multiple dots
@@ -65,10 +66,6 @@ describe("stringToBalance", () => {
     it("should handle no decimals input correctly", () => {
         expect(stringToBalance("123", 5)).toBe(12300000n);
         expect(stringToBalance("1.5", 0)).toBe(1n); // If no decimals are specified, it should truncate the fractional part
-    });
-
-    it("should handle edge case where value is just the decimal separator", () => {
-        expect(stringToBalance(".", 5)).toBe(0n);
     });
 
     it("should handle maximum safe integer value", () => {
