@@ -43,17 +43,23 @@ describe("stringToBalance", () => {
         expect(stringToBalance("0.000", 3)).toBe(0n);
     });
 
-    it("should throw an error for invalid inputs", () => {
-        expect(() => stringToBalance("", 3)).toThrow();
-        expect(() => stringToBalance("  ", 3)).toThrow();
-        expect(() => stringToBalance(".", 3)).toThrow();
-        expect(() => stringToBalance("-", 3)).toThrow();
+    it("should return 0n for empty inputs", () => {
+        expect(stringToBalance("", 3)).toBe(0n);
+        expect(stringToBalance("  ", 3)).toBe(0n);
+        expect(stringToBalance(".", 3)).toBe(0n);
+        expect(stringToBalance("-", 3)).toBe(0n);
+    });
+
+    it("should throw an error for inputs with special characters or symbols", () => {
         expect(() => stringToBalance("-.", 3)).toThrow();
         expect(() => stringToBalance("1-2", 3)).toThrow();
         expect(() => stringToBalance("1..2", 3)).toThrow();
         expect(() => stringToBalance("123abc", 3)).toThrow();
         expect(() => stringToBalance("abc", 3)).toThrow();
-        expect(() => stringToBalance("123.456.789", 3)).toThrow(); // Invalid format with multiple dots
+        expect(() => stringToBalance("123.456.789", 3)).toThrow();
+        expect(() => stringToBalance("+123.456", 3)).toThrow("Invalid input");
+        expect(() => stringToBalance("123$456", 3)).toThrow("Invalid input");
+        expect(() => stringToBalance("#123.456", 3)).toThrow("Invalid input");
     });
 
     it("should correctly handle negative values", () => {
@@ -77,12 +83,6 @@ describe("stringToBalance", () => {
         const longInput = "1".repeat(100) + "." + "9".repeat(50);
         const expectedOutput = BigInt("1".repeat(100) + "9".repeat(9));
         expect(stringToBalance(longInput, 9)).toBe(expectedOutput);
-    });
-
-    it("should throw an error for inputs with special characters or symbols", () => {
-        expect(() => stringToBalance("+123.456", 3)).toThrow("Invalid input");
-        expect(() => stringToBalance("123$456", 3)).toThrow("Invalid input");
-        expect(() => stringToBalance("#123.456", 3)).toThrow("Invalid input");
     });
 
     it("should handle multiple leading zeros in integer part", () => {

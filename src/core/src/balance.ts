@@ -38,8 +38,12 @@ export function stringToBalance(value: string, coinDecimals: number): bigint
 {
     value = value.trim();
 
+    if ( ["", ".", "-"].includes(value) ) {
+        return 0n;
+    }
+
     // validate the input
-    if (["", ".", "-", "-."].includes(value) || !/^-?\d*\.?\d*$/.test(value)) {
+    if ( "-." === value || !/^-?\d*\.?\d*$/.test(value) ) {
         throw new Error("Invalid input");
     }
 
