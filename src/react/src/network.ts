@@ -1,10 +1,16 @@
 export type BaseNetworkName = string;
 
+/**
+ * Check if the current hostname is a localhost environment.
+ */
 export function isLocalhost(): boolean {
     const hostname = window.location.hostname;
     return hostname === "localhost" || hostname === "127.0.0.1";
 }
 
+/**
+ * Load the network name based on URL parameters and local storage.
+ */
 export function loadNetwork<NetworkName extends BaseNetworkName>(
     supportedNetworks: readonly NetworkName[],
     defaultNetwork: NetworkName,
@@ -37,6 +43,9 @@ export function loadNetwork<NetworkName extends BaseNetworkName>(
     return defaultNetwork;
 }
 
+/**
+ * Change networks, updating the local storage and optionally triggering a callback.
+ */
 export function switchNetwork<NetworkName extends BaseNetworkName>(
     newNetwork: NetworkName,
     supportedNetworks: readonly NetworkName[],

@@ -131,3 +131,18 @@ The `suitcase-react` package provides components for React web apps.
 - `LinkToSuivision` - A link to suivision.xyz.
 - `Modal` - A modal window.
 - `NetworkSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.
+
+### Functions
+
+- `isLocalhost()` - Check if the current hostname is a localhost environment.
+- `loadNetwork()` - Load the network name based on URL parameters and local storage.
+- `switchNetwork()` - Change networks, updating the local storage and optionally triggering a callback.
+- `makeCssUrl()` - Encode a URL for use in CSS `url()` syntax.
+
+### Hooks
+
+- `useClickOutside()` - A React hook that detects when a click or touch event occurs outside a DOM element.
+
+### Types
+
+- `type ReactSetter` - A function that updates the state of a `useState` or `useReducer` hook.
