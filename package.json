@@ -17,7 +17,7 @@
         "clean": "turbo run clean && rm -rf dist/ node_modules/ .turbo/ src/sui*/build/",
         "dev": "turbo run dev",
         "lint": "turbo run lint",
-        "publish-all": "pnpm clean && pnpm i && pnpm typecheck && turbo run publish",
+        "publish-all": "pnpm clean && pnpm i && pnpm build && pnpm publish -r --filter=./src/*",
         "test": "turbo run test",
         "test:watch": "jest --watch",
         "typecheck": "turbo run typecheck"

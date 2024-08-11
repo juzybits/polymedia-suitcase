@@ -21,7 +21,6 @@
         "clean": "rm -rf dist/ node_modules/ .turbo/ .wrangler/",
         "dev": "tsc --watch -p tsconfig.esm.json",
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
-        "publish": "pnpm publish",
         "test": "jest --verbose --passWithNoTests",
         "typecheck": "tsc -p tsconfig.esm.json"
     },

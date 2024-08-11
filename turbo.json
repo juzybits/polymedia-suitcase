@@ -16,10 +16,6 @@
         "lint": {
             "outputs": []
         },
-        "publish": {
-            "dependsOn": [ "build" ],
-            "outputs": []
-        },
         "test": {
             "outputs": []
         },
