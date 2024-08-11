@@ -204,7 +204,7 @@ export function suiObjResToRef(
         objectId: resp.data.objectId,
         digest: resp.data.digest,
         version: resp.data.version,
-    }
+    };
 }
 
 /**
