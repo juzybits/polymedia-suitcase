@@ -150,28 +150,6 @@ export async function getSuiObjectRef(
 }
 
 /**
- * Validate a SuiObjectResponse and return its content.
- * @param resp A `SuiObjectResponse` from `SuiClient.getObject()` / `.multiGetObjects()` / `.getDynamicFieldObject()`
- * @param typeRegex (optional) A regular expression to check that `resp.data.content.type` has the right type
- * @returns The contents of `resp.data.content.fields`
- */
-export function getSuiObjectResponseFields(
-    resp: SuiObjectResponse,
-    typeRegex?: string,
-): Record<string, any> { // eslint-disable-line @typescript-eslint/no-explicit-any
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (resp.data?.content?.dataType !== "moveObject") {
-        throw Error(`content missing: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (typeRegex && !new RegExp(typeRegex).test(resp.data.content.type)) {
-        throw Error(`wrong object type: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-}
-
-/**
  * Check if a given object conforms to the `SuiObjectRef` interface.
  */
 /* eslint-disable */
@@ -193,4 +171,57 @@ export function objectArg(
     return isSuiObjectRef(obj)
         ? tx.objectRef(obj)
         : tx.object(obj);
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its `.data.objectId`.
+ */
+export function suiObjResToId(
+    resp: SuiObjectResponse,
+): string {
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (!resp.data) {
+        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return resp.data.objectId;
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
+ */
+export function suiObjResToRef(
+    resp: SuiObjectResponse,
+): SuiObjectRef {
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (!resp.data) {
+        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return {
+        objectId: resp.data.objectId,
+        digest: resp.data.digest,
+        version: resp.data.version,
+    }
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
+ */
+export function suiObjResToFields(
+    resp: SuiObjectResponse,
+    typeRegex?: string,
+): Record<string, any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (resp.data?.content?.dataType !== "moveObject") {
+        throw Error(`content missing: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (typeRegex && !new RegExp(typeRegex).test(resp.data.content.type)) {
+        throw Error(`wrong object type: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

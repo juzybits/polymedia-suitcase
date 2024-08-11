@@ -46,9 +46,11 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `fetchAllDynamicFields()` - Get all dynamic object fields owned by an object.
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
-- `getSuiObjectResponseFields()` - Validate a SuiObjectResponse and return its content.
 - `isSuiObjectRef()` - Check if a given object conforms to the `SuiObjectRef` interface.
 - `objectArg()` - Build an object argument for `Transaction.moveCall()`.
+- `suiObjResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
+- `suiObjResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
+- `suiObjResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
 
 ### Faucet
 
