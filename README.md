@@ -50,6 +50,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `objectArg()` - Build an object argument for `Transaction.moveCall()`.
 - `suiObjResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
 - `suiObjResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
+- `suiObjResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
 - `suiObjResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
 
 ### Faucet

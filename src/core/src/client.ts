@@ -1,4 +1,5 @@
 import {
+    DisplayFieldsResponse,
     DynamicFieldInfo,
     SuiClient,
     SuiExecutionResult,
@@ -205,6 +206,24 @@ export function suiObjResToRef(
         digest: resp.data.digest,
         version: resp.data.version,
     };
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
+ */
+export function suiObjResToDisplay(
+    resp: SuiObjectResponse,
+): DisplayFieldsResponse | null {
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (!resp.data?.display) {
+        throw Error(`response has no display: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (resp.data.display.error) {
+        throw Error(`display has error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return resp.data.display.data ?? null;
 }
 
 /**
