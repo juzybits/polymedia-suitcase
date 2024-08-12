@@ -174,40 +174,6 @@ export function objectArg(
 }
 
 /**
- * Validate a `SuiObjectResponse` and return its `.data.objectId`.
- */
-export function objResToId(
-    resp: SuiObjectResponse,
-): string {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (!resp.data) {
-        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return resp.data.objectId;
-}
-
-/**
- * Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
- */
-export function objResToRef(
-    resp: SuiObjectResponse,
-): SuiObjectRef {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (!resp.data) {
-        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return {
-        objectId: resp.data.objectId,
-        digest: resp.data.digest,
-        version: resp.data.version,
-    };
-}
-
-/**
  * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
  */
 export function objResToDisplay(
@@ -260,4 +226,54 @@ export function objResToFields(
         throw Error(`wrong object type: ${JSON.stringify(resp, null, 2)}`);
     }
     return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
+
+/**
+ * Validate a `SuiObjectResponse` and return its `.data.objectId`.
+ */
+export function objResToId(
+    objRes: SuiObjectResponse,
+): string {
+    if (objRes.error) {
+        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    }
+    if (!objRes.data) {
+        throw Error(`response has no data: ${JSON.stringify(objRes, null, 2)}`);
+    }
+    return objRes.data.objectId;
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
+ */
+export function objResToRef(
+    resp: SuiObjectResponse,
+): SuiObjectRef {
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (!resp.data) {
+        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return {
+        objectId: resp.data.objectId,
+        digest: resp.data.digest,
+        version: resp.data.version,
+    };
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its `.data.type`.
+ */
+export function objResToType(
+    resp: SuiObjectResponse,
+): string {
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (!resp.data?.type) {
+        throw Error(`response has no type: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return resp.data.type;
 }
