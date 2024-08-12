@@ -48,10 +48,10 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
 - `isSuiObjectRef()` - Check if a given object conforms to the `SuiObjectRef` interface.
 - `objectArg()` - Build an object argument for `Transaction.moveCall()`.
-- `suiObjResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
-- `suiObjResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
-- `suiObjResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
-- `suiObjResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
+- `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
+- `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
+- `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
+- `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
 
 ### Faucet
 
@@ -78,6 +78,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `type NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
 - `type ObjectArg` - An object argument for `Transaction.moveCall()`.
+- `type ObjectDisplay` - A Sui object display with common properties and arbitrary ones.
 - `type ReceivingRef` - The return type of `Transaction.receivingRef()`.
 - `type SignTransaction` - A function that can sign a `Transaction`.
 

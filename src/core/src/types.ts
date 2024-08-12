@@ -13,6 +13,22 @@ export type NetworkName =  "mainnet" | "testnet" | "devnet" | "localnet";
 export type ObjectArg = TransactionObjectInput | SuiObjectRef;
 
 /**
+ * A Sui object display with common properties and arbitrary ones.
+ */
+export type ObjectDisplay = {
+    [key: string]: string | null;
+    name: string | null;
+    description: string | null;
+    link: string | null;
+    image_url: string | null;
+    thumbnail_url: string | null;
+    project_name: string | null;
+    project_url: string | null;
+    project_image_url: string | null;
+    creator: string | null;
+};
+
+/**
  * The return type of `Transaction.receivingRef()`.
  */
 export type ReceivingRef = ReturnType<InstanceType<typeof Transaction>["receivingRef"]>;

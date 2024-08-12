@@ -1,5 +1,4 @@
 import {
-    DisplayFieldsResponse,
     DynamicFieldInfo,
     SuiClient,
     SuiExecutionResult,
@@ -9,7 +8,7 @@ import {
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
 import { removeAddressLeadingZeros } from "./address.js";
 import { sleep } from "./misc.js";
-import { ObjectArg } from "./types.js";
+import { ObjectArg, ObjectDisplay } from "./types.js";
 
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the results.
@@ -177,7 +176,7 @@ export function objectArg(
 /**
  * Validate a `SuiObjectResponse` and return its `.data.objectId`.
  */
-export function suiObjResToId(
+export function objResToId(
     resp: SuiObjectResponse,
 ): string {
     if (resp.error) {
@@ -192,7 +191,7 @@ export function suiObjResToId(
 /**
  * Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
  */
-export function suiObjResToRef(
+export function objResToRef(
     resp: SuiObjectResponse,
 ): SuiObjectRef {
     if (resp.error) {
@@ -211,9 +210,10 @@ export function suiObjResToRef(
 /**
  * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
  */
-export function suiObjResToDisplay(
+export function objResToDisplay(
     resp: SuiObjectResponse,
-): DisplayFieldsResponse | null {
+): ObjectDisplay
+{
     if (resp.error) {
         throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
@@ -223,16 +223,33 @@ export function suiObjResToDisplay(
     if (resp.data.display.error) {
         throw Error(`display has error: ${JSON.stringify(resp, null, 2)}`);
     }
-    return resp.data.display.data ?? null;
+
+    const defaultDisplay: ObjectDisplay = {
+        name: null,
+        description: null,
+        link: null,
+        image_url: null,
+        thumbnail_url: null,
+        project_name: null,
+        project_url: null,
+        project_image_url: null,
+        creator: null,
+    };
+
+    return {
+        ...defaultDisplay,
+        ...resp.data.display.data,
+    };
 }
 
 /**
  * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
  */
-export function suiObjResToFields(
+export function objResToFields(
     resp: SuiObjectResponse,
     typeRegex?: string,
-): Record<string, any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+{
     if (resp.error) {
         throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
