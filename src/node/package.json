@@ -31,7 +31,7 @@
         "@mysten/sui": "^1.4.0"
     },
     "devDependencies": {
-        "@types/node": "^22.2.0",
+        "@types/node": "^22.4.0",
         "typescript": "^5.5.4"
     },
     "type": "module",
