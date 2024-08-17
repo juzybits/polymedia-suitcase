@@ -32,6 +32,11 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ### Classes
 
+- `class SuiClientBase` - Abstract class to sign and execute Sui transactions.
+    - `signTransaction()`
+    - `executeTransaction()`
+    - `signAndExecuteTransaction()`
+
 - `class SuiEventFetcher` - Fetch Sui events and parse them into custom objects.
     - `fetchEvents()` - Fetch the latest events. Every time the function is called it looks
         for events that took place since the last call.
