@@ -8,7 +8,7 @@ import {
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
 import { removeAddressLeadingZeros } from "./addresses.js";
 import { sleep } from "./misc.js";
-import { ObjectArg, ObjectDisplay } from "./types.js";
+import { ObjectDisplay } from "./types.js";
 
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the results.
@@ -30,43 +30,6 @@ export async function devInspectAndGetResults(
     }
     return resp.results;
 }
-
-/**
- * Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
- * @returns An array with the deserialized return values of each transaction in the TransactionBlock.
- *
-export async function devInspectAndGetReturnValues( // TODO
-    suiClient: SuiClient,
-    tx: Transaction,
-    sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
-): Promise<unknown[][]> {
-    const results = await devInspectAndGetResults(suiClient, tx, sender);
-    // The values returned from each of the transactions in the TransactionBlock
-    const blockReturnValues: unknown[][] = [];
-    for (const txnResult of results) {
-        if (!txnResult.returnValues?.length) {
-            throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
-        }
-        // The values returned from the transaction (a function can return multiple values)
-        const txnReturnValues: unknown[] = [];
-        for (const value of txnResult.returnValues) {
-            const valueData = Uint8Array.from(value[0]);
-            const valueType = value[1];
-            let valueDeserialized: unknown;
-            if (valueType === "0x1::string::String") {
-                valueDeserialized = bcs.string().parse(valueData);
-            } else if (valueType === "vector<0x1::string::String>") {
-                valueDeserialized = bcs.vector(bcs.string()).parse(valueData);
-            } else {
-                valueDeserialized = bcs.de(valueType, valueData, "hex");
-            }
-            txnReturnValues.push(valueDeserialized);
-        }
-        blockReturnValues.push(txnReturnValues);
-    }
-    return blockReturnValues;
-}
-*/
 
 /**
  * Get all dynamic object fields owned by an object.
@@ -160,18 +123,6 @@ export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
         && typeof obj.digest !== "undefined";
 }
 /* eslint-enable */
-
-/**
- * Build an object argument for `Transaction.moveCall()`.
- */
-export function objectArg(
-    tx: Transaction,
-    obj: ObjectArg,
-) {
-    return isSuiObjectRef(obj)
-        ? tx.objectRef(obj)
-        : tx.object(obj);
-}
 
 /**
  * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
@@ -277,3 +228,40 @@ export function objResToType(
     }
     return resp.data.type;
 }
+
+/**
+ * Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
+ * @returns An array with the deserialized return values of each transaction in the TransactionBlock.
+ *
+export async function devInspectAndGetReturnValues( // TODO
+    suiClient: SuiClient,
+    tx: Transaction,
+    sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
+): Promise<unknown[][]> {
+    const results = await devInspectAndGetResults(suiClient, tx, sender);
+    // The values returned from each of the transactions in the TransactionBlock
+    const blockReturnValues: unknown[][] = [];
+    for (const txnResult of results) {
+        if (!txnResult.returnValues?.length) {
+            throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
+        }
+        // The values returned from the transaction (a function can return multiple values)
+        const txnReturnValues: unknown[] = [];
+        for (const value of txnResult.returnValues) {
+            const valueData = Uint8Array.from(value[0]);
+            const valueType = value[1];
+            let valueDeserialized: unknown;
+            if (valueType === "0x1::string::String") {
+                valueDeserialized = bcs.string().parse(valueData);
+            } else if (valueType === "vector<0x1::string::String>") {
+                valueDeserialized = bcs.vector(bcs.string()).parse(valueData);
+            } else {
+                valueDeserialized = bcs.de(valueType, valueData, "hex");
+            }
+            txnReturnValues.push(valueDeserialized);
+        }
+        blockReturnValues.push(txnReturnValues);
+    }
+    return blockReturnValues;
+}
+*/

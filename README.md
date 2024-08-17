@@ -47,7 +47,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
 - `isSuiObjectRef()` - Check if a given object conforms to the `SuiObjectRef` interface.
-- `objectArg()` - Build an object argument for `Transaction.moveCall()`.
 - `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
 - `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
 - `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
@@ -67,13 +66,17 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ### Keypairs
 
-- `pairFromSecretKey` - Build a `Keypair` from a secret key string like `suiprivkey1...`.
+- `pairFromSecretKey()` - Build a `Keypair` from a secret key string like `suiprivkey1...`.
 
 ### RPCs
 
 - `const RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.
 - `measureRpcLatency()` - Measure Sui RPC latency by making requests to various endpoints.
 - `newLowLatencySuiClient()` - Instantiate SuiClient using the RPC endpoint with the lowest latency.
+
+### Transactions
+
+- `objectArg()` - Build an object argument for `Transaction.moveCall()`.
 
 ### Types
 
