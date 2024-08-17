@@ -20,28 +20,36 @@ export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
 /**
  * Type guard to check if an object is owned by a single address.
  */
-export function isOwnerAddress(owner: ObjectOwner): owner is { AddressOwner: string } {
+export function isOwnerAddress(
+    owner: ObjectOwner,
+): owner is { AddressOwner: string } {
     return typeof owner === "object" && owner !== null && "AddressOwner" in owner;
 }
 
 /**
  * Type guard to check if an object is owned by a single object.
  */
-export function isOwnerObject(owner: ObjectOwner): owner is { ObjectOwner: string } {
+export function isOwnerObject(
+    owner: ObjectOwner,
+): owner is { ObjectOwner: string } {
     return typeof owner === "object" && owner !== null && "ObjectOwner" in owner;
 }
 
 /**
  * Type guard to check if an object can be used by any address.
  */
-export function isOwnerShared(owner: ObjectOwner): owner is { Shared: { initial_shared_version: string } } {
+export function isOwnerShared(
+    owner: ObjectOwner,
+): owner is { Shared: { initial_shared_version: string } } {
     return typeof owner === "object" && owner !== null && "Shared" in owner;
 }
 
 /**
  * Type guard to check if an object is immutable.
  */
-export function isOwnerImmutable(owner: ObjectOwner): owner is "Immutable" {
+export function isOwnerImmutable(
+    owner: ObjectOwner,
+): owner is "Immutable" {
     return owner === "Immutable";
 }
 
@@ -49,17 +57,17 @@ export function isOwnerImmutable(owner: ObjectOwner): owner is "Immutable" {
  * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
  */
 export function objResToDisplay(
-    resp: SuiObjectResponse,
+    objRes: SuiObjectResponse,
 ): ObjectDisplay
 {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    if (objRes.error) {
+        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
     }
-    if (!resp.data?.display) {
-        throw Error(`response has no display: ${JSON.stringify(resp, null, 2)}`);
+    if (!objRes.data?.display) {
+        throw Error(`response has no display: ${JSON.stringify(objRes, null, 2)}`);
     }
-    if (resp.data.display.error) {
-        throw Error(`display has error: ${JSON.stringify(resp, null, 2)}`);
+    if (objRes.data.display.error) {
+        throw Error(`display has error: ${JSON.stringify(objRes, null, 2)}`);
     }
 
     const defaultDisplay: ObjectDisplay = {
@@ -76,7 +84,7 @@ export function objResToDisplay(
 
     return {
         ...defaultDisplay,
-        ...resp.data.display.data,
+        ...objRes.data.display.data,
     };
 }
 
@@ -84,22 +92,17 @@ export function objResToDisplay(
  * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
  */
 export function objResToFields(
-    resp: SuiObjectResponse,
-    typeRegex?: string,
+    objRes: SuiObjectResponse,
 ): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    if (objRes.error) {
+        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
     }
-    if (resp.data?.content?.dataType !== "moveObject") {
-        throw Error(`content missing: ${JSON.stringify(resp, null, 2)}`);
+    if (objRes.data?.content?.dataType !== "moveObject") {
+        throw Error(`response content missing: ${JSON.stringify(objRes, null, 2)}`);
     }
-    if (typeRegex && !new RegExp(typeRegex).test(resp.data.content.type)) {
-        throw Error(`wrong object type: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    return objRes.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
-
 
 /**
  * Validate a `SuiObjectResponse` and return its `.data.objectId`.
@@ -120,18 +123,18 @@ export function objResToId(
  * Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
  */
 export function objResToRef(
-    resp: SuiObjectResponse,
+    objRes: SuiObjectResponse,
 ): SuiObjectRef {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    if (objRes.error) {
+        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
     }
-    if (!resp.data) {
-        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
+    if (!objRes.data) {
+        throw Error(`response has no data: ${JSON.stringify(objRes, null, 2)}`);
     }
     return {
-        objectId: resp.data.objectId,
-        digest: resp.data.digest,
-        version: resp.data.version,
+        objectId: objRes.data.objectId,
+        digest: objRes.data.digest,
+        version: objRes.data.version,
     };
 }
 
@@ -139,15 +142,15 @@ export function objResToRef(
  * Validate a `SuiObjectResponse` and return its `.data.type`.
  */
 export function objResToType(
-    resp: SuiObjectResponse,
+    objRes: SuiObjectResponse,
 ): string {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    if (objRes.error) {
+        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
     }
-    if (!resp.data?.type) {
-        throw Error(`response has no type: ${JSON.stringify(resp, null, 2)}`);
+    if (!objRes.data?.type) {
+        throw Error(`response has no type: ${JSON.stringify(objRes, null, 2)}`);
     }
-    return resp.data.type;
+    return objRes.data.type;
 }
 
 /**
