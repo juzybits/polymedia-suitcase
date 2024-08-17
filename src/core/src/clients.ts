@@ -6,7 +6,7 @@ import {
     SuiObjectResponse,
 } from "@mysten/sui/client";
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
-import { removeAddressLeadingZeros } from "./address.js";
+import { removeAddressLeadingZeros } from "./addresses.js";
 import { sleep } from "./misc.js";
 import { ObjectArg, ObjectDisplay } from "./types.js";
 
