@@ -24,6 +24,19 @@ export function objectArg(
  */
 export const TransferModule =
 {
+    public_freeze_object(
+        tx: Transaction,
+        obj_type: string,
+        obj: ObjectArg,
+    ): TransactionResult
+    {
+        return tx.moveCall({
+            target: `0x2::transfer::public_freeze_object`,
+            typeArguments: [ obj_type ],
+            arguments: [ objectArg(tx, obj) ],
+        });
+    },
+
     public_share_object(
         tx: Transaction,
         obj_type: string,
@@ -37,4 +50,20 @@ export const TransferModule =
         });
     },
 
+    public_transfer(
+        tx: Transaction,
+        obj_type: string,
+        obj: ObjectArg,
+        recipient: string,
+    ): TransactionResult
+    {
+        return tx.moveCall({
+            target: `0x2::transfer::public_transfer`,
+            typeArguments: [ obj_type ],
+            arguments: [
+                objectArg(tx, obj),
+                tx.pure.address(recipient),
+            ],
+        });
+    },
 }

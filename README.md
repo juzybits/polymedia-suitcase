@@ -78,6 +78,10 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `type ObjectArg` - An object argument for `Transaction.moveCall()`.
 - `objectArg()` - Build an object argument for `Transaction.moveCall()`.
+- `TransferModule` - Build transactions for the `sui::transfer` module.
+    - `public_freeze_object()`
+    - `public_share_object()`
+    - `public_transfer()`
 
 ### Types
 
