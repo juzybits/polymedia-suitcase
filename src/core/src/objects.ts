@@ -1,11 +1,12 @@
 import {
+    ObjectOwner,
     SuiObjectRef,
     SuiObjectResponse
 } from "@mysten/sui/client";
 import { ObjectDisplay } from "./types.js";
 
 /**
- * Check if a given object conforms to the `SuiObjectRef` interface.
+ * Type guard to check if an object is a `SuiObjectRef`.
  */
 /* eslint-disable */
 export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
@@ -15,6 +16,34 @@ export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
         && typeof obj.digest !== "undefined";
 }
 /* eslint-enable */
+
+/**
+ * Type guard to check if an object is owned by a single address.
+ */
+export function isOwnerAddress(owner: ObjectOwner): owner is { AddressOwner: string } {
+    return typeof owner === "object" && owner !== null && "AddressOwner" in owner;
+}
+
+/**
+ * Type guard to check if an object is owned by a single object.
+ */
+export function isOwnerObject(owner: ObjectOwner): owner is { ObjectOwner: string } {
+    return typeof owner === "object" && owner !== null && "ObjectOwner" in owner;
+}
+
+/**
+ * Type guard to check if an object can be used by any address.
+ */
+export function isOwnerShared(owner: ObjectOwner): owner is { Shared: { initial_shared_version: string } } {
+    return typeof owner === "object" && owner !== null && "Shared" in owner;
+}
+
+/**
+ * Type guard to check if an object is immutable.
+ */
+export function isOwnerImmutable(owner: ObjectOwner): owner is "Immutable" {
+    return owner === "Immutable";
+}
 
 /**
  * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.

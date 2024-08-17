@@ -69,7 +69,11 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ### Objects
 
-- `isSuiObjectRef()` - Check if a given object conforms to the `SuiObjectRef` interface.
+- `isSuiObjectRef()` - Type guard to check if an object is a `SuiObjectRef`.
+- `isOwnerAddress()` - Type guard to check if an object is owned by a single address.
+- `isOwnerObject()` - Type guard to check if an object is owned by a single object.
+- `isOwnerShared()` - Type guard to check if an object can be used by any address.
+- `isOwnerImmutable()` - Type guard to check if an object is immutable.
 - `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
 - `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
 - `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
