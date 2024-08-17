@@ -67,7 +67,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ### Keypairs
 
-- `pairFromSecretKey` - Build a `Ed25519Keypair` from a secret key string like `suiprivkey1...`.
+- `pairFromSecretKey` - Build a `Keypair` from a secret key string like `suiprivkey1...`.
 
 ### RPCs
 
