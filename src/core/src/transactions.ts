@@ -31,7 +31,7 @@ export const TransferModule =
     ): TransactionResult
     {
         return tx.moveCall({
-            target: `0x2::transfer::public_freeze_object`,
+            target: "0x2::transfer::public_freeze_object",
             typeArguments: [ obj_type ],
             arguments: [ objectArg(tx, obj) ],
         });
@@ -44,7 +44,7 @@ export const TransferModule =
     ): TransactionResult
     {
         return tx.moveCall({
-            target: `0x2::transfer::public_share_object`,
+            target: "0x2::transfer::public_share_object",
             typeArguments: [ obj_type ],
             arguments: [ objectArg(tx, obj) ],
         });
@@ -58,7 +58,7 @@ export const TransferModule =
     ): TransactionResult
     {
         return tx.moveCall({
-            target: `0x2::transfer::public_transfer`,
+            target: "0x2::transfer::public_transfer",
             typeArguments: [ obj_type ],
             arguments: [
                 objectArg(tx, obj),
@@ -66,4 +66,4 @@ export const TransferModule =
             ],
         });
     },
-}
+};
