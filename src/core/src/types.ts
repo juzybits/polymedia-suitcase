@@ -1,16 +1,10 @@
-import { SuiObjectRef } from "@mysten/sui/client";
 import { SignatureWithBytes } from "@mysten/sui/cryptography";
-import { Transaction, TransactionObjectInput } from "@mysten/sui/transactions";
+import { Transaction } from "@mysten/sui/transactions";
 
 /**
  * A Sui network name.
  */
 export type NetworkName =  "mainnet" | "testnet" | "devnet" | "localnet";
-
-/**
- * An object argument for `Transaction.moveCall()`.
- */
-export type ObjectArg = TransactionObjectInput | SuiObjectRef;
 
 /**
  * A Sui object display with common properties and arbitrary ones.

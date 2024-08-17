@@ -10,4 +10,4 @@ export * from "./misc.js";
 export * from "./rpcs.js";
 export * from "./transactions.js";
 export * from "./types.js";
-export * from "./url.js";
+export * from "./urls.js";
