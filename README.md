@@ -51,12 +51,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `fetchAllDynamicFields()` - Get all dynamic object fields owned by an object.
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
-- `isSuiObjectRef()` - Check if a given object conforms to the `SuiObjectRef` interface.
-- `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
-- `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
-- `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
-- `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
-- `objResToType()` - Validate a `SuiObjectResponse` and return its `.data.type`.
 
 ### Faucet
 
@@ -72,6 +66,15 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Keypairs
 
 - `pairFromSecretKey()` - Build a `Keypair` from a secret key string like `suiprivkey1...`.
+
+### Objects
+
+- `isSuiObjectRef()` - Check if a given object conforms to the `SuiObjectRef` interface.
+- `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
+- `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
+- `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
+- `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
+- `objResToType()` - Validate a `SuiObjectResponse` and return its `.data.type`.
 
 ### RPCs
 

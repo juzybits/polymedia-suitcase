@@ -8,6 +8,7 @@ export * from "./clients.js";
 export * from "./faucets.js";
 export * from "./keypairs.js";
 export * from "./misc.js";
+export * from "./objects.js";
 export * from "./rpcs.js";
 export * from "./transactions.js";
 export * from "./types.js";

@@ -10,7 +10,7 @@ export abstract class SuiClientBase
 {
     public readonly suiClient: SuiClient;
     public readonly signTransaction: SignTransaction;
-    public readonly txResponseOptions: SuiTransactionBlockResponseOptions;
+    protected readonly txResponseOptions: SuiTransactionBlockResponseOptions;
 
     /**
      * @param suiClient The client used to communicate with Sui.

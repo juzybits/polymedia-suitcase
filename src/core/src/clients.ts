@@ -2,13 +2,11 @@ import {
     DynamicFieldInfo,
     SuiClient,
     SuiExecutionResult,
-    SuiObjectRef,
-    SuiObjectResponse,
+    SuiObjectRef
 } from "@mysten/sui/client";
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
 import { removeAddressLeadingZeros } from "./addresses.js";
 import { sleep } from "./misc.js";
-import { ObjectDisplay } from "./types.js";
 
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the results.
@@ -110,123 +108,6 @@ export async function getSuiObjectRef(
         digest: resp.data.digest,
         version: resp.data.version,
     };
-}
-
-/**
- * Check if a given object conforms to the `SuiObjectRef` interface.
- */
-/* eslint-disable */
-export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
-    return obj
-        && typeof obj.objectId !== "undefined"
-        && typeof obj.version !== "undefined"
-        && typeof obj.digest !== "undefined";
-}
-/* eslint-enable */
-
-/**
- * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
- */
-export function objResToDisplay(
-    resp: SuiObjectResponse,
-): ObjectDisplay
-{
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (!resp.data?.display) {
-        throw Error(`response has no display: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (resp.data.display.error) {
-        throw Error(`display has error: ${JSON.stringify(resp, null, 2)}`);
-    }
-
-    const defaultDisplay: ObjectDisplay = {
-        name: null,
-        description: null,
-        link: null,
-        image_url: null,
-        thumbnail_url: null,
-        project_name: null,
-        project_url: null,
-        project_image_url: null,
-        creator: null,
-    };
-
-    return {
-        ...defaultDisplay,
-        ...resp.data.display.data,
-    };
-}
-
-/**
- * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
- */
-export function objResToFields(
-    resp: SuiObjectResponse,
-    typeRegex?: string,
-): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
-{
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (resp.data?.content?.dataType !== "moveObject") {
-        throw Error(`content missing: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (typeRegex && !new RegExp(typeRegex).test(resp.data.content.type)) {
-        throw Error(`wrong object type: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-}
-
-
-/**
- * Validate a `SuiObjectResponse` and return its `.data.objectId`.
- */
-export function objResToId(
-    objRes: SuiObjectResponse,
-): string {
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
-    }
-    if (!objRes.data) {
-        throw Error(`response has no data: ${JSON.stringify(objRes, null, 2)}`);
-    }
-    return objRes.data.objectId;
-}
-
-/**
- * Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
- */
-export function objResToRef(
-    resp: SuiObjectResponse,
-): SuiObjectRef {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (!resp.data) {
-        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return {
-        objectId: resp.data.objectId,
-        digest: resp.data.digest,
-        version: resp.data.version,
-    };
-}
-
-/**
- * Validate a `SuiObjectResponse` and return its `.data.type`.
- */
-export function objResToType(
-    resp: SuiObjectResponse,
-): string {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (!resp.data?.type) {
-        throw Error(`response has no type: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return resp.data.type;
 }
 
 /**
