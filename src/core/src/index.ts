@@ -1,3 +1,4 @@
+export * from "./SuiClientBase.js";
 export * from "./SuiEventFetcher.js";
 export * from "./SuiMultiClient.js";
 export * from "./addresses.js";
