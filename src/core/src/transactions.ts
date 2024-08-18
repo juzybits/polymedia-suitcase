@@ -1,4 +1,4 @@
-import { SuiObjectRef } from "@mysten/sui/client";
+import { SuiObjectRef, SuiTransactionBlockResponse } from "@mysten/sui/client";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
 import { isSuiObjectRef } from "./objects";
 
@@ -17,6 +17,28 @@ export function objectArg(
     return isSuiObjectRef(obj)
         ? tx.objectRef(obj)
         : tx.object(obj);
+}
+
+/**
+ * Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind
+ * and return its `.transaction.data`.
+ */
+export function txResToData(
+    txRes: SuiTransactionBlockResponse,
+)
+{
+    if (txRes.errors && txRes.errors.length > 0) {
+        throw Error(`response error: ${JSON.stringify(txRes, null, 2)}`);
+    }
+    if (txRes.transaction?.data.transaction.kind !== "ProgrammableTransaction") {
+        throw Error(`response has no data or is not a ProgrammableTransaction: ${JSON.stringify(txRes, null, 2)}`);
+    }
+    return {
+        sender: txRes.transaction.data.sender,
+        gasData: txRes.transaction.data.gasData,
+        inputs: txRes.transaction.data.transaction.inputs,
+        txs: txRes.transaction.data.transaction.transactions,
+    };
 }
 
 /**
