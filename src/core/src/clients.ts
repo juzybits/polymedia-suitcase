@@ -1,3 +1,4 @@
+import { bcs } from "@mysten/sui/bcs";
 import {
     DynamicFieldInfo,
     SuiClient,
@@ -15,7 +16,8 @@ export async function devInspectAndGetResults(
     suiClient: SuiClient,
     tx: Transaction,
     sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
-): Promise<SuiExecutionResult[]> {
+): Promise<SuiExecutionResult[]>
+{
     const resp = await suiClient.devInspectTransactionBlock({
         sender: sender,
         transactionBlock: tx,
@@ -30,6 +32,50 @@ export async function devInspectAndGetResults(
 }
 
 /**
+ * Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
+ * It only works with primitive values, `String`, and `vector<String>`.
+ * @returns An array with the deserialized return values of each transaction in the TransactionBlock.
+ */
+export async function devInspectAndGetReturnValues( // TODO: improve (see serializer.ts and ModuleFunction.tsx in polymedia-explorer)
+    suiClient: SuiClient,
+    tx: Transaction,
+    sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
+): Promise<unknown[][]>
+{
+    const results = await devInspectAndGetResults(suiClient, tx, sender);
+
+    // The values returned from each of the transactions in the TransactionBlock
+    const blockReturnValues: unknown[][] = [];
+    for (const txnResult of results)
+    {
+        if (!txnResult.returnValues?.length) {
+            throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
+        }
+        // The values returned from the transaction (a function can return multiple values)
+        const txnReturnValues: unknown[] = [];
+        for (const value of txnResult.returnValues)
+        {
+            const valueData = Uint8Array.from(value[0]);
+            const valueType = value[1];
+
+            let valueDeserialized: unknown;
+            if (valueType === "0x1::string::String") {
+                valueDeserialized = bcs.string().parse(valueData);
+            } else if (valueType === "vector<0x1::string::String>") {
+                valueDeserialized = bcs.vector(bcs.string()).parse(valueData);
+            } else {
+                // @ts-expect-error "Element implicitly has an 'any' type"
+                valueDeserialized = bcs[valueType]().parse(valueData);
+            }
+
+            txnReturnValues.push(valueDeserialized);
+        }
+        blockReturnValues.push(txnReturnValues);
+    }
+    return blockReturnValues;
+}
+
+/**
  * Get all dynamic object fields owned by an object.
  */
 export async function fetchAllDynamicFields(
@@ -37,7 +83,8 @@ export async function fetchAllDynamicFields(
     parentId: string,
     sleepBetweenRequests = 333, // milliseconds
     verbose = false,
-): Promise<DynamicFieldInfo[]> {
+): Promise<DynamicFieldInfo[]>
+{
     const allFieldsInfo: DynamicFieldInfo[] = [];
     let hasNextPage = true as boolean; // type cast so ESLint doesn't complain about 'no-unnecessary-condition'
     let cursor: string|null = null;
@@ -70,7 +117,8 @@ export async function getCoinOfValue(
     ownerAddress: string,
     coinType: string,
     coinValue: number|bigint,
-): Promise<TransactionResult> {
+): Promise<TransactionResult>
+{
     let coinOfValue: TransactionResult;
     coinType = removeAddressLeadingZeros(coinType);
     if (coinType === "0x2::sui::SUI") {
@@ -109,40 +157,3 @@ export async function getSuiObjectRef(
         version: resp.data.version,
     };
 }
-
-/**
- * Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
- * @returns An array with the deserialized return values of each transaction in the TransactionBlock.
- *
-export async function devInspectAndGetReturnValues( // TODO
-    suiClient: SuiClient,
-    tx: Transaction,
-    sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
-): Promise<unknown[][]> {
-    const results = await devInspectAndGetResults(suiClient, tx, sender);
-    // The values returned from each of the transactions in the TransactionBlock
-    const blockReturnValues: unknown[][] = [];
-    for (const txnResult of results) {
-        if (!txnResult.returnValues?.length) {
-            throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
-        }
-        // The values returned from the transaction (a function can return multiple values)
-        const txnReturnValues: unknown[] = [];
-        for (const value of txnResult.returnValues) {
-            const valueData = Uint8Array.from(value[0]);
-            const valueType = value[1];
-            let valueDeserialized: unknown;
-            if (valueType === "0x1::string::String") {
-                valueDeserialized = bcs.string().parse(valueData);
-            } else if (valueType === "vector<0x1::string::String>") {
-                valueDeserialized = bcs.vector(bcs.string()).parse(valueData);
-            } else {
-                valueDeserialized = bcs.de(valueType, valueData, "hex");
-            }
-            txnReturnValues.push(valueDeserialized);
-        }
-        blockReturnValues.push(txnReturnValues);
-    }
-    return blockReturnValues;
-}
-*/
