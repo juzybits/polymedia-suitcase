@@ -17,7 +17,7 @@ const currentDir = path.dirname(currentFile);
 const packagePaths = [
     path.resolve(currentDir, "../../core/package.json"),
     path.resolve(currentDir, "../../node/package.json"),
-    path.resolve(currentDir, "../../react/package.json")
+    path.resolve(currentDir, "../../react/package.json"),
 ];
 
 // Increment the version number from 0.0.[N] to 0.0.[N+1]
