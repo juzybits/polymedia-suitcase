@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { BaseNetworkName, switchNetwork } from "./network";
+import { BaseNetworkName, switchNetwork } from "./network.js";
 import { useClickOutside } from "./useClickOutside";
 
 /**

@@ -1,6 +1,6 @@
 import { SuiObjectRef, SuiTransactionBlockResponse } from "@mysten/sui/client";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
-import { isSuiObjectRef } from "./objects";
+import { isSuiObjectRef } from "./objects.js";
 
 /**
  * An object argument for `Transaction.moveCall()`.

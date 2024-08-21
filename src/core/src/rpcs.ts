@@ -1,5 +1,5 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
-import { NetworkName } from "./types";
+import { NetworkName } from "./types.js";
 
 /**
  * Default RPC endpoint URLs for SuiMultiClient.
