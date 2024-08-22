@@ -47,8 +47,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ### Client
 
-- `devInspectAndGetResults()` - Call `SuiClient.devInspectTransactionBlock()` and return the results.
-- `devInspectAndGetReturnValues()` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values. It only with for primitive values, `String`, and `vector<String>`.
+- `devInspectAndGetExecutionResults()` - Call `SuiClient.devInspectTransactionBlock()` and return the execution results.
+- `devInspectAndGetReturnValues()` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
 - `fetchAllDynamicFields()` - Get all dynamic object fields owned by an object.
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.

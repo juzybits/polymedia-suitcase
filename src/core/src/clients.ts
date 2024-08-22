@@ -1,4 +1,4 @@
-import { bcs } from "@mysten/sui/bcs";
+import { BcsType } from "@mysten/sui/bcs";
 import {
     DynamicFieldInfo,
     SuiClient,
@@ -10,9 +10,9 @@ import { removeAddressLeadingZeros } from "./addresses.js";
 import { sleep } from "./misc.js";
 
 /**
- * Call `SuiClient.devInspectTransactionBlock()` and return the results.
+ * Call `SuiClient.devInspectTransactionBlock()` and return the execution results.
  */
-export async function devInspectAndGetResults(
+export async function devInspectAndGetExecutionResults(
     suiClient: SuiClient,
     tx: Transaction,
     sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
@@ -23,56 +23,70 @@ export async function devInspectAndGetResults(
         transactionBlock: tx,
     });
     if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+        throw new Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
     if (!resp.results?.length) {
-        throw Error(`response has no results: ${JSON.stringify(resp, null, 2)}`);
+        throw new Error(`response has no results: ${JSON.stringify(resp, null, 2)}`);
     }
     return resp.results;
 }
 
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
- * It only works with primitive values, `String`, and `vector<String>`.
  * @returns An array with the deserialized return values of each transaction in the TransactionBlock.
+ *
+ * @example
+    ```
+    const blockReturnValues = await devInspectAndGetReturnValues(suiClient, tx, [
+        [
+            bcs.vector(bcs.Address),
+            bcs.Bool,
+            bcs.U64,
+        ],
+    ]);
+    ```
  */
-export async function devInspectAndGetReturnValues( // TODO: improve (see serializer.ts and ModuleFunction.tsx in polymedia-explorer)
+export async function devInspectAndGetReturnValues<T extends any[]>(
     suiClient: SuiClient,
     tx: Transaction,
+    blockParsers: BcsType<T[number]>[][],
     sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
-): Promise<unknown[][]>
+): Promise<T[]>
 {
-    const results = await devInspectAndGetResults(suiClient, tx, sender);
+    const blockResults = await devInspectAndGetExecutionResults(suiClient, tx, sender);
+
+    if (blockParsers.length !== blockResults.length) {
+        throw new Error(`You provided parsers for ${blockParsers.length} txs but the txblock contains ${blockResults.length} txs`);
+    }
 
     // The values returned from each of the transactions in the TransactionBlock
-    const blockReturnValues: unknown[][] = [];
-    for (const txnResult of results)
-    {
-        if (!txnResult.returnValues?.length) {
-            throw Error(`transaction didn't return any values: ${JSON.stringify(txnResult, null, 2)}`);
+    const blockReturns: T[] = [];
+
+    for (const [txIdx, txResult] of blockResults.entries()) {
+        if (!txResult.returnValues?.length) {
+            throw new Error(`Transaction ${txIdx} didn't return any values: ${JSON.stringify(txResult, null, 2)}`);
         }
+
+        const txParsers = blockParsers[txIdx];
+
+        if (txParsers.length !== txResult.returnValues.length) {
+            throw new Error(`You provided parsers for ${txParsers.length} return values but tx ${txIdx} contains ${txResult.returnValues.length} return values`);
+        }
+
         // The values returned from the transaction (a function can return multiple values)
-        const txnReturnValues: unknown[] = [];
-        for (const value of txnResult.returnValues)
-        {
+        const txReturns: T[number][] = [];
+
+        for (const [valueIdx, value] of txResult.returnValues.entries()) {
+            const parser = txParsers[valueIdx];
             const valueData = Uint8Array.from(value[0]);
-            const valueType = value[1];
-
-            let valueDeserialized: unknown;
-            if (valueType === "0x1::string::String") {
-                valueDeserialized = bcs.string().parse(valueData);
-            } else if (valueType === "vector<0x1::string::String>") {
-                valueDeserialized = bcs.vector(bcs.string()).parse(valueData);
-            } else {
-                // @ts-expect-error "Element implicitly has an 'any' type"
-                valueDeserialized = bcs[valueType]().parse(valueData);
-            }
-
-            txnReturnValues.push(valueDeserialized);
+            const valueDeserialized = parser.parse(valueData);
+            txReturns.push(valueDeserialized);
         }
-        blockReturnValues.push(txnReturnValues);
+
+        blockReturns.push(txReturns as T);
     }
-    return blockReturnValues;
+
+    return blockReturns;
 }
 
 /**
