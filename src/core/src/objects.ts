@@ -1,7 +1,9 @@
 import {
+    MoveStruct,
     ObjectOwner,
     SuiObjectRef,
-    SuiObjectResponse
+    SuiObjectResponse,
+    SuiParsedData
 } from "@mysten/sui/client";
 import { ObjectDisplay } from "./types.js";
 
@@ -51,6 +53,32 @@ export function isOwnerImmutable(
     owner: ObjectOwner,
 ): owner is "Immutable" {
     return owner === "Immutable";
+}
+
+/**
+ * Type guard to check if a `SuiParsedData` is a `moveObject`.
+ */
+export function isParsedDataObject(data: SuiParsedData): data is {
+    dataType: 'moveObject';
+    fields: MoveStruct;
+    hasPublicTransfer: boolean;
+    type: string;
+} {
+    return (
+        data.dataType === 'moveObject'
+    );
+}
+
+/**
+ * Type guard to check if a `SuiParsedData` is a `package`.
+ */
+export function isParsedDataPackage(data: SuiParsedData): data is {
+    dataType: 'package';
+    disassembled: {
+        [key: string]: unknown;
+    };
+} {
+    return data.dataType === 'package';
 }
 
 /**
