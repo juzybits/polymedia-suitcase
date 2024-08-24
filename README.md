@@ -78,8 +78,9 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isOwnerImmutable()` - Type guard to check if an object is immutable.
 - `isParsedDataObject()` - Type guard to check if a `SuiParsedData` is a `moveObject`.
 - `isParsedDataPackage()` - Type guard to check if a `SuiParsedData` is a `package`.
-- `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
+- `objResToContent()` - Validate a `SuiObjectResponse` and return its `.data.content`.
 - `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
+- `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
 - `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
 - `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
 - `objResToType()` - Validate a `SuiObjectResponse` and return its `.data.type`.

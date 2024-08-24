@@ -82,6 +82,37 @@ export function isParsedDataPackage(data: SuiParsedData): data is {
 }
 
 /**
+ * Validate a `SuiObjectResponse` and return its `.data.content`.
+ */
+export function objResToContent(
+    objRes: SuiObjectResponse,
+): SuiParsedData {
+    if (objRes.error) {
+        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    }
+    if (!objRes.data?.content) {
+        throw Error(`response has no content: ${JSON.stringify(objRes, null, 2)}`);
+    }
+    return objRes.data.content;
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
+ */
+export function objResToFields(
+    objRes: SuiObjectResponse,
+): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+{
+    if (objRes.error) {
+        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    }
+    if (objRes.data?.content?.dataType !== "moveObject") {
+        throw Error(`response content missing: ${JSON.stringify(objRes, null, 2)}`);
+    }
+    return objRes.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
+/**
  * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
  */
 export function objResToDisplay(
@@ -114,22 +145,6 @@ export function objResToDisplay(
         ...defaultDisplay,
         ...objRes.data.display.data,
     };
-}
-
-/**
- * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
- */
-export function objResToFields(
-    objRes: SuiObjectResponse,
-): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
-{
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
-    }
-    if (objRes.data?.content?.dataType !== "moveObject") {
-        throw Error(`response content missing: ${JSON.stringify(objRes, null, 2)}`);
-    }
-    return objRes.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 /**
