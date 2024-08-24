@@ -14,6 +14,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Addresses
 
 - `const NORMALIZED_ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
+- `const ZERO_ADDRESS` - The 0x0 address.
 - `generateRandomAddress()` - Generate a random Sui address (for development only).
 - `removeAddressLeadingZeros()` - Remove leading zeros from a Sui address (lossless).
 - `shortenAddress()` - Abbreviate a Sui address for display purposes (lossy).
