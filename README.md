@@ -90,6 +90,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ### Transactions
 
+- `isTxMoveCall()` - Type guard to check if a SuiTransaction is a MoveCall.
 - `type ObjectArg` - An object argument for `Transaction.moveCall()`.
 - `objectArg()` - Build an object argument for `Transaction.moveCall()`.
 - `txResToData()` - Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind and return its `.transaction.data`.

@@ -1,6 +1,13 @@
-import { SuiObjectRef, SuiTransactionBlockResponse } from "@mysten/sui/client";
+import { MoveCallSuiTransaction, SuiObjectRef, SuiTransaction, SuiTransactionBlockResponse } from "@mysten/sui/client";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
 import { isSuiObjectRef } from "./objects.js";
+
+/** Type guard to check if a SuiTransaction is a MoveCall. */
+export function isTxMoveCall(
+    tx: SuiTransaction,
+): tx is { MoveCall: MoveCallSuiTransaction } {
+    return "MoveCall" in tx;
+}
 
 /**
  * An object argument for `Transaction.moveCall()`.
