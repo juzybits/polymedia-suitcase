@@ -167,7 +167,7 @@ export function objResToRef(
 }
 
 /**
- * Validate a `SuiObjectResponse` and return its `.data.type`.
+ * Validate a `SuiObjectResponse` and return its `.data.content.type`.
  */
 export function objResToType(
     objRes: SuiObjectResponse,
@@ -175,8 +175,11 @@ export function objResToType(
     if (objRes.error) {
         throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
     }
-    if (!objRes.data?.type) {
-        throw Error(`response has no type: ${JSON.stringify(objRes, null, 2)}`);
+    if (!objRes.data?.content) {
+        throw Error(`response has no content: ${JSON.stringify(objRes, null, 2)}`);
     }
-    return objRes.data.type;
+    if (!isParsedDataObject(objRes.data.content)) {
+        throw Error(`response data is not a moveObject: ${JSON.stringify(objRes, null, 2)}`);
+    }
+    return objRes.data.content.type;
 }
