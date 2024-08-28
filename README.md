@@ -72,10 +72,10 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Objects
 
 - `isSuiObjectRef()` - Type guard to check if an object is a `SuiObjectRef`.
-- `isOwnerAddress()` - Type guard to check if an object is owned by a single address.
-- `isOwnerObject()` - Type guard to check if an object is owned by a single object.
-- `isOwnerShared()` - Type guard to check if an object can be used by any address.
-- `isOwnerImmutable()` - Type guard to check if an object is immutable.
+- `isOwnerAddress()` - Type guard to check if an `ObjectOwner` is `Address` (a single address).
+- `isOwnerObject()` - Type guard to check if an `ObjectOwner` is `Object` (a single object).
+- `isOwnerShared()` - Type guard to check if an `ObjectOwner` is `Shared` (can be used by any address).
+- `isOwnerImmutable()` - Type guard to check if an `ObjectOwner` is `Immutable`.
 - `isParsedDataObject()` - Type guard to check if a `SuiParsedData` is a `moveObject`.
 - `isParsedDataPackage()` - Type guard to check if a `SuiParsedData` is a `package`.
 - `objResToContent()` - Validate a `SuiObjectResponse` and return its `.data.content`.
@@ -93,7 +93,18 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ### Transactions
 
-- `isTxMoveCall()` - Type guard to check if a SuiTransaction is a MoveCall.
+- `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.
+- `isArgGasCoin()` - Type guard to check if a `SuiArgument` is a `GasCoin`.
+- `isArgInput()` - Type guard to check if a `SuiArgument` is an `Input`.
+- `isArgResult()` - Type guard to check if a `SuiArgument` is a `Result`.
+- `isArgNestedResult()` - Type guard to check if a `SuiArgument` is a `NestedResult`.
+- `isTxMakeMoveVec()` - Type guard to check if a `SuiTransaction` is a `MakeMoveVec` tx.
+- `isTxMergeCoins()` - Type guard to check if a `SuiTransaction` is a `MergeCoins` tx.
+- `isTxMoveCall()` - Type guard to check if a `SuiTransaction` is a `MoveCallSuiTransaction`.
+- `isTxPublish()` - Type guard to check if a `SuiTransaction` is a `Publish` tx.
+- `isTxSplitCoins()` - Type guard to check if a `SuiTransaction` is a `SplitCoins` tx.
+- `isTxTransferObjects()` - Type guard to check if a `SuiTransaction` is a `TransferObjects` tx.
+- `isTxUpgrade()` - Type guard to check if a `SuiTransaction` is an `Upgrade` tx.
 - `type ObjectArg` - An object argument for `Transaction.moveCall()`.
 - `objectArg()` - Build an object argument for `Transaction.moveCall()`.
 - `txResToData()` - Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind and return its `.transaction.data`.
