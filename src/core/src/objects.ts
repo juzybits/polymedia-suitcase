@@ -47,24 +47,22 @@ export function isOwnerImmutable(
 
 /** Type guard to check if a `SuiParsedData` is a `moveObject`. */
 export function isParsedDataObject(data: SuiParsedData): data is {
-    dataType: 'moveObject';
+    dataType: "moveObject";
     fields: MoveStruct;
     hasPublicTransfer: boolean;
     type: string;
 } {
     return (
-        data.dataType === 'moveObject'
+        data.dataType === "moveObject"
     );
 }
 
 /** Type guard to check if a `SuiParsedData` is a `package`. */
 export function isParsedDataPackage(data: SuiParsedData): data is {
-    dataType: 'package';
-    disassembled: {
-        [key: string]: unknown;
-    };
+    dataType: "package";
+    disassembled: Record<string, unknown>;
 } {
-    return data.dataType === 'package';
+    return data.dataType === "package";
 }
 
 /**

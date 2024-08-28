@@ -46,6 +46,7 @@ export async function devInspectAndGetExecutionResults(
     ]);
     ```
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function devInspectAndGetReturnValues<T extends any[]>(
     suiClient: SuiClient,
     tx: Transaction,

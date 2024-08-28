@@ -36,6 +36,7 @@ export default [
             "@typescript-eslint/no-namespace": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
             "@typescript-eslint/no-unnecessary-condition": "off",
+            "@typescript-eslint/no-unnecessary-type-parameters": "off",
             "@typescript-eslint/no-unused-expressions": [ "error", { allowShortCircuit: true, allowTernary: true } ],
             "@typescript-eslint/no-unused-vars": [ "error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" } ],
             "@typescript-eslint/prefer-nullish-coalescing": "off",
