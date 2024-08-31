@@ -7,7 +7,7 @@ import { Signer } from "@mysten/sui/cryptography";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { Transaction } from "@mysten/sui/transactions";
 import { fromB64 } from "@mysten/sui/utils";
-import { NetworkName, validateAndNormalizeSuiAddress } from "@polymedia/suitcase-core";
+import { NetworkName, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
 import { readJsonFile } from "./file.js";
 
 /**
@@ -15,7 +15,7 @@ import { readJsonFile } from "./file.js";
  */
 export function getActiveAddress(): string {
     const sender = execSync("sui client active-address", { encoding: "utf8" }).trim();
-    const address = validateAndNormalizeSuiAddress(sender);
+    const address = validateAndNormalizeAddress(sender);
     if (!address) {
         throw new Error("No active address was found");
     }

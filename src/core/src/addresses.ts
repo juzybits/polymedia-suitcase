@@ -57,7 +57,7 @@ export function shortenAddress(
 /**
  * Validate a Sui address and return its normalized form, or `null` if invalid.
  */
-export function validateAndNormalizeSuiAddress(
+export function validateAndNormalizeAddress(
     address: string,
 ): string | null {
     if (address.length === 0) {

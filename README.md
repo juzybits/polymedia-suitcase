@@ -18,7 +18,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `generateRandomAddress()` - Generate a random Sui address (for development only).
 - `removeAddressLeadingZeros()` - Remove leading zeros from a Sui address (lossless).
 - `shortenAddress()` - Abbreviate a Sui address for display purposes (lossy).
-- `validateAndNormalizeSuiAddress()` - Validate a Sui address and return its normalized form, or `null` if invalid.
+- `validateAndNormalizeAddress()` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
 ### APIs
 
