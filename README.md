@@ -80,6 +80,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isParsedDataPackage()` - Type guard to check if a `SuiParsedData` is a `package`.
 - `objResToContent()` - Validate a `SuiObjectResponse` and return its `.data.content`.
 - `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
+    - `newEmptyDisplay()` - Create an `ObjectDisplay` object with all fields set to `null`.
 - `objResToFields()` - Validate a `SuiObjectResponse` and return its `.data.content.fields`.
 - `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
 - `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.

@@ -97,6 +97,23 @@ export function objResToFields(
 }
 
 /**
+ * Create an `ObjectDisplay` object with all fields set to `null`.
+ */
+export function newEmptyDisplay(): ObjectDisplay {
+    return {
+        name: null,
+        description: null,
+        link: null,
+        image_url: null,
+        thumbnail_url: null,
+        project_name: null,
+        project_url: null,
+        project_image_url: null,
+        creator: null,
+    };
+}
+
+/**
  * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
  */
 export function objResToDisplay(
@@ -113,20 +130,8 @@ export function objResToDisplay(
         throw Error(`display has error: ${JSON.stringify(objRes, null, 2)}`);
     }
 
-    const defaultDisplay: ObjectDisplay = {
-        name: null,
-        description: null,
-        link: null,
-        image_url: null,
-        thumbnail_url: null,
-        project_name: null,
-        project_url: null,
-        project_image_url: null,
-        creator: null,
-    };
-
     return {
-        ...defaultDisplay,
+        ...newEmptyDisplay(),
         ...objRes.data.display.data,
     };
 }
