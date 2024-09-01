@@ -49,7 +49,7 @@ export function writeJsonFile(filename: string, contents: unknown): void {
 /**
  * Read a JSON file and parse its contents into an object.
  */
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+ 
 export function readJsonFile<T>(filename: string): T {
     const fileContent = fs.readFileSync(filename, "utf8");
     const jsonData = JSON.parse(fileContent) as T;

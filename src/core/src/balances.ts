@@ -111,7 +111,7 @@ export function formatBigInt(
     decimals: number,
     format: "standard"|"compact" = "standard"
 ): string {
-    const num = convertBigIntToNumber(big, decimals);
+    const num = convertBigIntToNumber(big, decimals); // eslint-disable-line @typescript-eslint/no-deprecated
     return formatNumber(num, format);
 }
 
