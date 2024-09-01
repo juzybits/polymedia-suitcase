@@ -39,12 +39,13 @@ export abstract class SuiClientBase
     public async executeTransaction(
         signedTx: SignatureWithBytes,
         waitForTx: boolean = true,
+        txResponseOptions: SuiTransactionBlockResponseOptions = this.txResponseOptions,
     ): Promise<SuiTransactionBlockResponse>
     {
         const resp = await this.suiClient.executeTransactionBlock({
             transactionBlock: signedTx.bytes,
             signature: signedTx.signature,
-            options: this.txResponseOptions,
+            options: txResponseOptions,
         });
 
         if (!waitForTx) {
@@ -53,7 +54,7 @@ export abstract class SuiClientBase
 
         return await this.suiClient.waitForTransaction({
             digest: resp.digest,
-            options: this.txResponseOptions,
+            options: txResponseOptions,
             timeout: this.waitForTxOptions.timeout,
             pollInterval: this.waitForTxOptions.pollInterval,
         });
@@ -62,9 +63,10 @@ export abstract class SuiClientBase
     public async signAndExecuteTransaction(
         tx: Transaction,
         waitForTx: boolean = true,
+        txResponseOptions: SuiTransactionBlockResponseOptions = this.txResponseOptions,
     ): Promise<SuiTransactionBlockResponse>
     {
         const signedTx = await this.signTransaction(tx);
-        return this.executeTransaction(signedTx, waitForTx);
+        return this.executeTransaction(signedTx, waitForTx, txResponseOptions);
     }
 }
