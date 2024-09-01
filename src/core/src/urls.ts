@@ -7,14 +7,21 @@
  */
 export type SuiExplorerItem = "address" | "object" | "package" | "txblock" | "coin";
 
+export type ExplorerUrlMaker = (
+    network: string,
+    kind: SuiExplorerItem,
+    addr: string,
+) => string;
+
 /**
  * Build an explorer.polymedia.app URL.
  */
-export function makePolymediaUrl(
+export const makePolymediaUrl: ExplorerUrlMaker = (
     network: string,
     kind: SuiExplorerItem,
     address: string,
-): string {
+): string =>
+{
     const baseUrl = isLocalnet(network)
         ? "http://localhost:3000"
         : "https://explorer.polymedia.app";
@@ -32,16 +39,17 @@ export function makePolymediaUrl(
         url += `?network=${networkLabel}`;
     }
     return url;
-}
+};
 
 /**
  * Build a suiscan.xyz URL.
  */
-export function makeSuiscanUrl(
+export const makeSuiscanUrl: ExplorerUrlMaker = (
     network: string,
     kind: SuiExplorerItem,
     address: string,
-): string {
+): string =>
+{
     if (isLocalnet(network)) {
         return makePolymediaUrl(network, kind, address);
     }
@@ -60,16 +68,17 @@ export function makeSuiscanUrl(
 
     const url = `${baseUrl}/${path}/${address}`;
     return url;
-}
+};
 
 /**
  * Build a suivision.xyz URL.
  */
-export function makeSuivisionUrl(
+export const makeSuivisionUrl: ExplorerUrlMaker = (
     network: string,
     kind: SuiExplorerItem,
     address: string,
-): string {
+): string =>
+{
     if (isLocalnet(network)) {
         return makePolymediaUrl(network, kind, address);
     }
@@ -86,7 +95,7 @@ export function makeSuivisionUrl(
 
     const url = `${baseUrl}/${path}/${address}`;
     return url;
-}
+};
 
 function isLocalnet(network: string): boolean {
     return network === "localnet" || network == "http://127.0.0.1:9000";

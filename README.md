@@ -169,6 +169,7 @@ The `suitcase-react` package provides components for React web apps.
 ### Components
 
 - `LinkExternal` - An external link.
+- `LinkToExplorer` - A link to a Sui explorer (Polymedia, Suiscan, or SuiVision).
 - `LinkToPolymedia` - A link to explorer.polymedia.app.
 - `LinkToSuiscan` - A link to suiscan.xyz.
 - `LinkToSuivision` - A link to suivision.xyz.

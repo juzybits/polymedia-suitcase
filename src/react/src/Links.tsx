@@ -1,4 +1,5 @@
 import {
+    ExplorerUrlMaker,
     NetworkName,
     SuiExplorerItem,
     makePolymediaUrl,
@@ -35,7 +36,7 @@ export const LinkExternal: React.FC<{
     </a>;
 };
 
-type ExplorerLinkProps = {
+export type ExplorerLinkProps = {
     network: NetworkName;
     kind: SuiExplorerItem;
     addr: string;
@@ -43,12 +44,6 @@ type ExplorerLinkProps = {
     id?: string;
     children?: React.ReactNode;
 };
-
-type ExplorerUrlMaker = (
-    network: NetworkName,
-    kind: SuiExplorerItem,
-    addr: string,
-) => string;
 
 /**
  * Higher-Order Component to create external links for explorers.
@@ -76,3 +71,25 @@ export const LinkToSuiscan = createExplorerLinkComponent(makeSuiscanUrl);
  * A link to suivision.xyz.
  */
 export const LinkToSuivision = createExplorerLinkComponent(makeSuivisionUrl);
+
+/**
+ * A link to a Sui explorer (Polymedia, Suiscan, or SuiVision).
+ */
+export const LinkToExplorer: React.FC<ExplorerLinkProps & {
+    explorer: "polymedia" | "suiscan" | "suivision";
+}> = ({ explorer, network, kind, addr, className, id, children }) =>
+{
+    let makeUrl: ExplorerUrlMaker;
+    if (explorer === "polymedia") {
+        makeUrl = makePolymediaUrl;
+    } else if (explorer === "suiscan") {
+        makeUrl = makeSuiscanUrl;
+    } else if (explorer === "suivision") {
+        makeUrl = makeSuivisionUrl;
+    } else {
+        throw new Error(`Unknown explorer: ${explorer}`);
+    }
+    return <LinkExternal href={makeUrl(network, kind, addr)} className={className} id={id}>
+        {children || shortenAddress(addr)}
+    </LinkExternal>;
+};
