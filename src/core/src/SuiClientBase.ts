@@ -16,7 +16,7 @@ export abstract class SuiClientBase
     public readonly suiClient: SuiClient;
     public readonly signTransaction: SignTransaction;
     protected readonly txResponseOptions: SuiTransactionBlockResponseOptions;
-    protected readonly waitForTxOptions: WaitForTxOptions;
+    protected readonly waitForTxOptions: WaitForTxOptions | false;
 
     /**
      * @param suiClient The client used to communicate with Sui.
@@ -38,7 +38,7 @@ export abstract class SuiClientBase
 
     public async executeTransaction(
         signedTx: SignatureWithBytes,
-        waitForTx: boolean = true,
+        waitForTxOptions: WaitForTxOptions | false = this.waitForTxOptions,
         txResponseOptions: SuiTransactionBlockResponseOptions = this.txResponseOptions,
     ): Promise<SuiTransactionBlockResponse>
     {
@@ -48,25 +48,25 @@ export abstract class SuiClientBase
             options: txResponseOptions,
         });
 
-        if (!waitForTx) {
+        if (!waitForTxOptions) {
             return resp;
         }
 
         return await this.suiClient.waitForTransaction({
             digest: resp.digest,
             options: txResponseOptions,
-            timeout: this.waitForTxOptions.timeout,
-            pollInterval: this.waitForTxOptions.pollInterval,
+            timeout: waitForTxOptions.timeout,
+            pollInterval: waitForTxOptions.pollInterval,
         });
     }
 
     public async signAndExecuteTransaction(
         tx: Transaction,
-        waitForTx: boolean = true,
+        waitForTxOptions: WaitForTxOptions | false = this.waitForTxOptions,
         txResponseOptions: SuiTransactionBlockResponseOptions = this.txResponseOptions,
     ): Promise<SuiTransactionBlockResponse>
     {
         const signedTx = await this.signTransaction(tx);
-        return this.executeTransaction(signedTx, waitForTx, txResponseOptions);
+        return this.executeTransaction(signedTx, waitForTxOptions, txResponseOptions);
     }
 }
