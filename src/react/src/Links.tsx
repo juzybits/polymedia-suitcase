@@ -8,41 +8,67 @@ import {
     shortenAddress,
 } from "@polymedia/suitcase-core";
 
-/**
- * An external link like:
- * `<a target='_blank' rel='noopener noreferrer nofollow' href={href}>{text}</a>`
- */
-export const LinkExternal: React.FC<{
-    href: string;
-    children: React.ReactNode;
-    follow?: boolean;
-    className?: string;
-    id?: string;
-}> = ({
-    href,
-    children,
-    follow = true,
-    className,
-    id,
-}) => {
-    return <a
-        target="_blank"
-        rel={`noopener noreferrer ${follow ? "" : "nofollow"}`}
-        href={href}
-        className={className}
-        id={id}
-    >
-        {children}
-    </a>;
-};
+// === types ===
+
+export type ExplorerName = "polymedia" | "suiscan" | "suivision";
 
 export type ExplorerLinkProps = {
     network: NetworkName;
     kind: SuiExplorerItem;
     addr: string;
-    className?: string;
-    id?: string;
+    html?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
     children?: React.ReactNode;
+};
+
+// === components ===
+
+/**
+ * An external link like:
+ * `<a target='_blank' rel='noopener noreferrer nofollow' href={href}>{text}</a>`
+ */
+export const LinkExternal: React.FC<{
+    follow?: boolean;
+    html?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
+    children: React.ReactNode;
+}> = ({
+    follow = true,
+    html = {},
+    children,
+}) => {
+    html.target = html.target ?? "_blank";
+    html.rel = html.rel ?? `noopener noreferrer ${follow ? "" : "nofollow"}`;
+    return <a {...html} >
+        {children}
+    </a>;
+};
+
+/**
+ * A link to a Sui explorer (Polymedia, Suiscan, or SuiVision).
+ */
+export const LinkToExplorer: React.FC<ExplorerLinkProps & {
+    explorer: ExplorerName;
+}> = ({
+    explorer,
+    network,
+    kind,
+    addr,
+    html = {},
+    children = null,
+}) => {
+    let makeUrl: ExplorerUrlMaker;
+    if (explorer === "polymedia") {
+        makeUrl = makePolymediaUrl;
+    } else if (explorer === "suiscan") {
+        makeUrl = makeSuiscanUrl;
+    } else if (explorer === "suivision") {
+        makeUrl = makeSuivisionUrl;
+    } else {
+        throw new Error(`Unknown explorer: ${explorer}`);
+    }
+    html.href = makeUrl(network, kind, addr);
+    return <LinkExternal html={html}>
+        {children || shortenAddress(addr)}
+    </LinkExternal>;
 };
 
 /**
@@ -51,11 +77,21 @@ export type ExplorerLinkProps = {
 const createExplorerLinkComponent = (
     makeUrl: ExplorerUrlMaker,
 ): React.FC<ExplorerLinkProps> =>
-    ({ network, kind, addr, className, id, children }) => (
-        <LinkExternal href={makeUrl(network, kind, addr)} className={className} id={id}>
+{
+    return ({
+        network,
+        kind,
+        addr,
+        html = {},
+        children = null,
+    }: ExplorerLinkProps) =>
+    {
+        html.href = makeUrl(network, kind, addr);
+        return <LinkExternal html={html}>
             {children || shortenAddress(addr)}
-        </LinkExternal>
-    );
+        </LinkExternal>;
+    };
+};
 
 /**
  * A link to explorer.polymedia.app.
@@ -71,25 +107,3 @@ export const LinkToSuiscan = createExplorerLinkComponent(makeSuiscanUrl);
  * A link to suivision.xyz.
  */
 export const LinkToSuivision = createExplorerLinkComponent(makeSuivisionUrl);
-
-/**
- * A link to a Sui explorer (Polymedia, Suiscan, or SuiVision).
- */
-export const LinkToExplorer: React.FC<ExplorerLinkProps & {
-    explorer: "polymedia" | "suiscan" | "suivision";
-}> = ({ explorer, network, kind, addr, className, id, children }) =>
-{
-    let makeUrl: ExplorerUrlMaker;
-    if (explorer === "polymedia") {
-        makeUrl = makePolymediaUrl;
-    } else if (explorer === "suiscan") {
-        makeUrl = makeSuiscanUrl;
-    } else if (explorer === "suivision") {
-        makeUrl = makeSuivisionUrl;
-    } else {
-        throw new Error(`Unknown explorer: ${explorer}`);
-    }
-    return <LinkExternal href={makeUrl(network, kind, addr)} className={className} id={id}>
-        {children || shortenAddress(addr)}
-    </LinkExternal>;
-};
