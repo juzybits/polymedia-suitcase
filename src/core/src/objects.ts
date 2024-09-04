@@ -1,7 +1,6 @@
 import {
     MoveStruct,
-    ObjectOwner,
-    SuiObjectRef,
+    ObjectOwner, SuiObjectRef,
     SuiObjectResponse,
     SuiParsedData
 } from "@mysten/sui/client";

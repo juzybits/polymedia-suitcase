@@ -2,12 +2,36 @@ import {
     MoveCallSuiTransaction,
     SuiArgument,
     SuiCallArg,
+    SuiObjectChange,
     SuiObjectRef,
     SuiTransaction,
     SuiTransactionBlockResponse,
 } from "@mysten/sui/client";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
 import { isSuiObjectRef } from "./objects.js";
+
+/**
+ * An object argument for `Transaction.moveCall()`.
+ */
+export type ObjectArg = TransactionObjectInput | SuiObjectRef;
+
+/** A `SuiObjectChange` with `type: "published"`. */
+export type SuiObjectChangePublished = Extract<SuiObjectChange, { type: 'published' }>;
+
+/** A `SuiObjectChange` with `type: "transferred"`. */
+export type SuiObjectChangeTransferred = Extract<SuiObjectChange, { type: 'transferred' }>;
+
+/** A `SuiObjectChange` with `type: "mutated"`. */
+export type SuiObjectChangeMutated = Extract<SuiObjectChange, { type: 'mutated' }>;
+
+/** A `SuiObjectChange` with `type: "deleted"`. */
+export type SuiObjectChangeDeleted = Extract<SuiObjectChange, { type: 'deleted' }>;
+
+/** A `SuiObjectChange` with `type: "wrapped"`. */
+export type SuiObjectChangeWrapped = Extract<SuiObjectChange, { type: 'wrapped' }>;
+
+/** A `SuiObjectChange` with `type: "created"`. */
+export type SuiObjectChangeCreated = Extract<SuiObjectChange, { type: 'created' }>;
 
 /**
  * Get the value of a `SuiCallArg` (transaction input).
@@ -93,11 +117,6 @@ export function isTxUpgrade(
 ): tx is { Upgrade: [string[], string, SuiArgument] } {
     return "Upgrade" in tx;
 }
-
-/**
- * An object argument for `Transaction.moveCall()`.
- */
-export type ObjectArg = TransactionObjectInput | SuiObjectRef;
 
 /**
  * Build an object argument for `Transaction.moveCall()`.

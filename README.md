@@ -95,6 +95,13 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Transactions
 
 - `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.
+- `type ObjectArg` - An object argument for `Transaction.moveCall()`.
+- `type SuiObjectChangePublished` - A `SuiObjectChange` with `type: 'published'`.
+- `type SuiObjectChangeTransferred` - A `SuiObjectChange` with `type: 'transferred'`.
+- `type SuiObjectChangeMutated` - A `SuiObjectChange` with `type: "mutated"`.
+- `type SuiObjectChangeDeleted` - A `SuiObjectChange` with `type: "deleted"`.
+- `type SuiObjectChangeWrapped` - A `SuiObjectChange` with `type: "wrapped"`.
+- `type SuiObjectChangeCreated` - A `SuiObjectChange` with `type: "created"`.
 - `isArgGasCoin()` - Type guard to check if a `SuiArgument` is a `GasCoin`.
 - `isArgInput()` - Type guard to check if a `SuiArgument` is an `Input`.
 - `isArgResult()` - Type guard to check if a `SuiArgument` is a `Result`.
@@ -106,7 +113,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isTxSplitCoins()` - Type guard to check if a `SuiTransaction` is a `SplitCoins` tx.
 - `isTxTransferObjects()` - Type guard to check if a `SuiTransaction` is a `TransferObjects` tx.
 - `isTxUpgrade()` - Type guard to check if a `SuiTransaction` is an `Upgrade` tx.
-- `type ObjectArg` - An object argument for `Transaction.moveCall()`.
 - `objectArg()` - Build an object argument for `Transaction.moveCall()`.
 - `txResToData()` - Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind and return its `.transaction.data`.
 - `TransferModule` - Build transactions for the `sui::transfer` module.
