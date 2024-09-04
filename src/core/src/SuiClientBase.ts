@@ -27,7 +27,7 @@ export abstract class SuiClientBase
     constructor(
         suiClient: SuiClient,
         signTransaction: SignTransaction,
-        txResponseOptions: SuiTransactionBlockResponseOptions = { showEffects: true },
+        txResponseOptions: SuiTransactionBlockResponseOptions = { showEffects: true, showObjectChanges: true },
         waitForTxOptions: WaitForTxOptions = { timeout: 60_000, pollInterval: 333 },
     ) {
         this.suiClient = suiClient;
