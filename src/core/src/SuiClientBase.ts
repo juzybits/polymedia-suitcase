@@ -1,4 +1,4 @@
-import { SuiClient, SuiObjectResponse, SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
+import { QueryTransactionBlocksParams, SuiClient, SuiObjectResponse, SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
 import { SignatureWithBytes } from "@mysten/sui/cryptography";
 import { Transaction } from "@mysten/sui/transactions";
 import { chunkArray } from "./misc.js";
@@ -49,7 +49,7 @@ export abstract class SuiClientBase
     // === data fetching ===
 
     /**
-     * Fetch and parse objects from the Sui network.
+     * Fetch and parse objects from the RPC and cache them.
      * @param objectIds The IDs of the objects to fetch.
      * @param cache The cache to use (if any). Keys are object IDs and values are the parsed objects.
      * @param fetchFn A function that fetches objects from the Sui network.
@@ -100,6 +100,26 @@ export abstract class SuiClientBase
                 console.warn(`[fetchAndParseObjects] Failed to fetch objects: ${result.reason}`);
             }
         }
+
+        return results;
+    }
+
+    /**
+     * Fetch and parse transactions from the RPC.
+     */
+    public async fetchAndParseTxs<T>(
+        parseFn: (txRes: SuiTransactionBlockResponse) => T | null,
+        query: QueryTransactionBlocksParams,
+    ) {
+        const pagTxRes = await this.suiClient.queryTransactionBlocks(query);
+
+        const results = {
+            cursor: pagTxRes.nextCursor,
+            hasNextPage: pagTxRes.hasNextPage,
+            data: pagTxRes.data
+                .map(txRes => parseFn(txRes))
+                .filter(result => result !== null),
+        };
 
         return results;
     }

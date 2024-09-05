@@ -34,7 +34,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ### Classes
 
 - `class SuiClientBase` - Abstract class to sign and execute Sui transactions.
-    - `fetchAndParseObjects()` - Fetch and parse objects from the Sui network and cache them.
+    - `fetchAndParseObjects()` - Fetch and parse objects from the RPC and cache them.
+    - `fetchAndParseTxs()` - Fetch and parse transactions from the RPC.
     - `signTransaction()` - Sign a transaction.
     - `executeTransaction()` - Execute a transaction.
     - `signAndExecuteTransaction()` - Sign and execute a transaction.
