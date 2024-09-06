@@ -1,68 +1,10 @@
 import {
-    MoveStruct,
-    ObjectOwner, SuiObjectRef,
+    SuiObjectRef,
     SuiObjectResponse,
     SuiParsedData
 } from "@mysten/sui/client";
+import { isParsedDataObject } from "./guards.js";
 import { ObjectDisplay } from "./types.js";
-
-/** Type guard to check if an object is a `SuiObjectRef`. */
-/* eslint-disable */
-export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
-    return obj
-        && typeof obj.objectId !== "undefined"
-        && typeof obj.version !== "undefined"
-        && typeof obj.digest !== "undefined";
-}
-/* eslint-enable */
-
-/** Type guard to check if an `ObjectOwner` is `Address` (a single address). */
-export function isOwnerAddress(
-    owner: ObjectOwner,
-): owner is { AddressOwner: string } {
-    return typeof owner === "object" && "AddressOwner" in owner;
-}
-
-/** Type guard to check if an `ObjectOwner` is `Object` (a single object). */
-export function isOwnerObject(
-    owner: ObjectOwner,
-): owner is { ObjectOwner: string } {
-    return typeof owner === "object" && "ObjectOwner" in owner;
-}
-
-/** Type guard to check if an `ObjectOwner` is `Shared` (can be used by any address). */
-export function isOwnerShared(
-    owner: ObjectOwner,
-): owner is { Shared: { initial_shared_version: string } } {
-    return typeof owner === "object" && "Shared" in owner;
-}
-
-/** Type guard to check if an `ObjectOwner` is `Immutable`. */
-export function isOwnerImmutable(
-    owner: ObjectOwner,
-): owner is "Immutable" {
-    return owner === "Immutable";
-}
-
-/** Type guard to check if a `SuiParsedData` is a `moveObject`. */
-export function isParsedDataObject(data: SuiParsedData): data is {
-    dataType: "moveObject";
-    fields: MoveStruct;
-    hasPublicTransfer: boolean;
-    type: string;
-} {
-    return (
-        data.dataType === "moveObject"
-    );
-}
-
-/** Type guard to check if a `SuiParsedData` is a `package`. */
-export function isParsedDataPackage(data: SuiParsedData): data is {
-    dataType: "package";
-    disassembled: Record<string, unknown>;
-} {
-    return data.dataType === "package";
-}
 
 /**
  * Validate a `SuiObjectResponse` and return its `.data.content`.

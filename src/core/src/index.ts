@@ -6,6 +6,7 @@ export * from "./apis.js";
 export * from "./balances.js";
 export * from "./clients.js";
 export * from "./faucets.js";
+export * from "./guards.js";
 export * from "./keypairs.js";
 export * from "./misc.js";
 export * from "./objects.js";

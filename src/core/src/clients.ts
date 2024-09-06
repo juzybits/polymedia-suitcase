@@ -23,10 +23,10 @@ export async function devInspectAndGetExecutionResults(
         transactionBlock: tx,
     });
     if (resp.error) {
-        throw new Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+        throw new Error(`Response error: ${JSON.stringify(resp, null, 2)}`);
     }
     if (!resp.results?.length) {
-        throw new Error(`response has no results: ${JSON.stringify(resp, null, 2)}`);
+        throw new Error(`Response has no results: ${JSON.stringify(resp, null, 2)}`);
     }
     return resp.results;
 }

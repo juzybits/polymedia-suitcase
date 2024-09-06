@@ -1,37 +1,13 @@
 import {
-    MoveCallSuiTransaction,
-    SuiArgument,
-    SuiCallArg,
-    SuiObjectChange,
-    SuiObjectRef,
-    SuiTransaction,
-    SuiTransactionBlockResponse,
+    SuiCallArg, SuiObjectRef, SuiTransactionBlockResponse
 } from "@mysten/sui/client";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
-import { isSuiObjectRef } from "./objects.js";
+import { isSuiObjectRef } from "./guards";
 
 /**
  * An object argument for `Transaction.moveCall()`.
  */
 export type ObjectArg = TransactionObjectInput | SuiObjectRef;
-
-/** A `SuiObjectChange` with `type: "published"`. */
-export type SuiObjectChangePublished = Extract<SuiObjectChange, { type: 'published' }>;
-
-/** A `SuiObjectChange` with `type: "transferred"`. */
-export type SuiObjectChangeTransferred = Extract<SuiObjectChange, { type: 'transferred' }>;
-
-/** A `SuiObjectChange` with `type: "mutated"`. */
-export type SuiObjectChangeMutated = Extract<SuiObjectChange, { type: 'mutated' }>;
-
-/** A `SuiObjectChange` with `type: "deleted"`. */
-export type SuiObjectChangeDeleted = Extract<SuiObjectChange, { type: 'deleted' }>;
-
-/** A `SuiObjectChange` with `type: "wrapped"`. */
-export type SuiObjectChangeWrapped = Extract<SuiObjectChange, { type: 'wrapped' }>;
-
-/** A `SuiObjectChange` with `type: "created"`. */
-export type SuiObjectChangeCreated = Extract<SuiObjectChange, { type: 'created' }>;
 
 /**
  * Get the value of a `SuiCallArg` (transaction input).
@@ -43,79 +19,6 @@ export function getArgVal<T>(arg: SuiCallArg): T {
         return arg.value as T;
     }
     return arg.objectId as T;
-}
-
-// === type guards for SuiArgument ===
-
-/** Type guard to check if a `SuiArgument` is a `GasCoin`. */
-export function isArgGasCoin(arg: SuiArgument): arg is "GasCoin" {
-    return arg === "GasCoin";
-}
-
-/** Type guard to check if a `SuiArgument` is an `Input`. */
-export function isArgInput(arg: SuiArgument): arg is { Input: number } {
-    return typeof arg === "object" && "Input" in arg;
-}
-
-/** Type guard to check if a `SuiArgument` is a `Result`. */
-export function isArgResult(arg: SuiArgument): arg is { Result: number } {
-    return typeof arg === "object" && "Result" in arg;
-}
-
-/** Type guard to check if a `SuiArgument` is a `NestedResult`. */
-export function isArgNestedResult(arg: SuiArgument): arg is { NestedResult: [number, number] } {
-    return typeof arg === "object" && "NestedResult" in arg;
-}
-
-// === type guards for SuiTransaction ===
-
-/** Type guard to check if a `SuiTransaction` is a `MakeMoveVec` tx. */
-export function isTxMakeMoveVec(
-    tx: SuiTransaction,
-): tx is { MakeMoveVec: [string | null, SuiArgument[]] } {
-    return "MakeMoveVec" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `MergeCoins` tx. */
-export function isTxMergeCoins(
-    tx: SuiTransaction,
-): tx is { MergeCoins: [SuiArgument, SuiArgument[]] } {
-    return "MergeCoins" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `MoveCallSuiTransaction`. */
-export function isTxMoveCall(
-    tx: SuiTransaction,
-): tx is { MoveCall: MoveCallSuiTransaction } {
-    return "MoveCall" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `Publish` tx. */
-export function isTxPublish(
-    tx: SuiTransaction,
-): tx is { Publish: string[] } {
-    return "Publish" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `SplitCoins` tx. */
-export function isTxSplitCoins(
-    tx: SuiTransaction,
-): tx is { SplitCoins: [SuiArgument, SuiArgument[]] } {
-    return "SplitCoins" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `TransferObjects` tx. */
-export function isTxTransferObjects(
-    tx: SuiTransaction,
-): tx is { TransferObjects: [SuiArgument[], SuiArgument] } {
-    return "TransferObjects" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is an `Upgrade` tx. */
-export function isTxUpgrade(
-    tx: SuiTransaction,
-): tx is { Upgrade: [string[], string, SuiArgument] } {
-    return "Upgrade" in tx;
 }
 
 /**
@@ -131,30 +34,7 @@ export function objectArg(
 }
 
 /**
- * Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind
- * and return its `.transaction.data`.
- */
-export function txResToData(
-    txRes: SuiTransactionBlockResponse,
-)
-{
-    if (txRes.errors && txRes.errors.length > 0) {
-        throw Error(`response error: ${JSON.stringify(txRes, null, 2)}`);
-    }
-    if (txRes.transaction?.data.transaction.kind !== "ProgrammableTransaction") {
-        throw Error(`response has no data or is not a ProgrammableTransaction: ${JSON.stringify(txRes, null, 2)}`);
-    }
-    return {
-        sender: txRes.transaction.data.sender,
-        gasData: txRes.transaction.data.gasData,
-        inputs: txRes.transaction.data.transaction.inputs,
-        txs: txRes.transaction.data.transaction.transactions,
-    };
-}
-
-/**
- * Parse a Move abort string (from `SuiTransactionBlockResponse.effects.status.error`)
- * into its different parts.
+ * Parse a Move abort string (from `tx.effects.status.error`) into its different parts.
  *
  * Based on `sui/crates/sui/src/clever_error_rendering.rs`.
  *
@@ -178,12 +58,34 @@ export function parseTxError(
     }
     const cleanString = (s: string) => s.replace(/\\/g, "").replace(/"/g, "");
     return {
-        packageId: match[1],
+        packageId: "0x" + match[1],
         module: cleanString(match[2]),
         instruction: parseInt(match[3]),
         function: cleanString(match[4]),
         code: parseInt(match[5]),
         command: parseInt(match[6]),
+    };
+}
+
+/**
+ * Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind
+ * and return its `.transaction.data`.
+ */
+export function txResToData(
+    txRes: SuiTransactionBlockResponse,
+)
+{
+    if (txRes.errors && txRes.errors.length > 0) {
+        throw Error(`response error: ${JSON.stringify(txRes, null, 2)}`);
+    }
+    if (txRes.transaction?.data.transaction.kind !== "ProgrammableTransaction") {
+        throw Error(`response has no data or is not a ProgrammableTransaction: ${JSON.stringify(txRes, null, 2)}`);
+    }
+    return {
+        sender: txRes.transaction.data.sender,
+        gasData: txRes.transaction.data.gasData,
+        inputs: txRes.transaction.data.transaction.inputs,
+        txs: txRes.transaction.data.transaction.transactions,
     };
 }
 
