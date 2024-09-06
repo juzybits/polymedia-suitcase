@@ -11,7 +11,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - Installation: `pnpm add @polymedia/suitcase-core`
 - Source code: [src/core](./src/core)
 
-### Addresses
+## Addresses
 
 - `const NORMALIZED_ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
 - `const ZERO_ADDRESS` - The 0x0 address.
@@ -20,18 +20,18 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `shortenAddress()` - Abbreviate a Sui address for display purposes (lossy).
 - `validateAndNormalizeAddress()` - Validate a Sui address and return its normalized form, or `null` if invalid.
 
-### APIs
+## APIs
 
 - `apiRequestIndexer()` - Make a request to the Indexer.xyz API (NFTs).
 
-### Balances
+## Balances
 
 - `balanceToString()` - Convert a bigint to a string, scaled down to the specified decimals.
 - `stringToBalance()` - Convert a string to a bigint, scaled up to the specified decimals.
 - `formatBigInt()` - Format a bigint into a readable string, scaled down to the specified decimals.
 - `formatNumber()` - Format a number into a readable string.
 
-### Classes
+## Classes
 
 - `class SuiClientBase` - Abstract class to sign and execute Sui transactions.
     - `fetchAndParseObjects()` - Fetch and parse objects from the RPC and cache them.
@@ -48,7 +48,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
     - `executeInBatches()` - Execute `SuiClient` RPC operations in parallel using multiple endpoints.
     - `testEndpoints()` - Test the latency of various Sui RPC endpoints.
 
-### Client
+## Client
 
 - `devInspectAndGetExecutionResults()` - Call `SuiClient.devInspectTransactionBlock()` and return the execution results.
 - `devInspectAndGetReturnValues()` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
@@ -56,22 +56,22 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
 
-### Faucet
+## Faucet
 
 - `requestSuiFromFaucet()` - Get SUI from the faucet on localnet/devnet/testnet.
 
-### Misc
+## Misc
 
 - `chunkArray()` - Split an array into multiple chunks of a certain size.
 - `chunkString()` - Split a string into multiple chunks of a certain size.
 - `makeRanges()` - Generate an array of ranges of a certain size between two numbers.
 - `sleep()` - Wait for a number of milliseconds.
 
-### Keypairs
+## Keypairs
 
 - `pairFromSecretKey()` - Build a `Keypair` from a secret key string like `suiprivkey1...`.
 
-### Objects
+## Objects
 
 - `objResToContent()` - Validate a `SuiObjectResponse` and return its `.data.content`.
 - `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
@@ -81,13 +81,13 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
 - `objResToType()` - Validate a `SuiObjectResponse` and return its `.data.type`.
 
-### RPCs
+## RPCs
 
 - `const RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.
 - `measureRpcLatency()` - Measure Sui RPC latency by making requests to various endpoints.
 - `newLowLatencySuiClient()` - Instantiate SuiClient using the RPC endpoint with the lowest latency.
 
-### Transactions
+## Transactions
 
 - `type ObjectArg` - An object argument for `Transaction.moveCall()`.
 - `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.
@@ -99,21 +99,21 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
     - `public_share_object()`
     - `public_transfer()`
 
-### Type guards
+## Type guards
 
-#### ObjectOwner
+###  ObjectOwner
 - `isOwnerAddress()` - Type guard to check if an `ObjectOwner` is `Address` (a single address).
 - `isOwnerImmutable()` - Type guard to check if an `ObjectOwner` is `Immutable`.
 - `isOwnerObject()` - Type guard to check if an `ObjectOwner` is `Object` (a single object).
 - `isOwnerShared()` - Type guard to check if an `ObjectOwner` is `Shared` (can be used by any address).
 
-#### SuiArgument
+###  SuiArgument
 - `isArgGasCoin()` - Type guard to check if a `SuiArgument` is a `GasCoin`.
 - `isArgInput()` - Type guard to check if a `SuiArgument` is an `Input`.
 - `isArgNestedResult()` - Type guard to check if a `SuiArgument` is a `NestedResult`.
 - `isArgResult()` - Type guard to check if a `SuiArgument` is a `Result`.
 
-#### SuiObjectChange
+###  SuiObjectChange
 - `type SuiObjectChangeCreated` - A `SuiObjectChange` with `type: "created"`.
 - `type SuiObjectChangeDeleted` - A `SuiObjectChange` with `type: "deleted"`.
 - `type SuiObjectChangeMutated` - A `SuiObjectChange` with `type: "mutated"`.
@@ -121,14 +121,14 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `type SuiObjectChangeTransferred` - A `SuiObjectChange` with `type: 'transferred'`.
 - `type SuiObjectChangeWrapped` - A `SuiObjectChange` with `type: "wrapped"`.
 
-#### SuiObjectRef
+###  SuiObjectRef
 - `isSuiObjectRef()` - Type guard to check if an object is a `SuiObjectRef`.
 
-#### SuiParsedData
+###  SuiParsedData
 - `isParsedDataObject()` - Type guard to check if a `SuiParsedData` is a `moveObject`.
 - `isParsedDataPackage()` - Type guard to check if a `SuiParsedData` is a `package`.
 
-#### SuiTransaction
+###  SuiTransaction
 - `isTxMakeMoveVec()` - Type guard to check if a `SuiTransaction` is a `MakeMoveVec` tx.
 - `isTxMergeCoins()` - Type guard to check if a `SuiTransaction` is a `MergeCoins` tx.
 - `isTxMoveCall()` - Type guard to check if a `SuiTransaction` is a `MoveCallSuiTransaction`.
@@ -137,14 +137,14 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isTxTransferObjects()` - Type guard to check if a `SuiTransaction` is a `TransferObjects` tx.
 - `isTxUpgrade()` - Type guard to check if a `SuiTransaction` is an `Upgrade` tx.
 
-### Types
+## Types
 
 - `type NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
 - `type ObjectDisplay` - A Sui object display with common properties and arbitrary ones.
 - `type ReceivingRef` - The return type of `Transaction.receivingRef()`.
 - `type SignTransaction` - A function that can sign a `Transaction`.
 
-### URLs
+## URLs
 
 - `type SuiExplorerItem` - A Sui explorer item type (address/object/package/txblock).
 - `makePolymediaUrl()` - Build an explorer.polymedia.app URL.
@@ -158,7 +158,7 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 - Installation: `pnpm add @polymedia/suitcase-node`
 - Source code: [src/node](./src/node)
 
-### Sui
+## Sui
 
 - `getActiveAddress()` - Get the current active address (sui client active-address).
 - `getActiveKeypair()` - Build a `Ed25519Keypair` object for the current active address by loading the secret key from `~/.sui/sui_config/sui.keystore`.
@@ -166,7 +166,7 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 - `setupSuiTransaction()` - Initialize objects to execute Sui transactions blocks using the current Sui active network and address.
 - `executeSuiTransaction()` - Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.
 
-### Files
+## Files
 
 - `fileExists()` - Check if a file exists in the filesystem.
 - `getFileName()` - Extract the file name from a module URL, without path or extension.
@@ -177,7 +177,7 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 - `writeCsvFile()` - Write objects into a CSV file.
 - `readCsvFile()` - Read a CSV file and parse each line into an object.
 
-### CLI
+## CLI
 
 - `parseArguments()` - Parse command line arguments and show usage instructions.
 - `promptUser()` - Display a query to the user and wait for their input. Return true if the user enters `y`.
@@ -189,7 +189,7 @@ The `suitcase-react` package provides components for React web apps.
 - Installation: `pnpm add @polymedia/suitcase-react`
 - Source code: [src/react](./src/react)
 
-### Components
+## Components
 
 - `LinkExternal` - An external link.
 - `LinkToExplorer` - A link to a Sui explorer (Polymedia, Suiscan, or SuiVision).
@@ -199,17 +199,17 @@ The `suitcase-react` package provides components for React web apps.
 - `Modal` - A modal window.
 - `NetworkSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.
 
-### Functions
+## Functions
 
 - `isLocalhost()` - Check if the current hostname is a localhost environment.
 - `loadNetwork()` - Load the network name based on URL parameters and local storage.
 - `switchNetwork()` - Change networks, updating the local storage and optionally triggering a callback.
 - `makeCssUrl()` - Encode a URL for use in CSS `url()` syntax.
 
-### Hooks
+## Hooks
 
 - `useClickOutside()` - A React hook that detects when a click or touch event occurs outside a DOM element.
 
-### Types
+## Types
 
 - `type ReactSetter` - A function that updates the state of a `useState` or `useReducer` hook.
