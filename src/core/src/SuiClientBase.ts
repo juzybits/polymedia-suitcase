@@ -124,6 +124,33 @@ export abstract class SuiClientBase
         return results;
     }
 
+    // === errors ===
+
+    /**
+     * Extract the numeric error code from a tx response and map it to an error message.
+     *
+     * Example error string:
+     * `MoveAbort(MoveLocation { module: ModuleId { address: 0x123, name: Identifier("the_module") }, function: 1, instruction: 29, function_name: Some("the_function") }, 5008) in command 2`
+     */
+    public parseErrorCode(
+        txRes: SuiTransactionBlockResponse,
+        errors: Record<number, string>,
+    ): string
+    {
+        if (!txRes.effects?.status.error) {
+            return "unknown error";
+        }
+        const match = txRes.effects.status.error.match(/MoveAbort.+, (\d+)\)/);
+        if (!match) {
+            return txRes.effects.status.error;
+        }
+        const code = parseInt(match[1]);
+        if (isNaN(code) || !(code in errors)) {
+            return txRes.effects.status.error;
+        }
+        return errors[code];
+    }
+
     // === transactions ===
 
     public async executeTransaction(
