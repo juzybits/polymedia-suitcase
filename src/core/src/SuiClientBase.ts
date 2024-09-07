@@ -108,7 +108,7 @@ export abstract class SuiClientBase
      * Fetch and parse transactions from the RPC.
      */
     public async fetchAndParseTxs<T>(
-        parseFn: (txRes: SuiTransactionBlockResponse) => T | null,
+        parseFn: (resp: SuiTransactionBlockResponse) => T | null,
         query: QueryTransactionBlocksParams,
     ) {
         const pagTxRes = await this.suiClient.queryTransactionBlocks(query);
@@ -117,7 +117,7 @@ export abstract class SuiClientBase
             cursor: pagTxRes.nextCursor,
             hasNextPage: pagTxRes.hasNextPage,
             data: pagTxRes.data
-                .map(txRes => parseFn(txRes))
+                .map(resp => parseFn(resp))
                 .filter(result => result !== null),
         };
 

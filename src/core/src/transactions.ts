@@ -72,20 +72,20 @@ export function parseTxError(
  * and return its `.transaction.data`.
  */
 export function txResToData(
-    txRes: SuiTransactionBlockResponse,
+    resp: SuiTransactionBlockResponse,
 )
 {
-    if (txRes.errors && txRes.errors.length > 0) {
-        throw Error(`response error: ${JSON.stringify(txRes, null, 2)}`);
+    if (resp.errors && resp.errors.length > 0) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (txRes.transaction?.data.transaction.kind !== "ProgrammableTransaction") {
-        throw Error(`response has no data or is not a ProgrammableTransaction: ${JSON.stringify(txRes, null, 2)}`);
+    if (resp.transaction?.data.transaction.kind !== "ProgrammableTransaction") {
+        throw Error(`response has no data or is not a ProgrammableTransaction: ${JSON.stringify(resp, null, 2)}`);
     }
     return {
-        sender: txRes.transaction.data.sender,
-        gasData: txRes.transaction.data.gasData,
-        inputs: txRes.transaction.data.transaction.inputs,
-        txs: txRes.transaction.data.transaction.transactions,
+        sender: resp.transaction.data.sender,
+        gasData: resp.transaction.data.gasData,
+        inputs: resp.transaction.data.transaction.inputs,
+        txs: resp.transaction.data.transaction.transactions,
     };
 }
 
