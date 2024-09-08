@@ -89,9 +89,9 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Transactions
 
-- `type ObjectArg` - An object argument for `Transaction.moveCall()`.
+- `type ObjectArg` - An object or object reference argument for `Transaction.moveCall()`.
+- `objectArg()` - Build an object or object reference argument for `Transaction.moveCall()`.
 - `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.
-- `objectArg()` - Build an object argument for `Transaction.moveCall()`.
 - `parseTxError()` - Parse a Move abort string (from `tx.effects.status.error`) into its different parts.
 - `txResToData()` - Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind and return its `.transaction.data`.
 - `TransferModule` - Build transactions for the `sui::transfer` module.

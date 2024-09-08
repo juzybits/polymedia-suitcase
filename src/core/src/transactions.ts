@@ -5,9 +5,21 @@ import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/
 import { isSuiObjectRef } from "./guards";
 
 /**
- * An object argument for `Transaction.moveCall()`.
+ * An object or object reference argument for `Transaction.moveCall()`.
  */
 export type ObjectArg = TransactionObjectInput | SuiObjectRef;
+
+/**
+ * Build an object or object reference argument for `Transaction.moveCall()`.
+ */
+export function objectArg(
+    tx: Transaction,
+    obj: ObjectArg,
+) {
+    return isSuiObjectRef(obj)
+        ? tx.objectRef(obj)
+        : tx.object(obj);
+}
 
 /**
  * Get the value of a `SuiCallArg` (transaction input).
@@ -19,18 +31,6 @@ export function getArgVal<T>(arg: SuiCallArg): T {
         return arg.value as T;
     }
     return arg.objectId as T;
-}
-
-/**
- * Build an object argument for `Transaction.moveCall()`.
- */
-export function objectArg(
-    tx: Transaction,
-    obj: ObjectArg,
-) {
-    return isSuiObjectRef(obj)
-        ? tx.objectRef(obj)
-        : tx.object(obj);
 }
 
 /**
