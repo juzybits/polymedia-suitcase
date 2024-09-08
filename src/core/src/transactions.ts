@@ -5,16 +5,16 @@ import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/
 import { isSuiObjectRef } from "./guards";
 
 /**
- * An object or object reference argument for `Transaction.moveCall()`.
+ * Either a `TransactionObjectInput` or a `SuiObjectRef`.
  */
-export type ObjectArg = TransactionObjectInput | SuiObjectRef;
+export type ObjectInput = TransactionObjectInput | SuiObjectRef;
 
 /**
- * Build an object or object reference argument for `Transaction.moveCall()`.
+ * Transform an `ObjectInput` into an argument for `Transaction.moveCall()`.
  */
 export function objectArg(
     tx: Transaction,
-    obj: ObjectArg,
+    obj: ObjectInput,
 ) {
     return isSuiObjectRef(obj)
         ? tx.objectRef(obj)
@@ -97,7 +97,7 @@ export const TransferModule =
     public_freeze_object(
         tx: Transaction,
         obj_type: string,
-        obj: ObjectArg,
+        obj: ObjectInput,
     ): TransactionResult
     {
         return tx.moveCall({
@@ -110,7 +110,7 @@ export const TransferModule =
     public_share_object(
         tx: Transaction,
         obj_type: string,
-        obj: ObjectArg,
+        obj: ObjectInput,
     ): TransactionResult
     {
         return tx.moveCall({
@@ -123,7 +123,7 @@ export const TransferModule =
     public_transfer(
         tx: Transaction,
         obj_type: string,
-        obj: ObjectArg,
+        obj: ObjectInput,
         recipient: string,
     ): TransactionResult
     {
