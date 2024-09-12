@@ -25,20 +25,20 @@ export abstract class SuiClientBase
 {
     public readonly suiClient: SuiClient;
     public readonly signTransaction: SignTransaction;
-    protected readonly txResponseOptions: SuiTransactionBlockResponseOptions;
     protected readonly waitForTxOptions: WaitForTxOptions | false;
+    protected readonly txResponseOptions: SuiTransactionBlockResponseOptions;
 
     /**
      * @param suiClient The client used to communicate with Sui.
      * @param signTransaction A function that signs transactions.
-     * @param txResponseOptions Which fields to include in transaction responses.
      * @param waitForTxOptions Options for `SuiClient.waitForTransaction()`.
+     * @param txResponseOptions Which fields to include in transaction responses.
      */
     constructor(
         suiClient: SuiClient,
         signTransaction: SignTransaction,
+        waitForTxOptions: WaitForTxOptions | false = { timeout: 60_000, pollInterval: 333 },
         txResponseOptions: SuiTransactionBlockResponseOptions = { showEffects: true, showObjectChanges: true },
-        waitForTxOptions: WaitForTxOptions = { timeout: 60_000, pollInterval: 333 },
     ) {
         this.suiClient = suiClient;
         this.signTransaction = signTransaction;
