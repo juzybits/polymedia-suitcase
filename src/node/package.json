@@ -28,7 +28,7 @@
         "@polymedia/suitcase-core": "workspace:*"
     },
     "peerDependencies": {
-        "@mysten/sui": "^1.7.0"
+        "@mysten/sui": "^1.9.0"
     },
     "devDependencies": {
         "@types/node": "^22.5.4",
