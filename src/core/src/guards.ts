@@ -64,22 +64,22 @@ export function isArgResult(arg: SuiArgument): arg is { Result: number } {
 // === SuiObjectChange ===
 
 /** A `SuiObjectChange` with `type: "created"`. */
-export type SuiObjectChangeCreated = Extract<SuiObjectChange, { type: 'created' }>;
+export type SuiObjectChangeCreated = Extract<SuiObjectChange, { type: "created" }>;
 
 /** A `SuiObjectChange` with `type: "deleted"`. */
-export type SuiObjectChangeDeleted = Extract<SuiObjectChange, { type: 'deleted' }>;
+export type SuiObjectChangeDeleted = Extract<SuiObjectChange, { type: "deleted" }>;
 
 /** A `SuiObjectChange` with `type: "mutated"`. */
-export type SuiObjectChangeMutated = Extract<SuiObjectChange, { type: 'mutated' }>;
+export type SuiObjectChangeMutated = Extract<SuiObjectChange, { type: "mutated" }>;
 
 /** A `SuiObjectChange` with `type: "published"`. */
-export type SuiObjectChangePublished = Extract<SuiObjectChange, { type: 'published' }>;
+export type SuiObjectChangePublished = Extract<SuiObjectChange, { type: "published" }>;
 
 /** A `SuiObjectChange` with `type: "transferred"`. */
-export type SuiObjectChangeTransferred = Extract<SuiObjectChange, { type: 'transferred' }>;
+export type SuiObjectChangeTransferred = Extract<SuiObjectChange, { type: "transferred" }>;
 
 /** A `SuiObjectChange` with `type: "wrapped"`. */
-export type SuiObjectChangeWrapped = Extract<SuiObjectChange, { type: 'wrapped' }>;
+export type SuiObjectChangeWrapped = Extract<SuiObjectChange, { type: "wrapped" }>;
 
 // === SuiObjectRef ===
 
