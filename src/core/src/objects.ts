@@ -10,31 +10,38 @@ import { ObjectDisplay } from "./types.js";
  * Validate a `SuiObjectResponse` and return its `.data.content`.
  */
 export function objResToContent(
-    objRes: SuiObjectResponse,
+    resp: SuiObjectResponse,
 ): SuiParsedData {
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (!objRes.data?.content) {
-        throw Error(`response has no content: ${JSON.stringify(objRes, null, 2)}`);
+    if (!resp.data?.content) {
+        throw Error(`response has no content: ${JSON.stringify(resp, null, 2)}`);
     }
-    return objRes.data.content;
+    return resp.data.content;
 }
 
 /**
- * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
+ * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
  */
-export function objResToFields(
-    objRes: SuiObjectResponse,
-): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+export function objResToDisplay(
+    resp: SuiObjectResponse,
+): ObjectDisplay
 {
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (objRes.data?.content?.dataType !== "moveObject") {
-        throw Error(`response content missing: ${JSON.stringify(objRes, null, 2)}`);
+    if (!resp.data?.display) {
+        throw Error(`response has no display: ${JSON.stringify(resp, null, 2)}`);
     }
-    return objRes.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    if (resp.data.display.error) {
+        throw Error(`display has error: ${JSON.stringify(resp, null, 2)}`);
+    }
+
+    return {
+        ...newEmptyDisplay(),
+        ...resp.data.display.data,
+    };
 }
 
 /**
@@ -55,59 +62,52 @@ export function newEmptyDisplay(): ObjectDisplay {
 }
 
 /**
- * Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
+ * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
  */
-export function objResToDisplay(
-    objRes: SuiObjectResponse,
-): ObjectDisplay
+export function objResToFields(
+    resp: SuiObjectResponse,
+): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 {
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (!objRes.data?.display) {
-        throw Error(`response has no display: ${JSON.stringify(objRes, null, 2)}`);
+    if (resp.data?.content?.dataType !== "moveObject") {
+        throw Error(`response content missing: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (objRes.data.display.error) {
-        throw Error(`display has error: ${JSON.stringify(objRes, null, 2)}`);
-    }
-
-    return {
-        ...newEmptyDisplay(),
-        ...objRes.data.display.data,
-    };
+    return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 /**
  * Validate a `SuiObjectResponse` and return its `.data.objectId`.
  */
 export function objResToId(
-    objRes: SuiObjectResponse,
+    resp: SuiObjectResponse,
 ): string {
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (!objRes.data) {
-        throw Error(`response has no data: ${JSON.stringify(objRes, null, 2)}`);
+    if (!resp.data) {
+        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
     }
-    return objRes.data.objectId;
+    return resp.data.objectId;
 }
 
 /**
  * Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
  */
 export function objResToRef(
-    objRes: SuiObjectResponse,
+    resp: SuiObjectResponse,
 ): SuiObjectRef {
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (!objRes.data) {
-        throw Error(`response has no data: ${JSON.stringify(objRes, null, 2)}`);
+    if (!resp.data) {
+        throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
     }
     return {
-        objectId: objRes.data.objectId,
-        digest: objRes.data.digest,
-        version: objRes.data.version,
+        objectId: resp.data.objectId,
+        digest: resp.data.digest,
+        version: resp.data.version,
     };
 }
 
@@ -115,16 +115,16 @@ export function objResToRef(
  * Validate a `SuiObjectResponse` and return its `.data.content.type`.
  */
 export function objResToType(
-    objRes: SuiObjectResponse,
+    resp: SuiObjectResponse,
 ): string {
-    if (objRes.error) {
-        throw Error(`response error: ${JSON.stringify(objRes, null, 2)}`);
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (!objRes.data?.content) {
-        throw Error(`response has no content: ${JSON.stringify(objRes, null, 2)}`);
+    if (!resp.data?.content) {
+        throw Error(`response has no content: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (!isParsedDataObject(objRes.data.content)) {
-        throw Error(`response data is not a moveObject: ${JSON.stringify(objRes, null, 2)}`);
+    if (!isParsedDataObject(resp.data.content)) {
+        throw Error(`response data is not a moveObject: ${JSON.stringify(resp, null, 2)}`);
     }
-    return objRes.data.content.type;
+    return resp.data.content.type;
 }

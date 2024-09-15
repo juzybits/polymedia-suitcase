@@ -60,7 +60,7 @@ export abstract class SuiClientBase
         objectIds: string[],
         cache: Map<string, T> | null,
         fetchFn: (ids: string[]) => Promise<SuiObjectResponse[]>,
-        parseFn: (objRes: SuiObjectResponse) => T | null
+        parseFn: (resp: SuiObjectResponse) => T | null
     ): Promise<T[]>
     {
         const results: T[] = [];
@@ -87,12 +87,12 @@ export abstract class SuiClientBase
         for (const result of allResults) {
             if (result.status === "fulfilled") {
                 const pagObjRes = result.value;
-                for (const objRes of pagObjRes) {
-                    const parsedObject = parseFn(objRes);
+                for (const resp of pagObjRes) {
+                    const parsedObject = parseFn(resp);
                     if (parsedObject) {
                         results.push(parsedObject);
                         if (cache) {
-                            cache.set(objResToId(objRes), parsedObject);
+                            cache.set(objResToId(resp), parsedObject);
                         }
                     }
                 }
