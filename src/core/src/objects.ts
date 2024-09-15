@@ -3,7 +3,7 @@ import {
     SuiObjectResponse,
     SuiParsedData
 } from "@mysten/sui/client";
-import { isParsedDataObject } from "./guards.js";
+import { isOwnerAddress, isOwnerImmutable, isOwnerObject, isOwnerShared, isParsedDataObject } from "./guards.js";
 import { ObjectDisplay } from "./types.js";
 
 /**
@@ -90,6 +90,34 @@ export function objResToId(
         throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
     }
     return resp.data.objectId;
+}
+
+/**
+ * Validate a `SuiObjectResponse` and return its owner: an address, object ID, "shared" or "immutable".
+ */
+export function objResToOwner(
+    resp: SuiObjectResponse,
+): string
+{
+    if (resp.error) {
+        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (!resp.data?.owner) {
+        throw Error(`response has no owner data: ${JSON.stringify(resp, null, 2)}`);
+    }
+    if (isOwnerAddress(resp.data.owner)) {
+        return resp.data.owner.AddressOwner;
+    }
+    if (isOwnerObject(resp.data.owner)) {
+        return resp.data.owner.ObjectOwner;
+    }
+    if (isOwnerShared(resp.data.owner)) {
+        return "shared";
+    }
+    if (isOwnerImmutable(resp.data.owner)) {
+        return "immutable";
+    }
+    return "unknown";
 }
 
 /**
