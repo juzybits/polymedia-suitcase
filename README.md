@@ -28,7 +28,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `balanceToString()` - Convert a bigint to a string, scaled down to the specified decimals.
 - `stringToBalance()` - Convert a string to a bigint, scaled up to the specified decimals.
-- `formatBigInt()` - Format a bigint into a readable string, scaled down to the specified decimals.
+- `formatBalance()` - Format a bigint into a readable string, scaled down to the specified decimals.
 - `formatNumber()` - Format a number into a readable string.
 
 ## Classes

@@ -104,32 +104,66 @@ function formatNumberCompact(num: number): string {
 
 /**
  * Format a bigint into a readable string, scaled down to the specified decimals.
- * @deprecated
+ *
+ * - 'standard' format:
+ *   - If the number is < 1000, show 2 decimals (e.g. '123.45')
+ *   - If the number is >= 1000, don't show any decimals (e.g. '1,234')
+ *
+ * - 'compact' format:
+ *   - If the number is < 1 million, use 'standard' format
+ *   - If the number is >= 1 million, use word notation (e.g. '540.23M', '20.05B')
  */
-export function formatBigInt(
+export function formatBalance(
     big: bigint,
     decimals: number,
-    format: "standard"|"compact" = "standard"
+    format: "standard" | "compact" = "standard"
 ): string {
-    const num = convertBigIntToNumber(big, decimals); // eslint-disable-line @typescript-eslint/no-deprecated
-    return formatNumber(num, format);
+    const isNegative = big < 0n;
+    const absoluteBig = isNegative ? -big : big;
+    const stringValue = balanceToString(absoluteBig, decimals);
+    const [integerPart, fractionalPart = ''] = stringValue.split('.');
+
+    let result = format === "standard"
+        ? formatBigIntStandard(integerPart, fractionalPart)
+        : formatBigIntCompact(integerPart, fractionalPart);
+
+    return isNegative ? '-' + result : result;
 }
 
-/**
- * Convert a bigint to a number, scaled down to the specified decimals.
- * @deprecated
- * @see balanceToString
- */
-export function convertBigIntToNumber(big: bigint, decimals: number): number {
-    return Number(big) / 10**decimals;
+function formatBigIntStandard(integerPart: string, fractionalPart: string): string {
+    const bigIntValue = BigInt(integerPart);
+    if (bigIntValue < 1000n) {
+        const formattedFraction = fractionalPart.slice(0, 2).padEnd(2, '0');
+        return `${integerPart}.${formattedFraction}`;
+    } else {
+        return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 }
 
-/**
- * Convert a number to a bigint, scaled to the specified decimals.
- * @deprecated
- * @see stringToBalance
- */
-export function convertNumberToBigInt(num: number, decimals: number): bigint {
-    const numScaledAsString = (num * 10**decimals).toFixed(0);
-    return BigInt(numScaledAsString);
+function formatBigIntCompact(integerPart: string, fractionalPart: string): string {
+    const bigIntValue = BigInt(integerPart);
+    if (bigIntValue < 1_000_000n) {
+        return formatBigIntStandard(integerPart, fractionalPart);
+    } else if (bigIntValue < 1_000_000_000n) {
+        return formatCompactPart(integerPart, 6, "M");
+    } else if (bigIntValue < 1_000_000_000_000n) {
+        return formatCompactPart(integerPart, 9, "B");
+    } else {
+        return formatCompactPart(integerPart, 12, "T");
+    }
+}
+
+function formatCompactPart(integerPart: string, digits: number, suffix: string): string {
+    const wholePart = integerPart.slice(0, -digits) || '0';
+    const decimalPart = integerPart.slice(-digits).padStart(2, '0').slice(0, 2);
+
+    if (wholePart.length <= 3) {
+        return `${wholePart}.${decimalPart}${suffix}`;
+    } else {
+        return `${addThousandsSeparators(wholePart)}${suffix}`;
+    }
+}
+
+function addThousandsSeparators(numStr: string): string {
+    return numStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
