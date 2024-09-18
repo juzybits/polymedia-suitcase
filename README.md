@@ -70,6 +70,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Misc
 
+- `const MAX_U64` - The maximum value for a 64-bit unsigned integer.
 - `chunkArray()` - Split an array into multiple chunks of a certain size.
 - `chunkString()` - Split a string into multiple chunks of a certain size.
 - `makeRanges()` - Generate an array of ranges of a certain size between two numbers.
