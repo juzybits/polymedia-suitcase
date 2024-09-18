@@ -3,6 +3,7 @@
 # JavaScript
 .auth.ts
 .env*
+*.tsbuildinfo
 .turbo
 .wrangler
 dist

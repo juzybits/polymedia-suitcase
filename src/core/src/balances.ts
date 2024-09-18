@@ -121,19 +121,19 @@ export function formatBalance(
     const isNegative = big < 0n;
     const absoluteBig = isNegative ? -big : big;
     const stringValue = balanceToString(absoluteBig, decimals);
-    const [integerPart, fractionalPart = ''] = stringValue.split('.');
+    const [integerPart, fractionalPart = ""] = stringValue.split(".");
 
-    let result = format === "standard"
+    const result = format === "standard"
         ? formatBigIntStandard(integerPart, fractionalPart)
         : formatBigIntCompact(integerPart, fractionalPart);
 
-    return isNegative ? '-' + result : result;
+    return isNegative ? "-" + result : result;
 }
 
 function formatBigIntStandard(integerPart: string, fractionalPart: string): string {
     const bigIntValue = BigInt(integerPart);
     if (bigIntValue < 1000n) {
-        const formattedFraction = fractionalPart.slice(0, 2).padEnd(2, '0');
+        const formattedFraction = fractionalPart.slice(0, 2).padEnd(2, "0");
         return `${integerPart}.${formattedFraction}`;
     } else {
         return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -154,8 +154,8 @@ function formatBigIntCompact(integerPart: string, fractionalPart: string): strin
 }
 
 function formatCompactPart(integerPart: string, digits: number, suffix: string): string {
-    const wholePart = integerPart.slice(0, -digits) || '0';
-    const decimalPart = integerPart.slice(-digits).padStart(2, '0').slice(0, 2);
+    const wholePart = integerPart.slice(0, -digits) || "0";
+    const decimalPart = integerPart.slice(-digits).padStart(2, "0").slice(0, 2);
 
     if (wholePart.length <= 3) {
         return `${wholePart}.${decimalPart}${suffix}`;

@@ -37,18 +37,18 @@ export const formatDate = (ms: number): string => {
 export const formatDuration = (ms: number): string =>
 {
     const formatUnit = (value: number, unit: string) =>
-        `${value} ${unit}${value !== 1 ? 's' : ''}`;
+        `${value} ${unit}${value !== 1 ? "s" : ""}`;
 
-    if (ms >= TimeUnit.ONE_DAY) {
-        return formatUnit(Math.floor(ms / TimeUnit.ONE_DAY), 'day');
+    if (ms >= Number(TimeUnit.ONE_DAY)) {
+        return formatUnit(Math.floor(ms / TimeUnit.ONE_DAY), "day");
     }
-    if (ms >= TimeUnit.ONE_HOUR) {
-        return formatUnit(Math.floor(ms / TimeUnit.ONE_HOUR), 'hour');
+    if (ms >= Number(TimeUnit.ONE_HOUR)) {
+        return formatUnit(Math.floor(ms / TimeUnit.ONE_HOUR), "hour");
     }
-    if (ms >= TimeUnit.ONE_MINUTE) {
-        return formatUnit(Math.floor(ms / TimeUnit.ONE_MINUTE), 'minute');
+    if (ms >= Number(TimeUnit.ONE_MINUTE)) {
+        return formatUnit(Math.floor(ms / TimeUnit.ONE_MINUTE), "minute");
     }
-    return formatUnit(Math.floor(ms / TimeUnit.ONE_SECOND), 'second');
+    return formatUnit(Math.floor(ms / TimeUnit.ONE_SECOND), "second");
 };
 
 /**
@@ -58,8 +58,8 @@ export const formatDuration = (ms: number): string =>
 export function formatTimeDiff(
     timestamp: number,
     now: number = Date.now(),
-    shortenTimeLabel: boolean = true,
-    endLabel: string = "< 1 sec",
+    shortenTimeLabel = true,
+    endLabel = "< 1 sec",
     maxTimeUnit: TimeUnit = TimeUnit.ONE_DAY
 ): string {
     if (!timestamp) return "";
