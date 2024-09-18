@@ -219,6 +219,13 @@ The `suitcase-react` package provides components for React web apps.
 
 - `useClickOutside()` - A React hook that detects when a click or touch event occurs outside a DOM element.
 
+## Forms
+
+- `useInputString()` - An input field for strings.
+- `useInputAddress()` - An input field for Sui addresses (or object IDs).
+- `useInputUnsignedInt()` - An input field for positive integers.
+- `useInputUnsignedBalance()` - Input field for positive Coin balances. Handles decimals (e.g. `"1 SUI"` → `1_000_000_000`).
+
 ## Types
 
 - `type ReactSetter` - A function that updates the state of a `useState` or `useReducer` hook.
