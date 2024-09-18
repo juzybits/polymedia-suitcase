@@ -60,6 +60,14 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `requestSuiFromFaucet()` - Get SUI from the faucet on localnet/devnet/testnet.
 
+## Format
+
+- `formatBps()` - Return a human-readable string from a number of basis points.
+- `formatDate()` - Return a human-readable date string from a timestamp in milliseconds.
+- `formatDuration()` - Return a human-readable string from a number of milliseconds.
+- `formatTimeDiff()` - Return a human-readable string with the time difference between two timestamps.
+- `shortenDigest()` - Return a shortened version of a transaction digest.
+
 ## Misc
 
 - `chunkArray()` - Split an array into multiple chunks of a certain size.
