@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     z-index: 1000;
     overflow-y: auto;
     padding: 1em;

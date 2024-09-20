@@ -4,23 +4,23 @@ import "./Modal.css";
  * A modal window.
  */
 export const Modal: React.FC<{
-    content: React.ReactNode;
     styleBackground?: React.CSSProperties;
     styleContent?: React.CSSProperties;
+    children: React.ReactNode;
 }> = ({
-    content,
     styleBackground = {},
     styleContent = {},
+    children,
 }) =>
 {
-    if (!content) {
+    if (!children) {
         return null;
     }
 
     return (
         <div className="modal-background" style={styleBackground}>
             <div className="modal-content" style={styleContent}>
-                {content}
+                {children}
             </div>
         </div>
     );
