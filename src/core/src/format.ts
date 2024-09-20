@@ -104,6 +104,15 @@ export function formatTimeDiff(
 }
 
 /**
+ * Return the domain from a URL.
+ * E.g. `"https://polymedia.app"` -> `"polymedia.app"`.
+ */
+export const urlToDomain = (url: string): string => {
+    const match = url.match(/^https?:\/\/([^/]+)/);
+    return match ? match[1] : "";
+};
+
+/**
  * Return a shortened version of a transaction digest.
  * E.g. "yjxT3tJvRdkg5p5NFN64hGUGSntWoB8MtA34ErFYMgW" -> "yjxT…YMgW".
  */

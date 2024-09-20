@@ -66,6 +66,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `formatDate()` - Return a human-readable date string from a timestamp in milliseconds.
 - `formatDuration()` - Return a human-readable string from a number of milliseconds.
 - `formatTimeDiff()` - Return a human-readable string with the time difference between two timestamps.
+- `urlToDomain()` - Return the domain from a URL.
 - `shortenDigest()` - Return a shortened version of a transaction digest.
 
 ## Misc
