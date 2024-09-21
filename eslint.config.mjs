@@ -58,7 +58,7 @@ export default [
         },
     },
     {
-        files: ["src/react/**/*.ts", "src/react/**/*.tsx"],
+        files: ["**/__tests__/**/*.ts?(x)", "src/react/**/*.ts?(x)"],
         rules: {
             "import/extensions": ["off", "ignorePackages"],
         },
