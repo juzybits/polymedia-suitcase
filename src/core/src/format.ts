@@ -108,7 +108,7 @@ export function formatTimeDiff(
  * E.g. `"https://polymedia.app"` -> `"polymedia.app"`.
  */
 export const urlToDomain = (url: string): string => {
-    const match = url.match(/^https?:\/\/([^/]+)/);
+    const match = /^https?:\/\/([^/]+)/.exec(url);
     return match ? match[1] : "";
 };
 

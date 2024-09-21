@@ -1,4 +1,4 @@
-import { formatBalance } from "../balances";
+import { formatBalance } from "../balances.js";
 
 describe("formatBalance", () => {
   describe("standard format", () => {
