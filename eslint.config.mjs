@@ -1,8 +1,9 @@
+import { fixupConfigRules } from "@eslint/compat";
 import eslint from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
-import tsEslint from "typescript-eslint";
+import eslintPluginImport from "eslint-plugin-import";
 import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
-import { fixupConfigRules } from "@eslint/compat";
+import tsEslint from "typescript-eslint";
 
 export default [
     eslint.configs.recommended,
@@ -22,6 +23,7 @@ export default [
         },
         plugins: {
             "@stylistic": stylistic,
+            import: eslintPluginImport,
         },
         rules: {
             "@stylistic/jsx-quotes": [ "error", "prefer-double" ],
@@ -42,6 +44,7 @@ export default [
             "@typescript-eslint/prefer-nullish-coalescing": "off",
             "@typescript-eslint/restrict-template-expressions": "off",
             "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
+            "import/extensions": ["error", "ignorePackages", { ts: "never", tsx: "never" }],
             "no-constant-condition": "off",
             "react/display-name": "off",
             "react/no-unescaped-entities": "off",
@@ -52,6 +55,12 @@ export default [
             react: {
                 version: "18"
             }
+        },
+    },
+    {
+        files: ["src/react/**/*.ts", "src/react/**/*.tsx"],
+        rules: {
+            "import/extensions": ["off", "ignorePackages"],
         },
     },
 ];
