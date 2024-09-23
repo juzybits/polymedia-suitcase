@@ -45,7 +45,7 @@ export function loadNetwork<NetworkName extends BaseNetworkName>(
 }
 
 /**
- * Change networks, updating the local storage and optionally triggering a callback.
+ * Change networks, update local storage, and optionally trigger a callback.
  */
 export function switchNetwork<NetworkName extends BaseNetworkName>(
     newNetwork: NetworkName,

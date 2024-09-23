@@ -215,7 +215,7 @@ The `suitcase-react` package provides components for React web apps.
 
 - `isLocalhost()` - Check if the current hostname is a localhost environment.
 - `loadNetwork()` - Load the network name based on URL parameters and local storage.
-- `switchNetwork()` - Change networks, updating the local storage and optionally triggering a callback.
+- `switchNetwork()` - Change networks, update local storage, and optionally trigger a callback.
 - `makeCssUrl()` - Encode a URL for use in CSS `url()` syntax.
 
 ## Hooks
