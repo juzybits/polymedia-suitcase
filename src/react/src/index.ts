@@ -5,4 +5,5 @@ export * from "./links";
 export * from "./misc";
 export * from "./modals";
 export * from "./networks";
+export * from "./rpcs";
 export * from "./types";

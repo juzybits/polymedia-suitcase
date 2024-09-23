@@ -246,6 +246,12 @@ The `suitcase-react` package provides components for React web apps.
 - `loadNetwork()` - Load the network name based on URL parameters and local storage.
 - `switchNetwork()` - Change networks, update local storage, and optionally trigger a callback.
 
+## RPCs
+
+- `RpcRadioSelector` - A radio button menu to select an RPC endpoint and save the choice to local storage.
+- `loadRpc()` - Load the RPC URL for the current network from local storage.
+- `switchRpc()` - Change RPCs, update local storage, and optionally trigger a callback.
+
 ## Types
 
 - `type ReactSetter` - A function that updates the state of a `useState` or `useReducer` hook.

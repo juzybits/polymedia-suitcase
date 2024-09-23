@@ -7,7 +7,7 @@ import { NetworkName } from "./types.js";
  */
 export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
     "mainnet": [
-        removePort(getFullnodeUrl("mainnet")),
+        getFullnodeUrl("mainnet"),
         "https://mainnet.suiet.app",
         "https://rpc-mainnet.suiscan.xyz",
         "https://mainnet.sui.rpcpool.com",
@@ -33,7 +33,7 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         // "https://sui-mainnet-eu-4.cosmostation.io",          // CORS error
     ],
     "testnet": [
-        removePort(getFullnodeUrl("testnet")),
+        getFullnodeUrl("testnet"),
         "https://rpc-testnet.suiscan.xyz",
         "https://sui-testnet-endpoint.blockvision.org",
         "https://sui-testnet.public.blastapi.io",
@@ -42,7 +42,7 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         'https://testnet.sui.rpcpool.com',
     ],
     "devnet": [
-        removePort(getFullnodeUrl("devnet")),
+        getFullnodeUrl("devnet"),
         "https://devnet.suiet.app",
     ],
     "localnet": [
@@ -117,9 +117,4 @@ export async function newLowLatencySuiClient({
     const results = await measureRpcLatency({endpoints, rpcRequest});
     const suiClient = new SuiClient({ url: results[0].endpoint });
     return suiClient;
-}
-
-function removePort(url: string): string
-{
-    return url.replace(/:\d+/, "");
 }
