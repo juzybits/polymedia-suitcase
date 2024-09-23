@@ -7,10 +7,9 @@ import {
     makeSuivisionUrl,
     shortenAddress,
 } from "@polymedia/suitcase-core";
+import { ExplorerName } from "./explorer";
 
 // === types ===
-
-export type ExplorerName = "polymedia" | "suiscan" | "suivision";
 
 export type ExplorerLinkProps = {
     network: NetworkName;
@@ -56,11 +55,11 @@ export const LinkToExplorer: React.FC<ExplorerLinkProps & {
     children = null,
 }) => {
     let makeUrl: ExplorerUrlMaker;
-    if (explorer === "polymedia") {
+    if (explorer === "Polymedia") {
         makeUrl = makePolymediaUrl;
-    } else if (explorer === "suiscan") {
+    } else if (explorer === "Suiscan") {
         makeUrl = makeSuiscanUrl;
-    } else if (explorer === "suivision") {
+    } else if (explorer === "SuiVision") {
         makeUrl = makeSuivisionUrl;
     } else {
         throw new Error(`Unknown explorer: ${explorer}`);

@@ -215,6 +215,7 @@ The `suitcase-react` package provides components for React web apps.
 
 - `const EXPLORER_NAMES` - `["Polymedia", "Suiscan", "SuiVision"]`;
 - `type ExplorerName` - `"Polymedia" | "Suiscan" | "SuiVision"`;
+- `ExplorerSelector` - A radio button menu to select a Sui explorer and save the choice to local storage.
 - `loadExplorer()` - Load the chosen Sui explorer name from local storage.
 - `switchExplorer()` - Change the chosen Sui explorer, update local storage, and optionally trigger a callback.
 
