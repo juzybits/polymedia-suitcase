@@ -17,7 +17,7 @@
         "react"
     ],
     "scripts": {
-        "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && cp src/styles/*.css dist/cjs/ && cp src/styles/*.css dist/esm/",
+        "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
         "clean": "rm -rf dist/ node_modules/ .turbo/",
         "dev": "tsc --watch -p tsconfig.esm.json",
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
