@@ -201,41 +201,48 @@ The `suitcase-react` package provides components for React web apps.
 - Installation: `pnpm add @polymedia/suitcase-react`
 - Source code: [src/react](./src/react)
 
-## Components
+## Explorers
+
+- `const EXPLORER_NAMES` - `["Polymedia", "Suiscan", "SuiVision"]`;
+- `type ExplorerName` - `"Polymedia" | "Suiscan" | "SuiVision"`;
+- `ExplorerRadioSelector` - A radio button menu to select a Sui explorer and save the choice to local storage.
+- `loadExplorer()` - Load the chosen Sui explorer name from local storage.
+- `switchExplorer()` - Change the chosen Sui explorer, update local storage, and optionally trigger a callback.
+
+## Forms
+
+- `useInputBase()` - A base hook for creating input fields.
+- `useInputString()` - An input field for strings.
+- `useInputAddress()` - An input field for Sui addresses (or object IDs).
+- `useInputUnsignedInt()` - An input field for positive integers.
+- `useInputUnsignedBalance()` - Input field for positive Coin balances. Handles decimals (e.g. `"1 SUI"` → `1_000_000_000`).
+
+## Hooks
+
+- `useClickOutside()` - A hook that detects when a click or touch event occurs outside a DOM element.
+
+## Links
 
 - `LinkExternal` - An external link.
 - `LinkToExplorer` - A link to a Sui explorer (Polymedia, Suiscan, or SuiVision).
 - `LinkToPolymedia` - A link to explorer.polymedia.app.
 - `LinkToSuiscan` - A link to suiscan.xyz.
 - `LinkToSuivision` - A link to suivision.xyz.
+
+## Misc
+
+- `makeCssUrl()` - Encode a URL for use in CSS `url()` syntax.
+
+## Modals
+
 - `Modal` - A modal window.
+
+## Networks
+
 - `NetworkSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.
-
-## Explorer
-
-- `const EXPLORER_NAMES` - `["Polymedia", "Suiscan", "SuiVision"]`;
-- `type ExplorerName` - `"Polymedia" | "Suiscan" | "SuiVision"`;
-- `ExplorerSelector` - A radio button menu to select a Sui explorer and save the choice to local storage.
-- `loadExplorer()` - Load the chosen Sui explorer name from local storage.
-- `switchExplorer()` - Change the chosen Sui explorer, update local storage, and optionally trigger a callback.
-
-## Functions
-
 - `isLocalhost()` - Check if the current hostname is a localhost environment.
 - `loadNetwork()` - Load the network name based on URL parameters and local storage.
 - `switchNetwork()` - Change networks, update local storage, and optionally trigger a callback.
-- `makeCssUrl()` - Encode a URL for use in CSS `url()` syntax.
-
-## Hooks
-
-- `useClickOutside()` - A React hook that detects when a click or touch event occurs outside a DOM element.
-
-## Forms
-
-- `useInputString()` - An input field for strings.
-- `useInputAddress()` - An input field for Sui addresses (or object IDs).
-- `useInputUnsignedInt()` - An input field for positive integers.
-- `useInputUnsignedBalance()` - Input field for positive Coin balances. Handles decimals (e.g. `"1 SUI"` → `1_000_000_000`).
 
 ## Types
 

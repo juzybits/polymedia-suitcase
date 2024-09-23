@@ -31,7 +31,7 @@ export type InputValidator<T> = (input: string) => {
 };
 
 /**
- * A base function for creating input fields.
+ * A base hook for creating input fields.
  */
 export const useInputBase = <T,>(
     props: CommonInputProps<T> & {

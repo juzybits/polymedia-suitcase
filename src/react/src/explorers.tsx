@@ -6,9 +6,9 @@ export type ExplorerName = (typeof EXPLORER_NAMES)[number];
  * A radio button menu to select a Sui explorer and save the choice to local storage.
  */
 export const ExplorerRadioSelector: React.FC<{
-    selectedExplorer: ExplorerName,
-    onSwitch: (newExplorer: ExplorerName) => void,
-    className?: string,
+    selectedExplorer: ExplorerName;
+    onSwitch: (newExplorer: ExplorerName) => void;
+    className?: string;
 }> = ({
     selectedExplorer,
     onSwitch,

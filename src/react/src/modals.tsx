@@ -1,5 +1,3 @@
-import "./Modal.css";
-
 /**
  * A modal window.
  */
