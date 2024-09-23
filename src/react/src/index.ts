@@ -1,6 +1,6 @@
 export * from "./Modal";
 export * from "./NetworkSelector";
-export * from "./explorer";
+export * from "./explorers";
 export * from "./forms";
 export * from "./links";
 export * from "./makeCssUrl";

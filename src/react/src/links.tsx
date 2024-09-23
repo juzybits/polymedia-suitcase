@@ -7,7 +7,7 @@ import {
     makeSuivisionUrl,
     shortenAddress,
 } from "@polymedia/suitcase-core";
-import { ExplorerName } from "./explorer";
+import { ExplorerName } from "./explorers";
 
 // === types ===
 
