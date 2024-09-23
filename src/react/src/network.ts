@@ -5,7 +5,8 @@ export type BaseNetworkName = string;
  */
 export function isLocalhost(): boolean {
     const hostname = window.location.hostname;
-    return hostname === "localhost" || hostname === "127.0.0.1";
+    const localNetworkPattern = /(^127\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2[0-9]\.)|(^172\.3[0-1]\.)|(^192\.168\.)/;
+    return hostname === "localhost" || localNetworkPattern.test(hostname);
 }
 
 /**
