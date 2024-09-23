@@ -1,10 +1,9 @@
 import { SignatureWithBytes } from "@mysten/sui/cryptography";
 import { Transaction } from "@mysten/sui/transactions";
 
-/**
- * A Sui network name.
- */
-export type NetworkName =  "mainnet" | "testnet" | "devnet" | "localnet";
+export const NETWORK_NAMES = ["mainnet", "testnet", "devnet", "localnet"] as const;
+
+export type NetworkName = (typeof NETWORK_NAMES)[number];
 
 /**
  * A Sui object display with common properties and arbitrary ones.

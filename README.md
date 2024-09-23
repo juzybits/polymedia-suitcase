@@ -151,7 +151,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Types
 
-- `type NetworkName` - A Sui network name (mainnet/testnet/devnet/localnet).
+- `const NETWORK_NAMES` - `["mainnet", "testnet", "devnet", "localnet"]`.
+- `type NetworkName` - `"mainnet" | "testnet" | "devnet" | "localnet"`.
 - `type ObjectDisplay` - A Sui object display with common properties and arbitrary ones.
 - `type ReceivingRef` - The return type of `Transaction.receivingRef()`.
 - `type SignTransaction` - A function that can sign a `Transaction`.
@@ -203,8 +204,8 @@ The `suitcase-react` package provides components for React web apps.
 
 ## Explorers
 
-- `const EXPLORER_NAMES` - `["Polymedia", "Suiscan", "SuiVision"]`;
-- `type ExplorerName` - `"Polymedia" | "Suiscan" | "SuiVision"`;
+- `const EXPLORER_NAMES` - `["Polymedia", "Suiscan", "SuiVision"]`.
+- `type ExplorerName` - `"Polymedia" | "Suiscan" | "SuiVision"`.
 - `ExplorerRadioSelector` - A radio button menu to select a Sui explorer and save the choice to local storage.
 - `loadExplorer()` - Load the chosen Sui explorer name from local storage.
 - `switchExplorer()` - Change the chosen Sui explorer, update local storage, and optionally trigger a callback.
@@ -239,7 +240,8 @@ The `suitcase-react` package provides components for React web apps.
 
 ## Networks
 
-- `NetworkSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.
+- `NetworkRadioSelector` - A radio button menu to select a Sui network and save the choice to local storage.
+- `NetworkDropdownSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.
 - `isLocalhost()` - Check if the current hostname is a localhost environment.
 - `loadNetwork()` - Load the network name based on URL parameters and local storage.
 - `switchNetwork()` - Change networks, update local storage, and optionally trigger a callback.

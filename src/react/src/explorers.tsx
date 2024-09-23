@@ -14,7 +14,7 @@ export const ExplorerRadioSelector: React.FC<{
     onSwitch,
     className = "",
 }) => {
-    return <div className={`polymedia-explorer-radio-selector ${className}`}>
+    return <div className={`polymedia-radio-selector polymedia-explorer-radio-selector ${className}`}>
         {EXPLORER_NAMES.map((explorer) => (
             <div key={explorer}>
                 <label className="selector-label">
