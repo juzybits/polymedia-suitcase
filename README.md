@@ -100,6 +100,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Transactions
 
+- `type NestedResult` - An item in the array returned by a `Transaction.moveCall()` call.
 - `type ObjectInput` - Either a `TransactionObjectInput` or a `SuiObjectRef`.
 - `objectArg()` - Transform an `ObjectInput` into an argument for `Transaction.moveCall()`.
 - `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.

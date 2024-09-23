@@ -5,6 +5,11 @@ import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/
 import { isSuiObjectRef } from "./guards.js";
 
 /**
+ * An item in the array returned by a `Transaction.moveCall()` call.
+ */
+export type NestedResult = ReturnType<Transaction["moveCall"]> extends (infer Item)[] ? Item : never;
+
+/**
  * Either a `TransactionObjectInput` or a `SuiObjectRef`.
  */
 export type ObjectInput = TransactionObjectInput | SuiObjectRef;
