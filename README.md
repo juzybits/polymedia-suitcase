@@ -211,6 +211,13 @@ The `suitcase-react` package provides components for React web apps.
 - `Modal` - A modal window.
 - `NetworkSelector` - A dropdown menu to choose between mainnet/testnet/devnet/localnet.
 
+## Explorer
+
+- `const EXPLORER_NAMES` - `["Polymedia", "Suiscan", "SuiVision"]`;
+- `type ExplorerName` - `"Polymedia" | "Suiscan" | "SuiVision"`;
+- `loadExplorer()` - Load the chosen Sui explorer name from local storage.
+- `switchExplorer()` - Change the chosen Sui explorer, update local storage, and optionally trigger a callback.
+
 ## Functions
 
 - `isLocalhost()` - Check if the current hostname is a localhost environment.

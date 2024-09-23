@@ -1,17 +1,20 @@
+export const EXPLORER_NAMES = ["Polymedia", "Suiscan", "SuiVision"] as const;
+
+export type ExplorerName = (typeof EXPLORER_NAMES)[number];
+
 /**
  * Load the chosen Sui explorer name from local storage.
  */
 export function loadExplorer(
-    supportedExplorers: readonly string[],
-    defaultExplorer: string,
-): string
+    defaultExplorer: ExplorerName,
+): ExplorerName
 {
-    if (!supportedExplorers.includes(defaultExplorer)) {
+    if (!isExplorerName(defaultExplorer)) {
         throw new Error(`Explorer not supported: ${defaultExplorer}`);
     }
 
     const explorer = localStorage.getItem("polymedia.explorer");
-    if (explorer && supportedExplorers.includes(explorer)) {
+    if (isExplorerName(explorer)) {
         return explorer;
     }
 
@@ -20,14 +23,13 @@ export function loadExplorer(
 }
 
 /**
- * Change the chosen Sui explorer, update local storage and optionally trigger a callback.
+ * Change the chosen Sui explorer, update local storage, and optionally trigger a callback.
  */
 export function switchExplorer(
-    newExplorer: string,
-    supportedExplorers: readonly string[],
-    onSwitch?: (newExplorer: string) => void
+    newExplorer: ExplorerName,
+    onSwitch?: (newExplorer: ExplorerName) => void
 ): void {
-    if (!supportedExplorers.includes(newExplorer)) {
+    if (!isExplorerName(newExplorer)) {
         throw new Error(`Explorer not supported: ${newExplorer}`);
     }
     localStorage.setItem("polymedia.explorer", newExplorer);
@@ -36,4 +38,10 @@ export function switchExplorer(
     } else {
         window.location.reload();
     }
+}
+
+function isExplorerName(
+    value: string | null,
+): value is ExplorerName {
+    return value !== null && EXPLORER_NAMES.includes(value as ExplorerName);
 }
