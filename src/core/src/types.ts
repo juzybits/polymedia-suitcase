@@ -22,6 +22,15 @@ export type ObjectDisplay = {
 };
 
 /**
+ * A paginated response from a Sui RPC call.
+ */
+export type PaginatedResponse<T> = {
+    data: T[];
+    hasNextPage: boolean;
+    nextCursor: string | null | undefined;
+};
+
+/**
  * The return type of `Transaction.receivingRef()`.
  */
 export type ReceivingRef = ReturnType<InstanceType<typeof Transaction>["receivingRef"]>;

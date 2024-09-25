@@ -154,6 +154,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `const NETWORK_NAMES` - `["mainnet", "testnet", "devnet", "localnet"]`.
 - `type NetworkName` - `"mainnet" | "testnet" | "devnet" | "localnet"`.
 - `type ObjectDisplay` - A Sui object display with common properties and arbitrary ones.
+- `type PaginatedResponse<T>` - A paginated response from a Sui RPC call.
 - `type ReceivingRef` - The return type of `Transaction.receivingRef()`.
 - `type SignTransaction` - A function that can sign a `Transaction`.
 

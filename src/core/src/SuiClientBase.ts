@@ -109,8 +109,8 @@ export abstract class SuiClientBase
         const pagTxRes = await this.suiClient.queryTransactionBlocks(query);
 
         const results = {
-            cursor: pagTxRes.nextCursor,
             hasNextPage: pagTxRes.hasNextPage,
+            nextCursor: pagTxRes.nextCursor,
             data: pagTxRes.data
                 .map(resp => parseFn(resp))
                 .filter(result => result !== null),
