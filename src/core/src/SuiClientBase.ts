@@ -80,24 +80,19 @@ export abstract class SuiClientBase
         }
 
         const idChunks = chunkArray(uncachedIds, MAX_OBJECTS_PER_REQUEST);
-        const allResults = await Promise.allSettled(
+        const allResults = await Promise.all(
             idChunks.map(fetchFn)
         );
 
-        for (const result of allResults) {
-            if (result.status === "fulfilled") {
-                const pagObjRes = result.value;
-                for (const resp of pagObjRes) {
-                    const parsedObject = parseFn(resp);
-                    if (parsedObject) {
-                        results.push(parsedObject);
-                        if (cache) {
-                            cache.set(objResToId(resp), parsedObject);
-                        }
+        for (const resps of allResults) {
+            for (const resp of resps) {
+                const parsedObject = parseFn(resp);
+                if (parsedObject) {
+                    results.push(parsedObject);
+                    if (cache) {
+                        cache.set(objResToId(resp), parsedObject);
                     }
                 }
-            } else {
-                console.warn(`[fetchAndParseObjects] Failed to fetch objects: ${result.reason}`);
             }
         }
 
