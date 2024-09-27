@@ -33,6 +33,12 @@ export type PaginatedResponse<T, C> = {
     nextCursor: C;
 };
 
+export const EmptyPaginatedResponse: PaginatedResponse<never, undefined> = {
+    data: [],
+    hasNextPage: false,
+    nextCursor: undefined,
+};
+
 /**
  * The return type of `Transaction.receivingRef()`.
  */
