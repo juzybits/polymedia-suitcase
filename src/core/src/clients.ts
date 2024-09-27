@@ -14,7 +14,7 @@ import { sleep } from "./misc.js";
  */
 export async function devInspectAndGetExecutionResults(
     suiClient: SuiClient,
-    tx: Transaction,
+    tx: Transaction | Uint8Array | string,
     sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
 ): Promise<SuiExecutionResult[]>
 {
@@ -49,7 +49,7 @@ export async function devInspectAndGetExecutionResults(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function devInspectAndGetReturnValues<T extends any[]>(
     suiClient: SuiClient,
-    tx: Transaction,
+    tx: Transaction | Uint8Array | string,
     blockParsers: BcsType<T[number]>[][],
     sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
 ): Promise<T[]>
