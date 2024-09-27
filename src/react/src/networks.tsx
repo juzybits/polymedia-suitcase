@@ -18,7 +18,7 @@ export const NetworkRadioSelector: React.FC<{
     onSwitch,
     className = "",
 }) => {
-    return <div className={`polymedia-radio-selector polymedia-network-radio-selector ${className}`}>
+    return <div className={`poly-radio-selector poly-network-radio-selector ${className}`}>
         {supportedNetworks.map((network) => (
             <div key={network}>
                 <label className="selector-label">

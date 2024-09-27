@@ -14,7 +14,7 @@ export const RpcRadioSelector: React.FC<{
     onSwitch,
     className = "",
 }) => {
-    return <div className={`polymedia-radio-selector polymedia-rpc-radio-selector ${className}`}>
+    return <div className={`poly-radio-selector poly-rpc-radio-selector ${className}`}>
         {RPC_ENDPOINTS[network].map((rpc) => (
             <div key={rpc}>
                 <label className="selector-label">
