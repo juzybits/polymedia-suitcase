@@ -118,10 +118,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isOwnerKind()` - Type guard to check if an `ObjectOwner` is of a specific kind.
 
 ###  SuiArgument
-- `isArgGasCoin()` - Type guard to check if a `SuiArgument` is a `GasCoin`.
-- `isArgInput()` - Type guard to check if a `SuiArgument` is an `Input`.
-- `isArgNestedResult()` - Type guard to check if a `SuiArgument` is a `NestedResult`.
-- `isArgResult()` - Type guard to check if a `SuiArgument` is a `Result`.
+- `type ArgKind<K>` - A `SuiArgument` of a specific kind.
+- `isArgKind()` - Type guard to check if a `SuiArgument` is of a specific kind.
 
 ###  SuiObjectChange
 - `type SuiObjectChangeCreated` - A `SuiObjectChange` with `type: "created"`.

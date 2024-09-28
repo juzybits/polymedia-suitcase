@@ -49,24 +49,30 @@ export function isOwnerKind<K extends OwnerKeys>(
 
 // === SuiArgument ===
 
-/** Type guard to check if a `SuiArgument` is a `GasCoin`. */
-export function isArgGasCoin(arg: SuiArgument): arg is "GasCoin" {
-    return arg === "GasCoin";
-}
+/**
+ * All possible `SuiArgument` subtypes.
+ */
+type ArgKeys = SuiArgument extends infer T
+    ? T extends { [K: string]: any }
+        ? keyof T
+        : T extends string
+            ? T
+            : never
+    : never;
 
-/** Type guard to check if a `SuiArgument` is an `Input`. */
-export function isArgInput(arg: SuiArgument): arg is { Input: number } {
-    return typeof arg === "object" && "Input" in arg;
-}
+/**
+ * A `SuiArgument` of a specific kind.
+ */
+export type ArgKind<K extends ArgKeys> = Extract<SuiArgument, { [P in K]: any } | K>;
 
-/** Type guard to check if a `SuiArgument` is a `NestedResult`. */
-export function isArgNestedResult(arg: SuiArgument): arg is { NestedResult: [number, number] } {
-    return typeof arg === "object" && "NestedResult" in arg;
-}
-
-/** Type guard to check if a `SuiArgument` is a `Result`. */
-export function isArgResult(arg: SuiArgument): arg is { Result: number } {
-    return typeof arg === "object" && "Result" in arg;
+/**
+ * Type guard to check if a `SuiArgument` is of a specific kind.
+ */
+export function isArgKind<K extends ArgKeys>(
+    arg: SuiArgument,
+    kind: K
+): arg is ArgKind<K> {
+    return kind === arg || (typeof arg === "object" && kind in arg);
 }
 
 // === SuiObjectChange ===
