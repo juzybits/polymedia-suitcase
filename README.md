@@ -209,6 +209,9 @@ The `suitcase-react` package provides components for React web apps.
 ## Hooks
 
 - `useClickOutside()` - A hook that detects when a click or touch event occurs outside a DOM element.
+- `useFetch()` - A hook to handle data fetching.
+- `useFetchAndLoadMore()` - A hook to handle data fetching and load more results.
+- `useFetchAndPaginate()` - A hook to handle data fetching and paginating through the results.
 
 ## Links
 
