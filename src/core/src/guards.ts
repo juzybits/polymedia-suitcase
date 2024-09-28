@@ -1,12 +1,11 @@
 import {
-    MoveCallSuiTransaction,
     MoveStruct,
     ObjectOwner,
     SuiArgument,
     SuiObjectChange,
     SuiObjectRef,
     SuiParsedData,
-    SuiTransaction,
+    SuiTransaction
 } from "@mysten/sui/client";
 
 // === ObjectOwner ===
@@ -117,16 +116,14 @@ export function isParsedDataPackage(data: SuiParsedData): data is {
 
 // === SuiTransaction ===
 
-/** All possible kinds of `SuiTransaction`. */
-type TxSubtype = {
-    MakeMoveVec: [string | null, SuiArgument[]];
-    MergeCoins: [SuiArgument, SuiArgument[]];
-    MoveCall: MoveCallSuiTransaction;
-    Publish: string[];
-    SplitCoins: [SuiArgument, SuiArgument[]];
-    TransferObjects: [SuiArgument[], SuiArgument];
-    Upgrade: [string[], string, SuiArgument];
-};
+/**
+ * All possible `SuiTransaction` subtypes.
+ */
+type TxKinds = SuiTransaction extends infer T
+    ? T extends { [K: string]: any }
+        ? keyof T
+        : never
+    : never;
 
 /**
  * A `SuiTransaction` of a specific kind.
@@ -135,8 +132,8 @@ type TxSubtype = {
  * const tx: TxKind<"MoveCall"> = ...
  * const packageId = tx.MoveCall.package;
  * ```
- * */
-export type TxKind<K extends keyof TxSubtype> = SuiTransaction & { [P in K]: TxSubtype[P] };
+ */
+export type TxKind<K extends TxKinds> = Extract<SuiTransaction, { [P in K]: any }>;
 
 /**
  * Type guard to check if a `SuiTransaction` is of a specific kind.
@@ -146,8 +143,8 @@ export type TxKind<K extends keyof TxSubtype> = SuiTransaction & { [P in K]: TxS
  *     const packageId = tx.MoveCall.package;
  * }
  * ```
- * */
-export function isTxKind<K extends keyof TxSubtype>(
+ */
+export function isTxKind<K extends TxKinds>(
     tx: SuiTransaction,
     kind: K
 ): tx is TxKind<K> {
