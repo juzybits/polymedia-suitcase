@@ -13,7 +13,7 @@ import {
  * All possible `ObjectOwner` subtypes.
  */
 type OwnerKeys = ObjectOwner extends infer T
-    ? T extends { [K: string]: any }
+    ? T extends Record<string, unknown>
         ? keyof T
         : T extends string
             ? T
@@ -24,7 +24,7 @@ type OwnerKeys = ObjectOwner extends infer T
  * An `ObjectOwner` of a specific kind.
  * ```
  */
-export type OwnerKind<K extends OwnerKeys> = Extract<ObjectOwner, { [P in K]: any } | K>;
+export type OwnerKind<K extends OwnerKeys> = Extract<ObjectOwner, Record<K, unknown> | K>;
 
 /**
  * Type guard to check if an `ObjectOwner` is of a specific kind.
@@ -42,7 +42,7 @@ export function isOwnerKind<K extends OwnerKeys>(
  * All possible `SuiArgument` subtypes.
  */
 type ArgKeys = SuiArgument extends infer T
-    ? T extends { [K: string]: any }
+    ? T extends Record<string, unknown>
         ? keyof T
         : T extends string
             ? T
@@ -52,7 +52,7 @@ type ArgKeys = SuiArgument extends infer T
 /**
  * A `SuiArgument` of a specific kind.
  */
-export type ArgKind<K extends ArgKeys> = Extract<SuiArgument, { [P in K]: any } | K>;
+export type ArgKind<K extends ArgKeys> = Extract<SuiArgument, Record<K, unknown> | K>;
 
 /**
  * Type guard to check if a `SuiArgument` is of a specific kind.
@@ -89,14 +89,12 @@ export function isObjChangeKind<K extends ObjChangeKeys>(
 // === SuiObjectRef ===
 
 /** Type guard to check if an object is a `SuiObjectRef`. */
-/* eslint-disable */
-export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
-    return obj
-        && typeof obj.objectId !== "undefined"
-        && typeof obj.version !== "undefined"
-        && typeof obj.digest !== "undefined";
+export function isSuiObjectRef(obj: unknown): obj is SuiObjectRef {
+    return typeof obj === "object" && obj !== null
+        && "objectId" in obj
+        && "version" in obj
+        && "digest" in obj;
 }
-/* eslint-enable */
 
 // === SuiParsedData ===
 
@@ -130,7 +128,7 @@ export function isParsedDataKind<K extends ParsedDataKeys>(
  * All possible `SuiTransaction` subtypes.
  */
 type TxKeys = SuiTransaction extends infer T
-    ? T extends { [K: string]: any }
+    ? T extends Record<string, unknown>
         ? keyof T
         : never
     : never;
@@ -138,7 +136,7 @@ type TxKeys = SuiTransaction extends infer T
 /**
  * A `SuiTransaction` of a specific kind.
  */
-export type TxKind<K extends TxKeys> = Extract<SuiTransaction, { [P in K]: any }>;
+export type TxKind<K extends TxKeys> = Extract<SuiTransaction, Record<K, unknown> | K>;
 
 /**
  * Type guard to check if a `SuiTransaction` is of a specific kind.

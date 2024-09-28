@@ -39,7 +39,7 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         "https://sui-testnet.public.blastapi.io",
         "https://testnet.suiet.app",
         "https://sui-testnet.nodeinfra.com",
-        'https://testnet.sui.rpcpool.com',
+        "https://testnet.sui.rpcpool.com",
     ],
     "devnet": [
         getFullnodeUrl("devnet"),

@@ -34,7 +34,7 @@ export const RpcRadioSelector: React.FC<{
             </div>
         ))}
     </div>;
-}
+};
 
 /**
  * Load the RPC URL for the current network from local storage.
