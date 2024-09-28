@@ -34,9 +34,6 @@ export function objResToDisplay(
     if (!resp.data?.display) {
         throw Error(`response has no display: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (resp.data.display.error) {
-        throw Error(`display has error: ${JSON.stringify(resp, null, 2)}`);
-    }
 
     return {
         ...newEmptyDisplay(),
