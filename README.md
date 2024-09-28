@@ -114,10 +114,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ## Type guards
 
 ###  ObjectOwner
-- `isOwnerAddress()` - Type guard to check if an `ObjectOwner` is `Address` (a single address).
-- `isOwnerImmutable()` - Type guard to check if an `ObjectOwner` is `Immutable`.
-- `isOwnerObject()` - Type guard to check if an `ObjectOwner` is `Object` (a single object).
-- `isOwnerShared()` - Type guard to check if an `ObjectOwner` is `Shared` (can be used by any address).
+- `type OwnerKind<K>` - An `ObjectOwner` of a specific kind.
+- `isOwnerKind()` - Type guard to check if an `ObjectOwner` is of a specific kind.
 
 ###  SuiArgument
 - `isArgGasCoin()` - Type guard to check if a `SuiArgument` is a `GasCoin`.

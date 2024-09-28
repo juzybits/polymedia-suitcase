@@ -3,7 +3,7 @@ import {
     SuiObjectResponse,
     SuiParsedData
 } from "@mysten/sui/client";
-import { isOwnerAddress, isOwnerImmutable, isOwnerObject, isOwnerShared, isParsedDataObject } from "./guards.js";
+import { isOwnerKind, isParsedDataObject } from "./guards.js";
 import { ObjectDisplay } from "./types.js";
 
 /**
@@ -105,16 +105,16 @@ export function objResToOwner(
     if (!resp.data?.owner) {
         throw Error(`response has no owner data: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (isOwnerAddress(resp.data.owner)) {
+    if (isOwnerKind(resp.data.owner, "AddressOwner")) {
         return resp.data.owner.AddressOwner;
     }
-    if (isOwnerObject(resp.data.owner)) {
+    if (isOwnerKind(resp.data.owner, "ObjectOwner")) {
         return resp.data.owner.ObjectOwner;
     }
-    if (isOwnerShared(resp.data.owner)) {
+    if (isOwnerKind(resp.data.owner, "Shared")) {
         return "shared";
     }
-    if (isOwnerImmutable(resp.data.owner)) {
+    if (isOwnerKind(resp.data.owner, "Immutable")) {
         return "immutable";
     }
     return "unknown";

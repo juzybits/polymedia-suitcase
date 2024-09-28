@@ -10,32 +10,41 @@ import {
 
 // === ObjectOwner ===
 
-/** Type guard to check if an `ObjectOwner` is `Address` (a single address). */
-export function isOwnerAddress(
-    owner: ObjectOwner,
-): owner is { AddressOwner: string } {
-    return typeof owner === "object" && "AddressOwner" in owner;
-}
+/**
+ * All possible `ObjectOwner` subtypes.
+ */
+type OwnerKeys = ObjectOwner extends infer T
+    ? T extends { [K: string]: any }
+        ? keyof T
+        : T extends string
+            ? T
+            : never
+    : never;
 
-/** Type guard to check if an `ObjectOwner` is `Immutable`. */
-export function isOwnerImmutable(
-    owner: ObjectOwner,
-): owner is "Immutable" {
-    return owner === "Immutable";
-}
+/**
+ * An `ObjectOwner` of a specific kind.
+ * @example
+ * ```ts
+ * const owner: OwnerKind<"AddressOwner"> = ...
+ * const address = owner.AddressOwner;
+ * ```
+ */
+export type OwnerKind<K extends OwnerKeys> = Extract<ObjectOwner, { [P in K]: any } | K>;
 
-/** Type guard to check if an `ObjectOwner` is `Object` (a single object). */
-export function isOwnerObject(
+/**
+ * Type guard to check if an `ObjectOwner` is of a specific kind.
+ * @example
+ * ```ts
+ * if (isOwnerKind(resp.data.owner, "AddressOwner")) {
+ *     const owner = resp.data.owner.AddressOwner;
+ * }
+ * ```
+ */
+export function isOwnerKind<K extends OwnerKeys>(
     owner: ObjectOwner,
-): owner is { ObjectOwner: string } {
-    return typeof owner === "object" && "ObjectOwner" in owner;
-}
-
-/** Type guard to check if an `ObjectOwner` is `Shared` (can be used by any address). */
-export function isOwnerShared(
-    owner: ObjectOwner,
-): owner is { Shared: { initial_shared_version: string } } {
-    return typeof owner === "object" && "Shared" in owner;
+    kind: K
+): owner is OwnerKind<K> {
+    return kind === owner || (typeof owner === "object" && kind in owner);
 }
 
 // === SuiArgument ===
@@ -119,7 +128,7 @@ export function isParsedDataPackage(data: SuiParsedData): data is {
 /**
  * All possible `SuiTransaction` subtypes.
  */
-type TxKinds = SuiTransaction extends infer T
+type TxKeys = SuiTransaction extends infer T
     ? T extends { [K: string]: any }
         ? keyof T
         : never
@@ -133,7 +142,7 @@ type TxKinds = SuiTransaction extends infer T
  * const packageId = tx.MoveCall.package;
  * ```
  */
-export type TxKind<K extends TxKinds> = Extract<SuiTransaction, { [P in K]: any }>;
+export type TxKind<K extends TxKeys> = Extract<SuiTransaction, { [P in K]: any }>;
 
 /**
  * Type guard to check if a `SuiTransaction` is of a specific kind.
@@ -144,7 +153,7 @@ export type TxKind<K extends TxKinds> = Extract<SuiTransaction, { [P in K]: any 
  * }
  * ```
  */
-export function isTxKind<K extends TxKinds>(
+export function isTxKind<K extends TxKeys>(
     tx: SuiTransaction,
     kind: K
 ): tx is TxKind<K> {
