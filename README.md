@@ -122,12 +122,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isArgKind()` - Type guard to check if a `SuiArgument` is of a specific kind.
 
 ###  SuiObjectChange
-- `type SuiObjectChangeCreated` - A `SuiObjectChange` with `type: "created"`.
-- `type SuiObjectChangeDeleted` - A `SuiObjectChange` with `type: "deleted"`.
-- `type SuiObjectChangeMutated` - A `SuiObjectChange` with `type: "mutated"`.
-- `type SuiObjectChangePublished` - A `SuiObjectChange` with `type: 'published'`.
-- `type SuiObjectChangeTransferred` - A `SuiObjectChange` with `type: 'transferred'`.
-- `type SuiObjectChangeWrapped` - A `SuiObjectChange` with `type: "wrapped"`.
+- `type ObjChangeKind<K>` - A `SuiObjectChange` of a specific kind.
+- `isObjChangeKind()` - Type guard to check if a `SuiObjectChange` is of a specific kind.
 
 ###  SuiObjectRef
 - `isSuiObjectRef()` - Type guard to check if an object is a `SuiObjectRef`.

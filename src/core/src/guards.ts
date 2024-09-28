@@ -66,23 +66,25 @@ export function isArgKind<K extends ArgKeys>(
 
 // === SuiObjectChange ===
 
-/** A `SuiObjectChange` with `type: "created"`. */
-export type SuiObjectChangeCreated = Extract<SuiObjectChange, { type: "created" }>;
+/**
+ * All possible `SuiObjectChange` subtypes.
+ */
+type ObjChangeKeys = SuiObjectChange extends { type: infer T } ? T : never;
 
-/** A `SuiObjectChange` with `type: "deleted"`. */
-export type SuiObjectChangeDeleted = Extract<SuiObjectChange, { type: "deleted" }>;
+/**
+ * A `SuiObjChange` of a specific kind.
+ */
+export type ObjChangeKind<K extends ObjChangeKeys> = Extract<SuiObjectChange, { type: K }>;
 
-/** A `SuiObjectChange` with `type: "mutated"`. */
-export type SuiObjectChangeMutated = Extract<SuiObjectChange, { type: "mutated" }>;
-
-/** A `SuiObjectChange` with `type: "published"`. */
-export type SuiObjectChangePublished = Extract<SuiObjectChange, { type: "published" }>;
-
-/** A `SuiObjectChange` with `type: "transferred"`. */
-export type SuiObjectChangeTransferred = Extract<SuiObjectChange, { type: "transferred" }>;
-
-/** A `SuiObjectChange` with `type: "wrapped"`. */
-export type SuiObjectChangeWrapped = Extract<SuiObjectChange, { type: "wrapped" }>;
+/**
+ * Type guard to check if a `SuiObjectChange` is of a specific kind.
+ */
+export function isObjChangeKind<K extends ObjChangeKeys>(
+    change: SuiObjectChange,
+    kind: K
+): change is ObjChangeKind<K> {
+    return change.type === kind;
+}
 
 // === SuiObjectRef ===
 
