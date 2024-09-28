@@ -141,13 +141,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isParsedDataPackage()` - Type guard to check if a `SuiParsedData` is a `package`.
 
 ###  SuiTransaction
-- `isTxMakeMoveVec()` - Type guard to check if a `SuiTransaction` is a `MakeMoveVec` tx.
-- `isTxMergeCoins()` - Type guard to check if a `SuiTransaction` is a `MergeCoins` tx.
-- `isTxMoveCall()` - Type guard to check if a `SuiTransaction` is a `MoveCallSuiTransaction`.
-- `isTxPublish()` - Type guard to check if a `SuiTransaction` is a `Publish` tx.
-- `isTxSplitCoins()` - Type guard to check if a `SuiTransaction` is a `SplitCoins` tx.
-- `isTxTransferObjects()` - Type guard to check if a `SuiTransaction` is a `TransferObjects` tx.
-- `isTxUpgrade()` - Type guard to check if a `SuiTransaction` is an `Upgrade` tx.
+- `type TxKind<K>` - A `SuiTransaction` of a specific kind.
+- `isTxKind()` - Type guard to check if a `SuiTransaction` is of a specific kind.
 
 ## Types
 

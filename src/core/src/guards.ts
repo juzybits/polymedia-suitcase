@@ -117,51 +117,39 @@ export function isParsedDataPackage(data: SuiParsedData): data is {
 
 // === SuiTransaction ===
 
-/** Type guard to check if a `SuiTransaction` is a `MakeMoveVec` tx. */
-export function isTxMakeMoveVec(
-    tx: SuiTransaction,
-): tx is { MakeMoveVec: [string | null, SuiArgument[]] } {
-    return "MakeMoveVec" in tx;
-}
+/** All possible kinds of `SuiTransaction`. */
+type TxSubtype = {
+    MakeMoveVec: [string | null, SuiArgument[]];
+    MergeCoins: [SuiArgument, SuiArgument[]];
+    MoveCall: MoveCallSuiTransaction;
+    Publish: string[];
+    SplitCoins: [SuiArgument, SuiArgument[]];
+    TransferObjects: [SuiArgument[], SuiArgument];
+    Upgrade: [string[], string, SuiArgument];
+};
 
-/** Type guard to check if a `SuiTransaction` is a `MergeCoins` tx. */
-export function isTxMergeCoins(
-    tx: SuiTransaction,
-): tx is { MergeCoins: [SuiArgument, SuiArgument[]] } {
-    return "MergeCoins" in tx;
-}
+/**
+ * A `SuiTransaction` of a specific kind.
+ * @example
+ * ```ts
+ * const tx: TxKind<"MoveCall"> = ...
+ * const packageId = tx.MoveCall.package;
+ * ```
+ * */
+export type TxKind<K extends keyof TxSubtype> = SuiTransaction & { [P in K]: TxSubtype[P] };
 
-/** Type guard to check if a `SuiTransaction` is a `MoveCallSuiTransaction`. */
-export function isTxMoveCall(
+/**
+ * Type guard to check if a `SuiTransaction` is of a specific kind.
+ * @example
+ * ```ts
+ * if (isTxKind(tx, "MoveCall")) {
+ *     const packageId = tx.MoveCall.package;
+ * }
+ * ```
+ * */
+export function isTxKind<K extends keyof TxSubtype>(
     tx: SuiTransaction,
-): tx is { MoveCall: MoveCallSuiTransaction } {
-    return "MoveCall" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `Publish` tx. */
-export function isTxPublish(
-    tx: SuiTransaction,
-): tx is { Publish: string[] } {
-    return "Publish" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `SplitCoins` tx. */
-export function isTxSplitCoins(
-    tx: SuiTransaction,
-): tx is { SplitCoins: [SuiArgument, SuiArgument[]] } {
-    return "SplitCoins" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is a `TransferObjects` tx. */
-export function isTxTransferObjects(
-    tx: SuiTransaction,
-): tx is { TransferObjects: [SuiArgument[], SuiArgument] } {
-    return "TransferObjects" in tx;
-}
-
-/** Type guard to check if a `SuiTransaction` is an `Upgrade` tx. */
-export function isTxUpgrade(
-    tx: SuiTransaction,
-): tx is { Upgrade: [string[], string, SuiArgument] } {
-    return "Upgrade" in tx;
+    kind: K
+): tx is TxKind<K> {
+    return kind in tx;
 }
