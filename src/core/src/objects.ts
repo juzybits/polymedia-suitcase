@@ -3,7 +3,7 @@ import {
     SuiObjectResponse,
     SuiParsedData
 } from "@mysten/sui/client";
-import { isOwnerKind, isParsedDataObject } from "./guards.js";
+import { isOwnerKind, isParsedDataKind } from "./guards.js";
 import { ObjectDisplay } from "./types.js";
 
 /**
@@ -151,7 +151,7 @@ export function objResToType(
     if (!resp.data?.content) {
         throw Error(`response has no content: ${JSON.stringify(resp, null, 2)}`);
     }
-    if (!isParsedDataObject(resp.data.content)) {
+    if (!isParsedDataKind(resp.data.content, "moveObject")) {
         throw Error(`response data is not a moveObject: ${JSON.stringify(resp, null, 2)}`);
     }
     return resp.data.content.type;

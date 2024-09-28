@@ -133,8 +133,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `isSuiObjectRef()` - Type guard to check if an object is a `SuiObjectRef`.
 
 ###  SuiParsedData
-- `isParsedDataObject()` - Type guard to check if a `SuiParsedData` is a `moveObject`.
-- `isParsedDataPackage()` - Type guard to check if a `SuiParsedData` is a `package`.
+- `type ParsedDataKind<K>` - A `SuiParsedData` of a specific kind.
+- `isParsedDataKind()` - Type guard to check if a `SuiParsedData` is of a specific kind.
 
 ###  SuiTransaction
 - `type TxKind<K>` - A `SuiTransaction` of a specific kind.

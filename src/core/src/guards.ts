@@ -1,5 +1,4 @@
 import {
-    MoveStruct,
     ObjectOwner,
     SuiArgument,
     SuiObjectChange,
@@ -23,22 +22,12 @@ type OwnerKeys = ObjectOwner extends infer T
 
 /**
  * An `ObjectOwner` of a specific kind.
- * @example
- * ```ts
- * const owner: OwnerKind<"AddressOwner"> = ...
- * const address = owner.AddressOwner;
  * ```
  */
 export type OwnerKind<K extends OwnerKeys> = Extract<ObjectOwner, { [P in K]: any } | K>;
 
 /**
  * Type guard to check if an `ObjectOwner` is of a specific kind.
- * @example
- * ```ts
- * if (isOwnerKind(resp.data.owner, "AddressOwner")) {
- *     const owner = resp.data.owner.AddressOwner;
- * }
- * ```
  */
 export function isOwnerKind<K extends OwnerKeys>(
     owner: ObjectOwner,
@@ -109,24 +98,28 @@ export function isSuiObjectRef(obj: any): obj is SuiObjectRef {
 
 // === SuiParsedData ===
 
-/** Type guard to check if a `SuiParsedData` is a `moveObject`. */
-export function isParsedDataObject(data: SuiParsedData): data is {
-    dataType: "moveObject";
-    fields: MoveStruct;
-    hasPublicTransfer: boolean;
-    type: string;
-} {
-    return (
-        data.dataType === "moveObject"
-    );
-}
+/**
+ * All possible `SuiParsedData` subtypes.
+ */
+type ParsedDataKeys = SuiParsedData extends infer T
+    ? T extends { dataType: infer DT }
+        ? DT
+        : never
+    : never;
 
-/** Type guard to check if a `SuiParsedData` is a `package`. */
-export function isParsedDataPackage(data: SuiParsedData): data is {
-    dataType: "package";
-    disassembled: Record<string, unknown>;
-} {
-    return data.dataType === "package";
+/**
+ * A `SuiParsedData` of a specific kind.
+ */
+export type ParsedDataKind<K extends ParsedDataKeys> = Extract<SuiParsedData, { dataType: K }>;
+
+/**
+ * Type guard to check if a `SuiParsedData` is of a specific kind.
+ */
+export function isParsedDataKind<K extends ParsedDataKeys>(
+    data: SuiParsedData,
+    kind: K
+): data is ParsedDataKind<K> {
+    return data.dataType === kind;
 }
 
 // === SuiTransaction ===
@@ -142,22 +135,11 @@ type TxKeys = SuiTransaction extends infer T
 
 /**
  * A `SuiTransaction` of a specific kind.
- * @example
- * ```ts
- * const tx: TxKind<"MoveCall"> = ...
- * const packageId = tx.MoveCall.package;
- * ```
  */
 export type TxKind<K extends TxKeys> = Extract<SuiTransaction, { [P in K]: any }>;
 
 /**
  * Type guard to check if a `SuiTransaction` is of a specific kind.
- * @example
- * ```ts
- * if (isTxKind(tx, "MoveCall")) {
- *     const packageId = tx.MoveCall.package;
- * }
- * ```
  */
 export function isTxKind<K extends TxKeys>(
     tx: SuiTransaction,
