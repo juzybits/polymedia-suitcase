@@ -6,7 +6,7 @@ import { getFullnodeUrl, SuiClient, SuiTransactionBlockResponse } from "@mysten/
 import { Signer } from "@mysten/sui/cryptography";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { Transaction } from "@mysten/sui/transactions";
-import { fromB64 } from "@mysten/sui/utils";
+import { fromBase64 } from "@mysten/sui/utils";
 import { NetworkName, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
 import { readJsonFile } from "./file.js";
 
@@ -34,7 +34,7 @@ export function getActiveKeypair(): Ed25519Keypair {
         const keystore = readJsonFile<string[]>(keystorePath);
 
         for (const priv of keystore) {
-            const raw = fromB64(priv);
+            const raw = fromBase64(priv);
             if (raw[0] !== 0) {
                 continue;
             }

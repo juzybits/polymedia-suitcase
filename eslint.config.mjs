@@ -44,7 +44,6 @@ export default [
             "@typescript-eslint/prefer-nullish-coalescing": "off",
             "@typescript-eslint/restrict-template-expressions": "off",
             "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
-            "import/extensions": ["error", "ignorePackages", { ts: "never", tsx: "never" }],
             "no-constant-condition": "off",
             "react/display-name": "off",
             "react/no-unescaped-entities": "off",
@@ -58,7 +57,13 @@ export default [
         },
     },
     {
-        files: ["**/__tests__/**/*.ts?(x)", "src/react/**/*.ts?(x)"],
+        files: ["src/core/**/*.ts?(x)", "src/sdk/**/*.ts?(x)"],
+        rules: {
+            "import/extensions": ["error", "ignorePackages", { ts: "never", tsx: "never" }],
+        },
+    },
+    {
+        files: ["**/__tests__/**/*.ts?(x)"],
         rules: {
             "import/extensions": ["off", "ignorePackages"],
         },
