@@ -71,7 +71,7 @@ importers:
         version: link:../node
     devDependencies:
       '@types/node':
-        specifier: ^22.5.5
+        specifier: ^22.7.4
         version: 22.7.4
       typescript:
         specifier: ^5.6.2
@@ -87,7 +87,7 @@ importers:
         version: link:../core
     devDependencies:
       '@types/node':
-        specifier: ^22.5.5
+        specifier: ^22.7.4
         version: 22.7.4
       typescript:
         specifier: ^5.6.2
@@ -100,7 +100,7 @@ importers:
         version: link:../core
     devDependencies:
       '@types/react':
-        specifier: ^18.3.7
+        specifier: ^18.3.10
         version: 18.3.10
       react:
         specifier: ^18.3.1

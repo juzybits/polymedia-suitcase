@@ -1,6 +1,6 @@
 {
     "private": false,
-    "version": "0.0.30",
+    "version": "0.0.31",
     "name": "@polymedia/suitcase-node",
     "author": "@juzybits (https://polymedia.app)",
     "homepage": "https://github.com/juzybits/polymedia-suitcase",
@@ -31,7 +31,7 @@
         "@mysten/sui": "^1.11.0"
     },
     "devDependencies": {
-        "@types/node": "^22.5.5",
+        "@types/node": "^22.7.4",
         "typescript": "^5.6.2"
     },
     "type": "module",
