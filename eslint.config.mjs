@@ -34,6 +34,7 @@ export default [
             "@typescript-eslint/consistent-type-definitions": [ "error", "type" ],
             "@typescript-eslint/no-confusing-void-expression": "off",
             "@typescript-eslint/no-floating-promises": "off",
+            "@typescript-eslint/no-inferrable-types": "off",
             "@typescript-eslint/no-misused-promises": "off",
             "@typescript-eslint/no-namespace": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
