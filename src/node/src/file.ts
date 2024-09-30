@@ -27,7 +27,7 @@ export function getFileName(importMetaUrl: string): string {
 /**
  * Write a string into a file.
  */
-function writeTextFile(filename: string, contents: string): void {
+export function writeTextFile(filename: string, contents: string): void {
     fs.writeFileSync(
         filename,
         contents + "\n"
@@ -49,7 +49,7 @@ export function writeJsonFile(filename: string, contents: unknown): void {
 /**
  * Read a JSON file and parse its contents into an object.
  */
- 
+
 export function readJsonFile<T>(filename: string): T {
     const fileContent = fs.readFileSync(filename, "utf8");
     const jsonData = JSON.parse(fileContent) as T;

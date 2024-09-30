@@ -177,6 +177,7 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 - `readTsvFile()` - Read a TSV file and parse each line into an object.
 - `writeCsvFile()` - Write objects into a CSV file.
 - `readCsvFile()` - Read a CSV file and parse each line into an object.
+- `writeTextFile()` - Write a string into a file.
 
 ## CLI
 
