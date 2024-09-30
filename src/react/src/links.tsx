@@ -25,18 +25,17 @@ export type ExplorerLinkProps = {
  * An external link like:
  * `<a target='_blank' rel='noopener noreferrer nofollow' href={href}>{text}</a>`
  */
-export const LinkExternal: React.FC<{
+export const LinkExternal: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement> & {
     follow?: boolean;
-    html?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
     children: React.ReactNode;
 }> = ({
     follow = true,
-    html = {},
     children,
+    ...props
 }) => {
-    html.target = html.target ?? "_blank";
-    html.rel = html.rel ?? `noopener noreferrer ${follow ? "" : "nofollow"}`;
-    return <a {...html} >
+    const target = props.target ?? "_blank";
+    const rel = props.rel ?? `noopener noreferrer ${follow ? "" : "nofollow"}`;
+    return <a {...props} target={target} rel={rel}>
         {children}
     </a>;
 };
@@ -65,7 +64,7 @@ export const LinkToExplorer: React.FC<ExplorerLinkProps & {
         throw new Error(`Unknown explorer: ${explorer}`);
     }
     html.href = makeUrl(network, kind, addr);
-    return <LinkExternal html={html}>
+    return <LinkExternal {...html}>
         {children || shortenAddress(addr)}
     </LinkExternal>;
 };
@@ -86,7 +85,7 @@ const createExplorerLinkComponent = (
     }: ExplorerLinkProps) =>
     {
         html.href = makeUrl(network, kind, addr);
-        return <LinkExternal html={html}>
+        return <LinkExternal {...html}>
             {children || shortenAddress(addr)}
         </LinkExternal>;
     };
