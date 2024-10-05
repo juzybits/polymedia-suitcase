@@ -6,16 +6,18 @@ import { NetworkName, RPC_ENDPOINTS } from "@polymedia/suitcase-core";
 export const RpcRadioSelector: React.FC<{
     network: NetworkName;
     selectedRpc: string;
+    supportedRpcs?: string[];
     onSwitch: (newRpc: string) => void;
     className?: string;
 }> = ({
     network,
     selectedRpc,
+    supportedRpcs = RPC_ENDPOINTS[network],
     onSwitch,
     className = "",
 }) => {
     return <div className={`poly-radio-selector poly-rpc-radio-selector ${className}`}>
-        {RPC_ENDPOINTS[network].map((rpc) => (
+        {supportedRpcs.map((rpc) => (
             <div key={rpc}>
                 <label className="selector-label">
                     <input
@@ -24,7 +26,13 @@ export const RpcRadioSelector: React.FC<{
                         value={rpc}
                         checked={selectedRpc === rpc}
                         onChange={() => {
-                            switchRpc(network, rpc, onSwitch);
+                            switchRpc({
+                                network,
+                                newRpc: rpc,
+                                supportedRpcs,
+                                defaultRpc: supportedRpcs[0],
+                                onSwitch
+                            });
                         }}
                     />
                     <span className="selector-text">
@@ -39,20 +47,45 @@ export const RpcRadioSelector: React.FC<{
 /**
  * Load the RPC URL for the current network from local storage.
  */
-export function loadRpc(
-    network: NetworkName,
-): string {
-    return localStorage.getItem(`polymedia.rpc.${network}`) || RPC_ENDPOINTS[network][0];
+export type LoadRpcParams = {
+    network: NetworkName;
+    supportedRpcs?: string[];
+    defaultRpc?: string;
+};
+
+export function loadRpc({
+    network,
+    supportedRpcs = RPC_ENDPOINTS[network],
+    defaultRpc = supportedRpcs[0],
+}: LoadRpcParams): string
+{
+    const storedRpc = localStorage.getItem(`polymedia.rpc.${network}`);
+    if (storedRpc && supportedRpcs.includes(storedRpc)) {
+        return storedRpc;
+    }
+    return defaultRpc;
 }
+
+export type SwitchRpcParams = {
+    network: NetworkName;
+    newRpc: string;
+    supportedRpcs?: string[];
+    defaultRpc?: string;
+    onSwitch?: (newRpc: string) => void;
+};
 
 /**
  * Change RPCs, update local storage, and optionally trigger a callback.
  */
-export function switchRpc(
-    network: NetworkName,
-    newRpc: string,
-    onSwitch?: (newRpc: string) => void,
-): void {
+export function switchRpc({
+    network,
+    newRpc,
+    supportedRpcs = RPC_ENDPOINTS[network],
+    defaultRpc = supportedRpcs[0],
+    onSwitch,
+}: SwitchRpcParams): void
+{
+    newRpc = supportedRpcs.includes(newRpc) ? newRpc : defaultRpc;
     localStorage.setItem(`polymedia.rpc.${network}`, newRpc);
     if (onSwitch) {
         onSwitch(newRpc);
