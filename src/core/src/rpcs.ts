@@ -13,7 +13,7 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         "https://mainnet.sui.rpcpool.com",
         "https://sui-mainnet.nodeinfra.com",
         "https://mainnet-rpc.sui.chainbase.online",
-        'https://sui-mainnet-ca-1.cosmostation.io',
+        "https://sui-mainnet-ca-1.cosmostation.io",
         "https://sui-mainnet-ca-2.cosmostation.io",
         "https://sui-mainnet-us-1.cosmostation.io",
         "https://sui-mainnet-us-2.cosmostation.io",
@@ -27,9 +27,9 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         // "https://sui-mainnet-rpc-korea.allthatnode.com",     // 000
         // "https://sui-mainnet-rpc-germany.allthatnode.com",   // 000
         // "https://sui-mainnet-rpc.bartestnet.com",            // 403
-        // 'https://sui-rpc-mainnet.testnet-pride.com',         // 502
-        // 'https://sui-mainnet-eu-1.cosmostation.io',          // 000
-        // 'https://sui-mainnet-eu-2.cosmostation.io',          // 000
+        // "https://sui-rpc-mainnet.testnet-pride.com",         // 502
+        // "https://sui-mainnet-eu-1.cosmostation.io",          // 000
+        // "https://sui-mainnet-eu-2.cosmostation.io",          // 000
         // "https://sui-mainnet-eu-3.cosmostation.io",          // CORS error
         // "https://sui-mainnet-eu-4.cosmostation.io",          // CORS error
     ],
