@@ -17,11 +17,11 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         "https://sui-mainnet-ca-2.cosmostation.io",
         "https://sui-mainnet-us-1.cosmostation.io",
         "https://sui-mainnet-us-2.cosmostation.io",
-        "https://sui.publicnode.com",
 
         // "https://sui-mainnet.public.blastapi.io",            // 500
         // "https://sui-mainnet-endpoint.blockvision.org",      // 429 too many requests
 
+        // "https://sui-rpc.publicnode.com",                    // 504 Gateway Timeout on queryTransactionBlocks() with showEffects/show*
         // "https://sui1mainnet-rpc.chainode.tech",             // CORS error
         // "https://sui-mainnet-rpc.allthatnode.com",           // 000
         // "https://sui-mainnet-rpc-korea.allthatnode.com",     // 000
@@ -41,6 +41,7 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
         "https://testnet.suiet.app",
         "https://sui-testnet.nodeinfra.com",
         "https://testnet.sui.rpcpool.com",
+        "https://sui-testnet-rpc.publicnode.com",
     ],
     "devnet": [
         getFullnodeUrl("devnet"),
