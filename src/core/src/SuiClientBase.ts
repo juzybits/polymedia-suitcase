@@ -34,16 +34,16 @@ export abstract class SuiClientBase
      * @param waitForTxOptions Options for `SuiClient.waitForTransaction()`.
      * @param txResponseOptions Which fields to include in transaction responses.
      */
-    constructor(
+    constructor(args: {
         suiClient: SuiClient,
         signTransaction: SignTransaction,
-        waitForTxOptions: WaitForTxOptions | false = { timeout: 60_000, pollInterval: 333 },
-        txResponseOptions: SuiTransactionBlockResponseOptions = { showEffects: true, showObjectChanges: true },
-    ) {
-        this.suiClient = suiClient;
-        this.signTransaction = signTransaction;
-        this.txResponseOptions = txResponseOptions;
-        this.waitForTxOptions = waitForTxOptions;
+        waitForTxOptions?: WaitForTxOptions | false,
+        txResponseOptions?: SuiTransactionBlockResponseOptions,
+    }) {
+        this.suiClient = args.suiClient;
+        this.signTransaction = args.signTransaction;
+        this.waitForTxOptions = args.waitForTxOptions ?? { timeout: 60_000, pollInterval: 333 };
+        this.txResponseOptions = args.txResponseOptions ?? { showEffects: true, showObjectChanges: true };
     }
 
     // === data fetching ===
