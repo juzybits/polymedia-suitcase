@@ -199,20 +199,20 @@ The `suitcase-react` package provides components for React web apps.
 - `loadExplorer()` - Load the chosen Sui explorer name from local storage.
 - `switchExplorer()` - Change the chosen Sui explorer, update local storage, and optionally trigger a callback.
 
-## Forms
-
-- `useInputBase()` - A base hook for creating input fields.
-- `useInputString()` - An input field for strings.
-- `useInputAddress()` - An input field for Sui addresses (or object IDs).
-- `useInputUnsignedInt()` - An input field for positive integers.
-- `useInputUnsignedBalance()` - Input field for positive Coin balances. Handles decimals (e.g. `"1 SUI"` → `1_000_000_000`).
-
 ## Hooks
 
 - `useClickOutside()` - A hook that detects when a click or touch event occurs outside a DOM element.
 - `useFetch()` - A hook to handle data fetching.
 - `useFetchAndLoadMore()` - A hook to handle data fetching and load more results.
 - `useFetchAndPaginate()` - A hook to handle data fetching and paginating through the results.
+
+## Inputs
+
+- `useInputBase()` - A base hook for creating input fields.
+- `useInputString()` - An input field for strings.
+- `useInputAddress()` - An input field for Sui addresses (or object IDs).
+- `useInputUnsignedInt()` - An input field for positive integers.
+- `useInputUnsignedBalance()` - Input field for positive Coin balances. Handles decimals (e.g. `"1 SUI"` → `1_000_000_000`).
 
 ## Links
 
