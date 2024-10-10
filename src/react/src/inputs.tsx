@@ -9,6 +9,7 @@ export type CommonInputProps<T> = {
     label?: React.ReactNode;
     msgRequired?: string;
     onChangeVal?: (val: T | undefined) => void;
+    deps?: React.DependencyList;
 };
 
 /**
@@ -40,7 +41,6 @@ export const useInputBase = <T,>(
 ): InputReturn<T> =>
 {
     const html = props.html ?? {};
-
     const [str, setStr] = useState<string>(`${html.value ?? ""}`);
     const [val, setVal] = useState<T | undefined>();
     const [err, setErr] = useState<string | undefined>();
@@ -81,8 +81,8 @@ export const useInputBase = <T,>(
     };
 
     useEffect(() => {
-        onChangeStr(str.trim());
-    }, []);
+        onChangeStr(str); // revalidate
+    }, props.deps);
 
     useEffect(() => {
         if (props.onChangeVal) {
