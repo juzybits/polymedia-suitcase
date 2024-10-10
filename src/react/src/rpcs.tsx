@@ -1,4 +1,5 @@
 import { NetworkName, RPC_ENDPOINTS } from "@polymedia/suitcase-core";
+import { RadioOption, RadioSelector } from "./selectors";
 
 /**
  * A radio button menu to select an RPC endpoint and save the choice to local storage.
@@ -15,33 +16,31 @@ export const RpcRadioSelector: React.FC<{
     supportedRpcs = RPC_ENDPOINTS[network],
     onSwitch,
     className = "",
-}) => {
-    return <div className={`poly-radio-selector poly-rpc-radio-selector ${className}`}>
-        {supportedRpcs.map((rpc) => (
-            <div key={rpc}>
-                <label className="selector-label">
-                    <input
-                        className="selector-radio"
-                        type="radio"
-                        value={rpc}
-                        checked={selectedRpc === rpc}
-                        onChange={() => {
-                            switchRpc({
-                                network,
-                                newRpc: rpc,
-                                supportedRpcs,
-                                defaultRpc: supportedRpcs[0],
-                                onSwitch
-                            });
-                        }}
-                    />
-                    <span className="selector-text">
-                        {rpc}
-                    </span>
-                </label>
-            </div>
-        ))}
-    </div>;
+}) =>
+{
+    const options: RadioOption<string>[] = supportedRpcs.map(rpc => ({
+        value: rpc,
+        label: rpc
+    }));
+
+    const onSelect = (newRpc: string) => {
+        switchRpc({
+            network,
+            newRpc,
+            supportedRpcs,
+            defaultRpc: supportedRpcs[0],
+            onSwitch
+        });
+    };
+
+    return (
+        <RadioSelector
+            options={options}
+            selectedValue={selectedRpc}
+            onSelect={onSelect}
+            className={`poly-rpc-radio-selector ${className}`}
+        />
+    );
 };
 
 /**

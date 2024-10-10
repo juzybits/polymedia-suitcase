@@ -1,6 +1,7 @@
 import { NetworkName } from "@polymedia/suitcase-core";
 import { useRef, useState } from "react";
 import { useClickOutside } from "./hooks";
+import { RadioSelector, RadioOption } from "./selectors";
 
 export type BaseNetworkName = string;
 
@@ -17,27 +18,25 @@ export const NetworkRadioSelector: React.FC<{
     supportedNetworks,
     onSwitch,
     className = "",
-}) => {
-    return <div className={`poly-radio-selector poly-network-radio-selector ${className}`}>
-        {supportedNetworks.map((network) => (
-            <div key={network}>
-                <label className="selector-label">
-                    <input
-                        className="selector-radio"
-                        type="radio"
-                        value={network}
-                        checked={selectedNetwork === network}
-                        onChange={() => {
-                            switchNetwork(network, supportedNetworks, onSwitch);
-                        }}
-                    />
-                    <span className="selector-text">
-                        {network}
-                    </span>
-                </label>
-            </div>
-        ))}
-    </div>;
+}) =>
+{
+    const options: RadioOption<NetworkName>[] = supportedNetworks.map(network => ({
+        value: network,
+        label: network
+    }));
+
+    const onSelect = (newNetwork: NetworkName) => {
+        switchNetwork(newNetwork, supportedNetworks, onSwitch);
+    };
+
+    return (
+        <RadioSelector
+            options={options}
+            selectedValue={selectedNetwork}
+            onSelect={onSelect}
+            className={`poly-network-radio-selector ${className}`}
+        />
+    );
 };
 
 /**

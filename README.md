@@ -244,6 +244,10 @@ The `suitcase-react` package provides components for React web apps.
 - `loadRpc()` - Load the RPC URL for the current network from local storage.
 - `switchRpc()` - Change RPCs, update local storage, and optionally trigger a callback.
 
+## Selectors
+
+- `RadioSelector` - A generic radio button menu.
+
 ## Types
 
 - `type ReactSetter` - A function that updates the state of a `useState` or `useReducer` hook.

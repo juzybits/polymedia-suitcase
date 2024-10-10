@@ -1,3 +1,5 @@
+import { RadioOption, RadioSelector } from "./selectors";
+
 export const EXPLORER_NAMES = ["Polymedia", "Suiscan", "SuiVision"] as const;
 
 export type ExplorerName = (typeof EXPLORER_NAMES)[number];
@@ -13,27 +15,25 @@ export const ExplorerRadioSelector: React.FC<{
     selectedExplorer,
     onSwitch,
     className = "",
-}) => {
-    return <div className={`poly-radio-selector poly-explorer-radio-selector ${className}`}>
-        {EXPLORER_NAMES.map((explorer) => (
-            <div key={explorer}>
-                <label className="selector-label">
-                    <input
-                        className="selector-radio"
-                        type="radio"
-                        value={explorer}
-                        checked={selectedExplorer === explorer}
-                        onChange={() => {
-                            switchExplorer(explorer, onSwitch);
-                        }}
-                    />
-                    <span className="selector-text">
-                        {explorer}
-                    </span>
-                </label>
-            </div>
-        ))}
-    </div>;
+}) =>
+{
+    const options: RadioOption<ExplorerName>[] = EXPLORER_NAMES.map(explorer => ({
+        value: explorer,
+        label: explorer
+    }));
+
+    const onSelect = (newExplorer: ExplorerName) => {
+        switchExplorer(newExplorer, onSwitch);
+    };
+
+    return (
+        <RadioSelector
+            options={options}
+            selectedValue={selectedExplorer}
+            onSelect={onSelect}
+            className={`poly-explorer-radio-selector ${className}`}
+        />
+    );
 };
 
 /**
