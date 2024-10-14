@@ -35,10 +35,10 @@ export abstract class SuiClientBase
      * @param txResponseOptions Which fields to include in transaction responses.
      */
     constructor(args: {
-        suiClient: SuiClient,
-        signTransaction: SignTransaction,
-        waitForTxOptions?: WaitForTxOptions | false,
-        txResponseOptions?: SuiTransactionBlockResponseOptions,
+        suiClient: SuiClient;
+        signTransaction: SignTransaction;
+        waitForTxOptions?: WaitForTxOptions | false;
+        txResponseOptions?: SuiTransactionBlockResponseOptions;
     }) {
         this.suiClient = args.suiClient;
         this.signTransaction = args.signTransaction;
