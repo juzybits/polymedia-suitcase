@@ -47,14 +47,14 @@ export type ReceivingRef = ReturnType<InstanceType<typeof Transaction>["receivin
 /**
  * A function that can sign a `Transaction`.
  *
- * For a webapp that uses `@mysten/dapp-kit` to sign with a Sui wallet:
+ * For apps that use `@mysten/dapp-kit` to sign with a Sui wallet:
     ```
     const { mutateAsync: walletSignTx } = useSignTransaction();
     const signTx: SignTransaction = async (tx) => {
         return walletSignTx({ transaction: tx });
     };
     ```
- * For a script that uses a local secret key to sign programmatically:
+ * For code that has direct access to the private key:
     ```
     const secretKey = "suiprivkey1...";
     const signer = pairFromSecretKey(secretKey)

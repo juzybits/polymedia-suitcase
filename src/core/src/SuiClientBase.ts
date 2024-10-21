@@ -19,7 +19,7 @@ export type WaitForTxOptions = {
 const MAX_OBJECTS_PER_REQUEST = 50;
 
 /**
- * Abstract class to sign and execute Sui transactions.
+ * Abstract class for building Sui SDK clients.
  */
 export abstract class SuiClientBase
 {
