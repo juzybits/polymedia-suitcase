@@ -129,7 +129,7 @@ export async function fetchAllDynamicFields(
 export async function getCoinOfValue(
     suiClient: SuiClient,
     tx: Transaction,
-    ownerAddress: string,
+    owner: string,
     coinType: string,
     coinValue: number|bigint,
 ): Promise<TransactionResult>
@@ -140,7 +140,7 @@ export async function getCoinOfValue(
         coinOfValue = tx.splitCoins(tx.gas, [tx.pure.u64(coinValue)]);
     }
     else {
-        const paginatedCoins = await suiClient.getCoins({ owner: ownerAddress, coinType });
+        const paginatedCoins = await suiClient.getCoins({ owner, coinType });
         // if (paginatedCoins.hasNextPage) // TODO
 
         // Merge all coins into one
