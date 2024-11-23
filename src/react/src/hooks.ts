@@ -71,7 +71,7 @@ export function useFetch<T>(
         }
     };
 
-    return { data, error, isLoading };
+    return { data, error, isLoading, refetch: fetchData };
 }
 
 /**
