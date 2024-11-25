@@ -25,10 +25,10 @@
         "typecheck": "tsc -p tsconfig.esm.json"
     },
     "peerDependencies": {
-        "@mysten/sui": "^1.14.2"
+        "@mysten/sui": "^1.15.0"
     },
     "devDependencies": {
-        "typescript": "^5.6.3"
+        "typescript": "^5.7.2"
     },
     "type": "module",
     "sideEffects": false,
