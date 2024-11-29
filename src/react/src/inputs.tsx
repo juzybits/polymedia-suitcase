@@ -2,10 +2,9 @@ import { formatBalance, MAX_U64, NORMALIZED_ADDRESS_REGEX, stringToBalance, vali
 import React, { useEffect, useState } from "react";
 
 /**
- * Common props for all input fields.
+ * Common props for input and textarea fields.
  */
-export type CommonInputProps<T> = {
-    html?: React.InputHTMLAttributes<HTMLInputElement>;
+export type FieldProps<T> = {
     label?: React.ReactNode;
     msgRequired?: string;
     onChangeVal?: (val: T | undefined) => void;
@@ -13,9 +12,24 @@ export type CommonInputProps<T> = {
 };
 
 /**
- * The return type for all input fields.
+ * Props for input fields.
  */
-export type InputReturn<T> = {
+export type InputProps<T> = FieldProps<T> & {
+    html?: React.InputHTMLAttributes<HTMLInputElement>;
+};
+
+/**
+ * Props for textarea fields.
+ */
+export type TextAreaProps<T> = FieldProps<T> & {
+    html?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+    validate: InputValidator<T>;
+};
+
+/**
+ * The state and rendered element returned by field hooks.
+ */
+export type FieldResult<T> = {
     str: string;
     val: T | undefined;
     err: string | undefined;
@@ -35,10 +49,10 @@ export type InputValidator<T> = (input: string) => {
  * A base hook for creating input fields.
  */
 export const useInputBase = <T,>(
-    props: CommonInputProps<T> & {
+    props: InputProps<T> & {
         validate: InputValidator<T>;
     },
-): InputReturn<T> =>
+): FieldResult<T> =>
 {
     const html = props.html ?? {};
     const [str, setStr] = useState<string>(`${html.value ?? ""}`);
@@ -112,10 +126,84 @@ export const useInputBase = <T,>(
 };
 
 /**
+ * A textarea field with custom validation.
+ */
+export const useTextArea = <T,>(
+    props: TextAreaProps<T>,
+): FieldResult<T> =>
+{
+    const html = props.html ?? {};
+    const [str, setStr] = useState<string>(`${html.value ?? ""}`);
+    const [val, setVal] = useState<T | undefined>();
+    const [err, setErr] = useState<string | undefined>();
+
+    // Handle user input
+    const onChangeTextArea: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+        const newStr = e.target.value;
+        setStr(newStr);
+        onChangeStr(newStr);
+
+        if (html.onChange) {
+            html.onChange(e);
+        }
+    };
+
+    // Validate and update state
+    const onChangeStr = (newStr: string): void => {
+        const trimStr = newStr.trim();
+        if (html.required && trimStr === "") {
+            setErr(props.msgRequired ?? "Input is required");
+            setVal(undefined);
+        } else {
+            const validation = props.validate(trimStr);
+            setErr(validation.err);
+            setVal(validation.val);
+        }
+    };
+
+    const clear = () => {
+        setStr("");
+        setVal(undefined);
+        setErr(undefined);
+    };
+
+    // Validate initial value only once
+    useEffect(() => {
+        onChangeStr(str);
+    }, []);
+
+    // Notify parent of value changes
+    useEffect(() => {
+        if (props.onChangeVal) {
+            props.onChangeVal(val);
+        }
+    }, [val, props.onChangeVal]);
+
+    const input = (
+        <div className="poly-input">
+            {props.label &&
+            <div className="input-label">{props.label}</div>}
+
+            <textarea
+                className="input"
+                {...html}
+                onChange={onChangeTextArea}
+                value={str}
+            />
+
+            {err &&
+            <div className="input-error">{err}</div>}
+        </div>
+    );
+
+    return { str, val, err, input, clear };
+};
+
+/**
  * An input field for strings.
  */
 export const useInputString = (
-    props: CommonInputProps<string> & {
+    props: InputProps<string> & {
         minLength?: number;
         maxLength?: number;
         minBytes?: number;
@@ -123,7 +211,7 @@ export const useInputString = (
         msgTooShort?: string;
         msgTooLong?: string;
     },
-): InputReturn<string> =>
+): FieldResult<string> =>
 {
     const html = props.html ?? {};
     html.type = "text";
@@ -161,8 +249,8 @@ export const useInputString = (
  * An input field for Sui addresses (or object IDs).
  */
 export const useInputAddress = (
-    props: CommonInputProps<string>,
-): InputReturn<string> =>
+    props: InputProps<string>,
+): FieldResult<string> =>
 {
     const html = props.html ?? {};
     html.type = "text";
@@ -188,13 +276,13 @@ export const useInputAddress = (
  * An input field for positive integers.
  */
 export const useInputUnsignedInt = (
-    props: CommonInputProps<number> & {
+    props: InputProps<number> & {
         min?: number;
         max?: number;
         msgTooSmall?: string;
         msgTooLarge?: string;
     },
-): InputReturn<number> =>
+): FieldResult<number> =>
 {
     const html = props.html ?? {};
     html.type = "text";
@@ -235,14 +323,14 @@ export const useInputUnsignedInt = (
  * Input field for positive Coin balances. Handles decimals (e.g. `"1 SUI"` → `1_000_000_000`).
  */
 export const useInputUnsignedBalance = (
-    props: CommonInputProps<bigint> & {
+    props: InputProps<bigint> & {
         decimals: number;
         min?: bigint;
         max?: bigint;
         msgTooSmall?: string;
         msgTooLarge?: string;
     },
-): InputReturn<bigint> =>
+): FieldResult<bigint> =>
 {
     const html = props.html ?? {};
     html.type = "text";
