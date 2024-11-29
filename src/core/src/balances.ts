@@ -121,6 +121,12 @@ export function formatBalance(
     const isNegative = big < 0n;
     const absoluteBig = isNegative ? -big : big;
     const stringValue = balanceToString(absoluteBig, decimals);
+
+    // If the number is effectively zero, return "0.00"
+    if (stringValue === "0") {
+        return "0.00";
+    }
+
     const [integerPart, fractionalPart = ""] = stringValue.split(".");
 
     const result = format === "standard"
@@ -132,6 +138,13 @@ export function formatBalance(
 
 function formatBigIntStandard(integerPart: string, fractionalPart: string): string {
     const bigIntValue = BigInt(integerPart);
+    if (bigIntValue === 0n && fractionalPart !== "") {
+        // For very small numbers (0.xxx), show all significant digits
+        // Remove trailing zeros from fractional part
+        const significantDecimals = fractionalPart.replace(/0+$/, '');
+        return `0.${significantDecimals}`;
+    }
+
     if (bigIntValue < 1000n) {
         const formattedFraction = fractionalPart.slice(0, 2).padEnd(2, "0");
         return `${integerPart}.${formattedFraction}`;

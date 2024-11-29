@@ -17,7 +17,7 @@ describe("formatBalance", () => {
     it("should handle numbers with more than 2 decimal places", () => {
       expect(formatBalance(123456n, 4)).toBe("12.34");
       expect(formatBalance(1234567n, 5)).toBe("12.34");
-      expect(formatBalance(123456789n, 18)).toBe("0.00");
+      expect(formatBalance(123456789n, 18)).toBe("0.000000000123456789");
       expect(formatBalance(1234567890123456789n, 18)).toBe("1.23");
     });
 
@@ -32,15 +32,15 @@ describe("formatBalance", () => {
     });
 
     it("should handle very small positive numbers", () => {
-      expect(formatBalance(1n, 18)).toBe("0.00");
-      expect(formatBalance(10n, 18)).toBe("0.00");
-      expect(formatBalance(100n, 18)).toBe("0.00");
+      expect(formatBalance(1n, 18)).toBe("0.000000000000000001");
+      expect(formatBalance(10n, 18)).toBe("0.00000000000000001");
+      expect(formatBalance(100n, 18)).toBe("0.0000000000000001");
     });
 
     it("should handle very small negative numbers", () => {
-      expect(formatBalance(-1n, 18)).toBe("-0.00");
-      expect(formatBalance(-10n, 18)).toBe("-0.00");
-      expect(formatBalance(-100n, 18)).toBe("-0.00");
+      expect(formatBalance(-1n, 18)).toBe("-0.000000000000000001");
+      expect(formatBalance(-10n, 18)).toBe("-0.00000000000000001");
+      expect(formatBalance(-100n, 18)).toBe("-0.0000000000000001");
     });
 
     it("should handle maximum safe integer", () => {
@@ -118,7 +118,9 @@ describe("formatBalance", () => {
     });
 
     it("should handle very small non-zero numbers in compact format", () => {
-      expect(formatBalance(1n, 18, "compact")).toBe("0.00");
+      expect(formatBalance(1n, 18, "compact")).toBe("0.000000000000000001");
+      expect(formatBalance(10n, 18, "compact")).toBe("0.00000000000000001");
+      expect(formatBalance(100n, 18, "compact")).toBe("0.0000000000000001");
     });
   });
 
