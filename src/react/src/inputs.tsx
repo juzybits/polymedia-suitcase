@@ -8,7 +8,6 @@ export type FieldProps<T> = {
     label?: React.ReactNode;
     msgRequired?: string;
     onChangeVal?: (val: T | undefined) => void;
-    deps?: React.DependencyList;
 };
 
 /**
@@ -94,19 +93,20 @@ export const useInputBase = <T,>(
         setErr(undefined);
     };
 
+    // Validate initial value only once
     useEffect(() => {
-        onChangeStr(str); // revalidate
-    }, props.deps);
+        onChangeStr(str);
+    }, []);
 
+    // Notify parent of value changes
     useEffect(() => {
         if (props.onChangeVal) {
             props.onChangeVal(val);
         }
-    }, [val]);
+    }, [val, props.onChangeVal]);
 
     const input = (
         <div className="poly-input">
-
             {props.label &&
             <div className="input-label">{props.label}</div>}
 
@@ -118,7 +118,6 @@ export const useInputBase = <T,>(
 
             {err &&
             <div className="input-error">{err}</div>}
-
         </div>
     );
 
