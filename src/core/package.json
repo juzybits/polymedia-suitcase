@@ -25,7 +25,7 @@
         "typecheck": "tsc -p tsconfig.esm.json"
     },
     "peerDependencies": {
-        "@mysten/sui": "^1.15.0"
+        "@mysten/sui": "^1.15.1"
     },
     "devDependencies": {
         "typescript": "^5.7.2"
