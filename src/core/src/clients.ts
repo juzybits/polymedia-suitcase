@@ -84,7 +84,7 @@ export async function devInspectAndGetReturnValues<T extends any[]>(
             txReturns.push(valueDeserialized);
         }
 
-        blockReturns.push(txReturns as T);
+        blockReturns.push(txReturns as T[number]);
     }
 
     return blockReturns;
