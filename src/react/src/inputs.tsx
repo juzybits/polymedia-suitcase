@@ -50,6 +50,7 @@ export type InputValidator<T> = (input: string) => {
 export const useInputBase = <T,>(
     props: InputProps<T> & {
         validate: InputValidator<T>;
+        deps: React.DependencyList;
     },
 ): FieldResult<T> =>
 {
@@ -93,10 +94,9 @@ export const useInputBase = <T,>(
         setErr(undefined);
     };
 
-    // Validate initial value only once
     useEffect(() => {
         onChangeStr(str);
-    }, []);
+    }, props.deps);
 
     // Notify parent of value changes
     useEffect(() => {
@@ -128,7 +128,9 @@ export const useInputBase = <T,>(
  * A textarea field with custom validation.
  */
 export const useTextArea = <T,>(
-    props: TextAreaProps<T>,
+    props: TextAreaProps<T> & {
+        deps: React.DependencyList;
+    },
 ): FieldResult<T> =>
 {
     const html = props.html ?? {};
@@ -166,10 +168,9 @@ export const useTextArea = <T,>(
         setErr(undefined);
     };
 
-    // Validate initial value only once
     useEffect(() => {
         onChangeStr(str);
-    }, []);
+    }, props.deps);
 
     // Notify parent of value changes
     useEffect(() => {
@@ -241,6 +242,7 @@ export const useInputString = (
         html,
         validate,
         ...props,
+        deps: [props],
     });
 };
 
@@ -268,6 +270,7 @@ export const useInputAddress = (
         html,
         validate,
         ...props,
+        deps: [props],
     });
 };
 
@@ -315,6 +318,7 @@ export const useInputUnsignedInt = (
         html,
         validate,
         ...props,
+        deps: [props],
     });
 };
 
@@ -358,5 +362,6 @@ export const useInputUnsignedBalance = (
         html,
         validate,
         ...props,
+        deps: [props],
     });
 };

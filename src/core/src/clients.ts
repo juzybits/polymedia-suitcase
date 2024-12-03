@@ -125,6 +125,7 @@ export async function fetchAllDynamicFields(
 /**
  * Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
  * Assumes that the owner has enough balance.
+ * @deprecated Use `coinWithBalance` from `@mysten/sui` instead.
  */
 export async function getCoinOfValue(
     suiClient: SuiClient,
