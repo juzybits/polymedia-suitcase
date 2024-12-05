@@ -1,4 +1,4 @@
-import { formatBalance, MAX_U64, NORMALIZED_ADDRESS_REGEX, stringToBalance, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
+import { formatBalance, MAX_U64, REGEX_ADDRESS_NORMALIZED, stringToBalance, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
 import React, { useEffect, useState } from "react";
 
 // === common ===
@@ -182,7 +182,7 @@ export const useInputAddress = (
     const html = props.html ?? {};
     html.type = "text";
     html.inputMode = "text";
-    html.pattern = `^${NORMALIZED_ADDRESS_REGEX}$`;
+    html.pattern = `^${REGEX_ADDRESS_NORMALIZED}$`;
 
     const validate: InputValidator<string> = (input: string) =>
     {

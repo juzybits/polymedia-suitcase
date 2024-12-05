@@ -11,6 +11,7 @@ export * from "./guards.js";
 export * from "./keypairs.js";
 export * from "./misc.js";
 export * from "./objects.js";
+export * from "./regex.js";
 export * from "./rpcs.js";
 export * from "./transactions.js";
 export * from "./types.js";

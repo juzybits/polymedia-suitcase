@@ -13,7 +13,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Addresses
 
-- `const NORMALIZED_ADDRESS_REGEX` - Regular expression to match a normalized Sui address.
 - `const ZERO_ADDRESS` - The 0x0 address.
 - `generateRandomAddress()` - Generate a random Sui address (for development only).
 - `removeAddressLeadingZeros()` - Remove leading zeros from a Sui address (lossless).
@@ -92,6 +91,13 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
 - `objResToType()` - Validate a `SuiObjectResponse` and return its `.data.type`.
 
+## Regular expressions
+
+- `const REGEX_ADDRESS` - Match a Sui address.
+- `const REGEX_ADDRESS_NORMALIZED` - Match a normalized Sui address.
+- `const REGEX_MODULE_NAME` - Match a Sui module name.
+- `const REGEX_STRUCT_NAME` - Match a Sui struct name.
+- `const REGEX_TYPE_BASIC` - Match a Sui type without generic parameters (e.g. `0x123::module::Struct`).
 ## RPCs
 
 - `const RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.
