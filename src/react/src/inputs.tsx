@@ -18,7 +18,7 @@ export type CommonInputProps<T> = {
 export type InputResult<T> = {
     str: string;
     val: T | undefined;
-    err: string | undefined;
+    err: string | null;
     input: JSX.Element;
     clear: () => void;
 };
@@ -27,7 +27,7 @@ export type InputResult<T> = {
  * A function that validates an input string and returns an error message or the value.
  */
 export type InputValidator<T> = (input: string) => {
-    err: string | undefined;
+    err: string | null;
     val: T | undefined;
 };
 
@@ -53,7 +53,7 @@ export const useInputBase = <T,>(
     const html = props.html ?? {};
     const [str, setStr] = useState<string>(`${html.value ?? ""}`);
     const [val, setVal] = useState<T | undefined>();
-    const [err, setErr] = useState<string | undefined>();
+    const [err, setErr] = useState<string | null>(null);
 
     const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = (e) =>
     {
@@ -87,7 +87,7 @@ export const useInputBase = <T,>(
     const clear = () => {
         setStr("");
         setVal(undefined);
-        setErr(undefined);
+        setErr(null);
     };
 
     useEffect(() => {
@@ -156,7 +156,7 @@ export const useInputString = (
             return { err: props.msgTooLong ?? "Too long", val: undefined };
         }
 
-        return { err: undefined, val: input };
+        return { err: null, val: input };
     };
 
     return useInputBase<string>({
@@ -183,7 +183,7 @@ export const useInputAddress = (
     {
         const addr = validateAndNormalizeAddress(input);
         return addr
-            ? { err: undefined, val: addr }
+            ? { err: null, val: addr }
             : { err: "Invalid Sui address", val: undefined };
     };
 
@@ -215,7 +215,7 @@ export const useInputUnsignedInt = (
     const validate: InputValidator<number> = (input: string) =>
     {
         if (input === "") {
-            return { err: undefined, val: undefined };
+            return { err: null, val: undefined };
         }
 
         const numValue = Number(input);
@@ -232,7 +232,7 @@ export const useInputUnsignedInt = (
         if (numValue > Number.MAX_SAFE_INTEGER) {
             return { err: "Number is too large", val: undefined };
         }
-        return { err: undefined, val: numValue };
+        return { err: null, val: numValue };
     };
 
     return useInputBase<number>({
@@ -265,7 +265,7 @@ export const useInputUnsignedBalance = (
     const validate: InputValidator<bigint> = (input: string) =>
     {
         if (input === "" || input === ".") {
-            return { err: undefined, val: undefined };
+            return { err: null, val: undefined };
         }
 
         const bigInput = stringToBalance(input, props.decimals);
@@ -276,7 +276,7 @@ export const useInputUnsignedBalance = (
         if (max !== undefined && bigInput > max) {
             return { err: props.msgTooLarge ?? `Maximum value is ${formatBalance(max, props.decimals)}`, val: undefined };
         }
-        return { err: undefined, val: bigInput };
+        return { err: null, val: bigInput };
     };
 
     return useInputBase<bigint>({
@@ -308,7 +308,7 @@ export const useTextArea = <T,>(
     const html = props.html ?? {};
     const [str, setStr] = useState<string>(`${html.value ?? ""}`);
     const [val, setVal] = useState<T | undefined>();
-    const [err, setErr] = useState<string | undefined>();
+    const [err, setErr] = useState<string | null>(null);
 
     // Handle user input
     const onChangeTextArea: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
@@ -337,7 +337,7 @@ export const useTextArea = <T,>(
     const clear = () => {
         setStr("");
         setVal(undefined);
-        setErr(undefined);
+        setErr(null);
     };
 
     useEffect(() => {
@@ -397,13 +397,13 @@ export const useDropdown = <T extends string>(
 {
     const html = props.html ?? {};
     const [val, setVal] = useState<T | undefined>(html.value);
-    const [err, setErr] = useState<string | undefined>(undefined);
+    const [err, setErr] = useState<string | null>(null);
 
     const validate = (newVal: T | undefined) => {
         if (html.required && !newVal) {
             setErr(props.msgRequired ?? "Selection required");
         } else {
-            setErr(undefined);
+            setErr(null);
         }
     };
 
