@@ -10,6 +10,7 @@ export type CommonInputProps<T> = {
     label?: React.ReactNode;
     msgRequired?: string;
     onChangeVal?: (val: T | undefined) => void;
+    validate?: InputValidator<T>;
 };
 
 /**
@@ -156,6 +157,10 @@ export const useInputString = (
             return { err: props.msgTooLong ?? "Too long", val: undefined };
         }
 
+        if (props.validate) {
+            return props.validate(input);
+        }
+
         return { err: null, val: input };
     };
 
@@ -182,9 +187,15 @@ export const useInputAddress = (
     const validate: InputValidator<string> = (input: string) =>
     {
         const addr = validateAndNormalizeAddress(input);
-        return addr
-            ? { err: null, val: addr }
-            : { err: "Invalid Sui address", val: undefined };
+        if (!addr) {
+            return { err: "Invalid Sui address", val: undefined };
+        }
+
+        if (props.validate) {
+            return props.validate(addr);
+        }
+
+        return { err: null, val: addr };
     };
 
     return useInputBase<string>({
@@ -232,6 +243,11 @@ export const useInputUnsignedInt = (
         if (numValue > Number.MAX_SAFE_INTEGER) {
             return { err: "Number is too large", val: undefined };
         }
+
+        if (props.validate) {
+            return props.validate(input);
+        }
+
         return { err: null, val: numValue };
     };
 
@@ -276,6 +292,11 @@ export const useInputUnsignedBalance = (
         if (max !== undefined && bigInput > max) {
             return { err: props.msgTooLarge ?? `Maximum value is ${formatBalance(max, props.decimals)}`, val: undefined };
         }
+
+        if (props.validate) {
+            return props.validate(input);
+        }
+
         return { err: null, val: bigInput };
     };
 
