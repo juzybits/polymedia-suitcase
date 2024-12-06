@@ -141,7 +141,7 @@ function formatBigIntStandard(integerPart: string, fractionalPart: string): stri
     if (bigIntValue === 0n && fractionalPart !== "") {
         // For very small numbers (0.xxx), show all significant digits
         // Remove trailing zeros from fractional part
-        const significantDecimals = fractionalPart.replace(/0+$/, '');
+        const significantDecimals = fractionalPart.replace(/0+$/, "");
         return `0.${significantDecimals}`;
     }
 
