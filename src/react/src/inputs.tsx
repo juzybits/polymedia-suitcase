@@ -4,6 +4,19 @@ import React, { useEffect, useState } from "react";
 // === common ===
 
 /**
+ * The result of an input validation.
+ */
+export type ValidationResult<T> = {
+    err: string | null;
+    val: T | undefined;
+};
+
+/**
+ * A function that validates an input string and returns an error message or the value.
+ */
+export type InputValidator<T> = (input: string) => Promise<ValidationResult<T>>;
+
+/**
  * Common props for all kinds of inputs.
  */
 export type CommonInputProps<T> = {
@@ -23,14 +36,6 @@ export type InputResult<T> = {
     input: JSX.Element;
     clear: () => void;
 };
-
-/**
- * A function that validates an input string and returns an error message or the value.
- */
-export type InputValidator<T> = (input: string) => Promise<{
-    err: string | null;
-    val: T | undefined;
-}>;
 
 // === input ===
 
