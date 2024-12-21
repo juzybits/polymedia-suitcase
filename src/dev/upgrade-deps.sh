@@ -9,8 +9,12 @@ PATH_LOCAL=$HOME/data/code/polymedia-suitcase
 REACT_VERSION="^18.0.0"
 
 cd $PATH_LOCAL
-pnpm upgrade --latest --recursive
-pnpm upgrade --latest -w
+pnpm up --latest --recursive
+pnpm up --latest -w
 
 cd $PATH_LOCAL/src/react
 pnpm add -D @types/react@$REACT_VERSION
+
+cd $PATH_LOCAL
+pnpm up --recursive
+pnpm up -w

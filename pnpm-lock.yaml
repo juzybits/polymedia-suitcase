@@ -100,7 +100,7 @@ importers:
         version: link:../core
       react:
         specifier: ^18.0.0
-        version: 19.0.0
+        version: 18.3.1
     devDependencies:
       '@types/react':
         specifier: ^18.3.18
@@ -1879,8 +1879,8 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react@19.0.0:
-    resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
+  react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
 
   reflect.getprototypeof@1.0.9:
@@ -4549,7 +4549,9 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react@19.0.0: {}
+  react@18.3.1:
+    dependencies:
+      loose-envify: 1.4.0
 
   reflect.getprototypeof@1.0.9:
     dependencies:
