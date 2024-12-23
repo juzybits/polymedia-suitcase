@@ -152,6 +152,12 @@ export abstract class SuiClientBase
     ): Promise<SuiTransactionBlockResponse>
     {
         const signedTx = await this.signTransaction(tx);
-        return this.executeTransaction(signedTx, waitForTxOptions, txResponseOptions);
+        const resp = await this.executeTransaction(signedTx, waitForTxOptions, txResponseOptions);
+
+        if (resp.effects && resp.effects.status.status !== "success") {
+            throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
+        }
+
+        return resp;
     }
 }
