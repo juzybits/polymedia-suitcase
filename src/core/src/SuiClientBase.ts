@@ -24,7 +24,7 @@ const MAX_OBJECTS_PER_REQUEST = 50;
 export abstract class SuiClientBase
 {
     public readonly suiClient: SuiClient;
-    public readonly signTransaction: SignTransaction;
+    public readonly signTx: SignTransaction;
     protected readonly waitForTxOptions: WaitForTxOptions | false;
     protected readonly txResponseOptions: SuiTransactionBlockResponseOptions;
 
@@ -36,12 +36,12 @@ export abstract class SuiClientBase
      */
     constructor(args: {
         suiClient: SuiClient;
-        signTransaction: SignTransaction;
+        signTx: SignTransaction;
         waitForTxOptions?: WaitForTxOptions | false;
         txResponseOptions?: SuiTransactionBlockResponseOptions;
     }) {
         this.suiClient = args.suiClient;
-        this.signTransaction = args.signTransaction;
+        this.signTx = args.signTx;
         this.waitForTxOptions = args.waitForTxOptions ?? { timeout: 60_000, pollInterval: 333 };
         this.txResponseOptions = args.txResponseOptions ?? { showEffects: true, showObjectChanges: true };
     }
@@ -56,7 +56,7 @@ export abstract class SuiClientBase
      * @param parseFn A function that parses a `SuiObjectResponse` into an object.
      * @returns The parsed objects.
      */
-    public async fetchAndParseObjects<T>(
+    public async fetchAndParseObjs<T>(
         objectIds: string[],
         fetchFn: (ids: string[]) => Promise<SuiObjectResponse[]>,
         parseFn: (resp: SuiObjectResponse) => T | null,
@@ -121,7 +121,7 @@ export abstract class SuiClientBase
 
     // === transactions ===
 
-    public async executeTransaction(
+    public async executeTx(
         signedTx: SignatureWithBytes,
         waitForTxOptions: WaitForTxOptions | false = this.waitForTxOptions,
         txResponseOptions: SuiTransactionBlockResponseOptions = this.txResponseOptions,
@@ -145,14 +145,14 @@ export abstract class SuiClientBase
         });
     }
 
-    public async signAndExecuteTransaction(
+    public async signAndExecuteTx(
         tx: Transaction,
         waitForTxOptions: WaitForTxOptions | false = this.waitForTxOptions,
         txResponseOptions: SuiTransactionBlockResponseOptions = this.txResponseOptions,
     ): Promise<SuiTransactionBlockResponse>
     {
-        const signedTx = await this.signTransaction(tx);
-        const resp = await this.executeTransaction(signedTx, waitForTxOptions, txResponseOptions);
+        const signedTx = await this.signTx(tx);
+        const resp = await this.executeTx(signedTx, waitForTxOptions, txResponseOptions);
 
         if (resp.effects && resp.effects.status.status !== "success") {
             throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
