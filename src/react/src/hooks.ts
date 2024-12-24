@@ -4,8 +4,8 @@ import { RefObject, useEffect, useState } from "react";
 /**
  * A hook that detects when a click or touch event occurs outside a DOM element.
  *
- * @param domElementRef - A React ref object pointing to the target DOM element.
- * @param onClickOutside - Function to call when a click or touch is detected outside the target element.
+ * @param domElementRef A React ref object pointing to the target DOM element.
+ * @param onClickOutside Function to call when a click or touch is detected outside the target element.
  */
 export function useClickOutside(
     domElementRef: RefObject<HTMLElement>,
@@ -40,7 +40,7 @@ export function useClickOutside(
  * @param dependencies An array of dependencies that trigger a re-fetch when changed
  * @returns An object containing:
  *   - data: The fetched data
- *   - error: Any error that occurred
+ *   - err: Any error that occurred
  *   - isLoading: Whether data is currently being fetched
  */
 export function useFetch<T>(
@@ -48,7 +48,7 @@ export function useFetch<T>(
     dependencies: unknown[] = [],
 ) {
     const [data, setData] = useState<T | undefined>(undefined);
-    const [error, setError] = useState<string | null>(null);
+    const [err, setErr] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -58,20 +58,20 @@ export function useFetch<T>(
     const fetchData = async () =>
     {
         setData(undefined);
-        setError(null);
+        setErr(null);
         setIsLoading(true);
         try {
             const result = await fetchFunction();
             setData(result);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "An unknown error occurred");
+            setErr(err instanceof Error ? err.message : "An unknown error occurred");
             console.warn("[useFetch]", err);
         } finally {
             setIsLoading(false);
         }
     };
 
-    return { data, error, isLoading, refetch: fetchData };
+    return { data, err, isLoading, refetch: fetchData };
 }
 
 /**
@@ -84,7 +84,7 @@ export function useFetch<T>(
  * @param dependencies An array of dependencies that trigger a re-fetch when changed
  * @returns An object containing:
  *   - data: The fetched data
- *   - error: Any error that occurred
+ *   - err: Any error that occurred
  *   - isLoading: Whether data is currently being fetched
  *   - hasNextPage: Whether there is a next page available to fetch
  *   - loadMore: A function to load more data
@@ -94,7 +94,7 @@ export function useFetchAndLoadMore<T, C>(
     dependencies: unknown[] = [],
 ) {
     const [ data, setData ] = useState<T[]>([]);
-    const [ error, setError ] = useState<string | null>(null);
+    const [ err, setErr ] = useState<string | null>(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ hasNextPage, setHasNextPage ] = useState(true);
     const [ nextCursor, setNextCursor ] = useState<C | undefined>(undefined);
@@ -102,7 +102,7 @@ export function useFetchAndLoadMore<T, C>(
     useEffect(() => {
         // reset state
         setData([]);
-        setError(null);
+        setErr(null);
         setIsLoading(true);
         setHasNextPage(true);
         setNextCursor(undefined);
@@ -114,7 +114,7 @@ export function useFetchAndLoadMore<T, C>(
     {
         if (!hasNextPage) return;
 
-        setError(null);
+        setErr(null);
         setIsLoading(true);
         try {
             const response = await fetchFunction(nextCursor);
@@ -122,14 +122,14 @@ export function useFetchAndLoadMore<T, C>(
             setHasNextPage(response.hasNextPage);
             setNextCursor(response.nextCursor);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to load more data");
+            setErr(err instanceof Error ? err.message : "Failed to load more data");
             console.warn("[useFetchAndLoadMore]", err);
         } finally {
             setIsLoading(false);
         }
     };
 
-    return { data, error, isLoading, hasNextPage, loadMore };
+    return { data, err, isLoading, hasNextPage, loadMore };
 }
 
 /**
@@ -140,22 +140,22 @@ export function useFetchAndLoadMore<T, C>(
  * @param fetchFunction An async function that returns a `Promise<PaginatedResponse<T>>`
  * @param dependencies An array of dependencies that trigger a re-fetch when changed
  * @returns An object containing the following properties:
- *   - page - The current page of data
- *   - error - Any error that occurred during fetching
- *   - isLoading - Whether data is currently being fetched
- *   - hasMultiplePages - Whether there are multiple pages of data
- *   - isFirstPage - Whether the current page is the first page
- *   - isLastPage - Whether the current page is the last fetched page
- *   - hasNextPage - Whether there is a next page available to fetch
- *   - goToNextPage - Function to navigate to the next page
- *   - goToPreviousPage - Function to navigate to the previous page
+ *   - page: The current page of data
+ *   - err: Any error that occurred during fetching
+ *   - isLoading: Whether data is currently being fetched
+ *   - hasMultiplePages: Whether there are multiple pages of data
+ *   - isFirstPage: Whether the current page is the first page
+ *   - isLastPage: Whether the current page is the last fetched page
+ *   - hasNextPage: Whether there is a next page available to fetch
+ *   - goToNextPage: Function to navigate to the next page
+ *   - goToPreviousPage: Function to navigate to the previous page
  */
 export function useFetchAndPaginate<T, C>(
     fetchFunction: (cursor: C | undefined) => Promise<PaginatedResponse<T, C>>,
     dependencies: unknown[] = [],
 ) {
     const [ pages, setPages ] = useState<T[][]>([]);
-    const [ error, setError ] = useState<string | null>(null);
+    const [ err, setErr ] = useState<string | null>(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ pageIndex, setPageIndex ] = useState(-1);
     const [ hasNextPage, setHasNextPage ] = useState(true);
@@ -164,7 +164,7 @@ export function useFetchAndPaginate<T, C>(
     useEffect(() => {
         // reset state
         setPages([]);
-        setError(null);
+        setErr(null);
         setIsLoading(true);
         setPageIndex(-1);
         setHasNextPage(true);
@@ -184,7 +184,7 @@ export function useFetchAndPaginate<T, C>(
             return;
         }
         // fetch the next page
-        setError(null);
+        setErr(null);
         setIsLoading(true);
         try {
             const response = await fetchFunction(nextCursor);
@@ -193,7 +193,7 @@ export function useFetchAndPaginate<T, C>(
             setNextCursor(response.nextCursor);
             setPageIndex(nextPageIndex);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to load more data");
+            setErr(err instanceof Error ? err.message : "Failed to load more data");
             console.warn("[useFetchAndPaginate]", err);
         } finally {
             setIsLoading(false);
@@ -208,7 +208,7 @@ export function useFetchAndPaginate<T, C>(
 
     return {
         page: pages[pageIndex] ?? [],
-        error,
+        err,
         isLoading,
         hasMultiplePages: pages.length > 1 || (pages.length === 1 && hasNextPage),
         isFirstPage: pageIndex === 0,
