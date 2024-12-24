@@ -14,7 +14,7 @@ export type ValidationResult<T> = {
 /**
  * A function that validates an input string and returns an error message or the value.
  */
-export type InputValidator<T> = (input: string) => Promise<ValidationResult<T>>;
+export type InputValidator<T> = (input: string) => ValidationResult<T>;
 
 /**
  * Common props for all kinds of inputs.
@@ -61,7 +61,7 @@ export const useInputBase = <T,>(
     const [val, setVal] = useState<T | undefined>();
     const [err, setErr] = useState<string | null>(null);
 
-    const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const handleInputEvent: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         // prevent input of invalid characters
         const newStr = e.target.value;
         if (html.pattern && !new RegExp(html.pattern).test(newStr)) {
@@ -69,21 +69,21 @@ export const useInputBase = <T,>(
         }
 
         setStr(newStr);
-        onChangeStr(newStr);
+        validateAndUpdateValue(newStr);
 
         if (html.onChange) {
             html.onChange(e);
         }
     };
 
-    const onChangeStr = async (newStr: string) => {
+    const validateAndUpdateValue = (newStr: string) => {
         const trimStr = newStr.trim();
         if (html.required && trimStr === "") {
             setErr(props.msgRequired ?? "Input is required");
             setVal(undefined);
         } else {
             try {
-                const validation = await props.validate(trimStr);
+                const validation = props.validate(trimStr);
                 setErr(validation.err);
                 setVal(validation.val);
             } catch (err) {
@@ -101,7 +101,7 @@ export const useInputBase = <T,>(
     };
 
     useEffect(() => {
-        onChangeStr(str);
+        validateAndUpdateValue(str);
     }, props.deps);
 
     // Notify parent of value changes
@@ -118,7 +118,7 @@ export const useInputBase = <T,>(
 
             <input className="input"
                 {...html}
-                onChange={onChangeInput}
+                onChange={handleInputEvent}
                 value={str}
             />
 
@@ -150,7 +150,7 @@ export const useInputString = (
     html.pattern = undefined;
 
     const textEncoder = new TextEncoder();
-    const validate: InputValidator<string> = async (input: string) =>
+    const validate: InputValidator<string> = (input: string) =>
     {
         if (props.minLength && input.length > 0 && input.length < props.minLength) {
             return { err: props.msgTooShort ?? "Too short", val: undefined };
@@ -167,7 +167,7 @@ export const useInputString = (
         }
 
         if (props.validate) {
-            return await props.validate(input);
+            return props.validate(input);
         }
 
         return { err: null, val: input };
@@ -193,7 +193,7 @@ export const useInputAddress = (
     html.inputMode = "text";
     html.pattern = `^${REGEX_ADDRESS_NORMALIZED}$`;
 
-    const validate: InputValidator<string> = async (input: string) =>
+    const validate: InputValidator<string> = (input: string) =>
     {
         const addr = validateAndNormalizeAddress(input);
         if (!addr) {
@@ -201,7 +201,7 @@ export const useInputAddress = (
         }
 
         if (props.validate) {
-            return await props.validate(addr);
+            return props.validate(addr);
         }
 
         return { err: null, val: addr };
@@ -232,7 +232,7 @@ export const useInputUnsignedInt = (
     html.inputMode = "numeric";
     html.pattern = "^[0-9]*$";
 
-    const validate: InputValidator<number> = async (input: string) =>
+    const validate: InputValidator<number> = (input: string) =>
     {
         if (input === "") {
             return { err: null, val: undefined };
@@ -287,7 +287,7 @@ export const useInputUnsignedBalance = (
     html.pattern = `^[0-9]*\\.?[0-9]{0,${props.decimals}}$`;
 
     const max = props.max ?? MAX_U64;
-    const validate: InputValidator<bigint> = async (input: string) =>
+    const validate: InputValidator<bigint> = (input: string) =>
     {
         if (input === "" || input === ".") {
             return { err: null, val: undefined };
@@ -303,7 +303,7 @@ export const useInputUnsignedBalance = (
         }
 
         if (props.validate) {
-            return await props.validate(input);
+            return props.validate(input);
         }
 
         return { err: null, val: bigInput };
@@ -352,14 +352,14 @@ export const useTextArea = <T,>(
     };
 
     // Validate and update state
-    const onChangeStr = async (newStr: string) => {
+    const onChangeStr = (newStr: string) => {
         const trimStr = newStr.trim();
         if (html.required && trimStr === "") {
             setErr(props.msgRequired ?? "Input is required");
             setVal(undefined);
         } else {
             try {
-                const validation = await props.validate(trimStr);
+                const validation = props.validate(trimStr);
                 setErr(validation.err);
                 setVal(validation.val);
             } catch (err) {
