@@ -39,40 +39,6 @@ export function getArgVal<T>(arg: SuiCallArg): T {
 }
 
 /**
- * Parse a Move abort string (from `tx.effects.status.error`) into its different parts.
- *
- * Based on `sui/crates/sui/src/clever_error_rendering.rs`.
- *
- * Example error string:
- * `MoveAbort(MoveLocation { module: ModuleId { address: 0x123, name: Identifier("the_module") }, function: 1, instruction: 29, function_name: Some("the_function") }, 5008) in command 2`
- */
-export function parseTxError(
-    error: string,
-): {
-    packageId: string;
-    module: string;
-    function: string;
-    instruction: number;
-    code: number;
-    command: number;
-} | null
-{
-    const match = /MoveAbort.*address:\s*(.*?),.* name:.*Identifier\((.*?)\).*instruction:\s+(\d+),.*function_name:.*Some\((.*?)\).*},\s*(\d+).*in command\s*(\d+)/.exec(error);
-    if (!match) {
-        return null;
-    }
-    const cleanString = (s: string) => s.replace(/\\/g, "").replace(/"/g, "");
-    return {
-        packageId: "0x" + match[1],
-        module: cleanString(match[2]),
-        instruction: parseInt(match[3]),
-        function: cleanString(match[4]),
-        code: parseInt(match[5]),
-        command: parseInt(match[6]),
-    };
-}
-
-/**
  * Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind
  * and return its `.transaction.data`.
  */

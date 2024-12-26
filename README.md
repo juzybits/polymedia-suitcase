@@ -55,6 +55,11 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
 
+## Errors
+
+- `parseMoveAbort()` - Parse a Move abort string into its different parts.
+- `class TxErrorParser` - Parse transaction errors and convert them into user-friendly messages.
+
 ## Faucet
 
 - `requestSuiFromFaucet()` - Get SUI from the faucet on localnet/devnet/testnet.
@@ -110,7 +115,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `type ObjectInput` - Either a `TransactionObjectInput` or a `SuiObjectRef`.
 - `objectArg()` - Transform an `ObjectInput` into an argument for `Transaction.moveCall()`.
 - `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.
-- `parseTxError()` - Parse a Move abort string (from `tx.effects.status.error`) into its different parts.
 - `txResToData()` - Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind and return its `.transaction.data`.
 - `TransferModule` - Build transactions for the `sui::transfer` module.
     - `public_freeze_object()`
