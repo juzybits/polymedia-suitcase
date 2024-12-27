@@ -1,6 +1,10 @@
 import { PaginatedResponse } from "@polymedia/suitcase-core";
 import { RefObject, useEffect, useState } from "react";
 
+export type UseFetchResult<T> = ReturnType<typeof useFetch<T>>;
+export type UseFetchAndLoadMoreResult<T, C> = ReturnType<typeof useFetchAndLoadMore<T, C>>;
+export type UseFetchAndPaginateResult<T, C> = ReturnType<typeof useFetchAndPaginate<T, C>>;
+
 /**
  * A hook that detects when a click or touch event occurs outside a DOM element.
  *
