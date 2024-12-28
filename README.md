@@ -201,6 +201,11 @@ The `suitcase-react` package provides components for React web apps.
 - Installation: `pnpm add @polymedia/suitcase-react`
 - Source code: [src/react](./src/react)
 
+## Buttons
+
+- `Btn` - A button component.
+- `BtnPrevNext` - A button component to navigate through paginated data (see `useFetchAndPaginate()`).
+
 ## Explorers
 
 - `const EXPLORER_NAMES` - `["Polymedia", "Suiscan", "SuiVision"]`.
