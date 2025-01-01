@@ -24,8 +24,6 @@ export const Btn: React.FC<{
         try {
             setIsWorking(true);
             await onClick();
-        } catch (err) {
-            throw err;
         } finally {
             setIsWorking(false);
         }
