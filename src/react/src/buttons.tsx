@@ -1,28 +1,39 @@
-import { RefObject } from "react";
+import { RefObject, useState } from "react";
 import { useFetchAndPaginate } from "./hooks";
 
 /**
  * A button component.
  */
 export const Btn: React.FC<{
-    onClick: () => void;
+    onClick: () => Promise<unknown>;
     children: React.ReactNode;
     disabled?: boolean;
-    working?: boolean;
     className?: string;
 }> = ({
     onClick,
     children,
     disabled = undefined,
-    working = undefined,
     className = undefined,
 }) =>
 {
+    const [working, setIsWorking] = useState(false);
+
     disabled = disabled || working;
+
+    const handleClick = async () => {
+        try {
+            setIsWorking(true);
+            await onClick();
+        } catch (err) {
+            throw err;
+        } finally {
+            setIsWorking(false);
+        }
+    };
 
     return (
         <button
-            onClick={onClick}
+            onClick={handleClick}
             className={`btn ${working ? "working" : ""} ${className ?? ""}`}
             disabled={disabled}
         >
@@ -62,11 +73,13 @@ export const BtnPrevNext: React.FC<{
     const handlePrevClick = () => {
         data.goToPreviousPage();
         handlePageChange();
+        return Promise.resolve();
     };
 
-    const handleNextClick = () => {
-        data.goToNextPage();
+    const handleNextClick = async () => {
+        await data.goToNextPage();
         handlePageChange();
+        return Promise.resolve();
     };
 
     return (
@@ -79,7 +92,6 @@ export const BtnPrevNext: React.FC<{
             </Btn>
             <Btn
                 disabled={data.isLoading || (data.isLastPage && !data.hasNextPage)}
-                working={data.isLoading}
                 onClick={handleNextClick}
             >
                 NEXT
