@@ -1,6 +1,7 @@
 export * from "./buttons";
 export * from "./explorers";
 export * from "./hooks";
+export * from "./icons";
 export * from "./inputs";
 export * from "./links";
 export * from "./misc";
