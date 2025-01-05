@@ -1,25 +1,23 @@
-import { NetworkName } from "@polymedia/suitcase-core";
 import { useRef, useState } from "react";
 import { useClickOutside } from "./hooks";
-import { RadioSelector, RadioOption } from "./selectors";
+import { RadioOption, RadioSelector } from "./selectors";
 
 export type BaseNetworkName = string;
 
 /**
  * A radio button menu to select a Sui network and save the choice to local storage.
  */
-export const NetworkRadioSelector: React.FC<{
-    selectedNetwork: NetworkName;
-    supportedNetworks: readonly NetworkName[];
-    onSwitch: (newNetwork: NetworkName) => void;
-    className?: string;
-}> = ({
+export function NetworkRadioSelector<NetworkName extends BaseNetworkName>({
     selectedNetwork,
     supportedNetworks,
     onSwitch,
     className = "",
-}) =>
-{
+}: {
+    selectedNetwork: NetworkName;
+    supportedNetworks: readonly NetworkName[];
+    onSwitch: (newNetwork: NetworkName) => void;
+    className?: string;
+}) {
     const options: RadioOption<NetworkName>[] = supportedNetworks.map(network => ({
         value: network,
         label: network
@@ -37,7 +35,7 @@ export const NetworkRadioSelector: React.FC<{
             className={`poly-network-radio-selector ${className}`}
         />
     );
-};
+}
 
 /**
  * A dropdown menu to choose between mainnet/testnet/devnet/localnet.
