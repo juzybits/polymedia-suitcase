@@ -7,32 +7,27 @@ export type BaseNetworkName = string;
 /**
  * A radio button menu to select a Sui network and save the choice to local storage.
  */
-export function NetworkRadioSelector<NetworkName extends BaseNetworkName>({
-    selectedNetwork,
-    supportedNetworks,
-    onSwitch,
-    className = "",
-}: {
+export function NetworkRadioSelector<NetworkName extends BaseNetworkName>(props: {
     selectedNetwork: NetworkName;
     supportedNetworks: readonly NetworkName[];
     onSwitch: (newNetwork: NetworkName) => void;
     className?: string;
 }) {
-    const options: RadioOption<NetworkName>[] = supportedNetworks.map(network => ({
+    const options: RadioOption<NetworkName>[] = props.supportedNetworks.map(network => ({
         value: network,
         label: network
     }));
 
     const onSelect = (newNetwork: NetworkName) => {
-        switchNetwork(newNetwork, supportedNetworks, onSwitch);
+        switchNetwork(newNetwork, props.supportedNetworks, props.onSwitch);
     };
 
     return (
         <RadioSelector
             options={options}
-            selectedValue={selectedNetwork}
+            selectedValue={props.selectedNetwork}
             onSelect={onSelect}
-            className={`poly-network-radio-selector ${className}`}
+            className={`poly-network-radio-selector ${props.className ?? ""}`}
         />
     );
 }
@@ -40,14 +35,7 @@ export function NetworkRadioSelector<NetworkName extends BaseNetworkName>({
 /**
  * A dropdown menu to choose between mainnet/testnet/devnet/localnet.
  */
-export function NetworkDropdownSelector<NetworkName extends BaseNetworkName>({
-    currentNetwork,
-    supportedNetworks,
-    onSwitch,
-    disabled = false,
-    className = "",
-    id,
-}: {
+export function NetworkDropdownSelector<NetworkName extends BaseNetworkName>(props: {
     currentNetwork: NetworkName;
     supportedNetworks: readonly NetworkName[];
     onSwitch?: (newNetwork: NetworkName) => void;
@@ -62,14 +50,14 @@ export function NetworkDropdownSelector<NetworkName extends BaseNetworkName>({
 
     const SelectedOption: React.FC = () => {
         return <div className="network-option selected" /* onMouseEnter={() => setIsOpen(true)} */ >
-            <span className="text" onClick={() => { !disabled && setIsOpen(true); }}>
-                {currentNetwork}
+            <span className="text" onClick={() => { !props.disabled && setIsOpen(true); }}>
+                {props.currentNetwork}
             </span>
         </div>;
     };
 
     const NetworkOptions: React.FC = () => {
-        const otherNetworks = supportedNetworks.filter(net => net !== currentNetwork);
+        const otherNetworks = props.supportedNetworks.filter(net => net !== props.currentNetwork);
         return <div className="network-options">
             {otherNetworks.map(net => (
                 <NetworkOption key={net} network={net} />
@@ -80,8 +68,8 @@ export function NetworkDropdownSelector<NetworkName extends BaseNetworkName>({
     const NetworkOption: React.FC<{ network: NetworkName }> = ({ network }) => {
         return <div className="network-option">
             <span className="text" onClick={() => {
-                if (!disabled) {
-                    switchNetwork(network, supportedNetworks, onSwitch);
+                if (!props.disabled) {
+                    switchNetwork(network, props.supportedNetworks, props.onSwitch);
                     setIsOpen(false);
                 }
             }}>
@@ -91,8 +79,8 @@ export function NetworkDropdownSelector<NetworkName extends BaseNetworkName>({
     };
 
     return <div
-        id={id}
-        className={"network-selector " + (disabled ? "disabled " : "") + className}
+        id={props.id}
+        className={"network-selector " + (props.disabled ? "disabled " : "") + props.className}
         ref={selectorRef}
         onMouseLeave={() => {setIsOpen(false);}}
     >
