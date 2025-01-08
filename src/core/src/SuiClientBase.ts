@@ -160,4 +160,21 @@ export abstract class SuiClientBase
 
         return resp;
     }
+
+    public async dryRunOrSignAndExecute(
+        tx: Transaction,
+        dryRun?: boolean,
+        sender: string = "0x7777777777777777777777777777777777777777777777777777777777777777",
+    ): Promise<SuiTransactionBlockResponse>
+    {
+        if (dryRun) {
+            const results = await this.suiClient.devInspectTransactionBlock({
+                sender,
+                transactionBlock: tx,
+            });
+            return { digest: "", ...results };
+        } else {
+            return await this.signAndExecuteTx(tx);
+        }
+    }
 }
