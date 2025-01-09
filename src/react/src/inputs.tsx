@@ -13,9 +13,16 @@ export type ValidationResult<T> = {
 };
 
 /**
- * A function that validates an input string and returns an error message or the value.
+ * A function that validates a raw input string and returns an error message or the value.
+ * Runs after the hook's internal validation.
  */
 export type InputValidator<T> = (input: string) => ValidationResult<T>;
+
+/**
+ * A function that validates a processed value and returns an error message or the value.
+ * Runs after the hook's internal validation and after the user-provided `validateInput`.
+ */
+export type ValueValidator<T> = (val: T) => ValidationResult<T>;
 
 /**
  * Common props for all kinds of inputs.
@@ -24,7 +31,8 @@ export type CommonInputProps<T> = {
     label?: React.ReactNode;
     msgRequired?: string;
     onChangeVal?: (val: T | undefined) => void;
-    validate?: InputValidator<T>;
+    validateInput?: InputValidator<T>;
+    validateValue?: ValueValidator<T>;
 };
 
 /**
@@ -167,11 +175,13 @@ export const useInputString = (
             return { err: props.msgTooLong ?? "Too long", val: undefined };
         }
 
-        if (props.validate) {
-            return props.validate(input);
-        }
+        const inputRes = props.validateInput?.(input);
+        if (inputRes?.err) { return inputRes; }
 
-        return { err: null, val: input };
+        const valueRes = props.validateValue?.(inputRes?.val ?? input);
+        if (valueRes?.err) { return valueRes; }
+
+        return { err: null, val: valueRes?.val ?? inputRes?.val ?? input };
     };
 
     return useInputBase({
@@ -201,11 +211,13 @@ export const useInputAddress = (
             return { err: "Invalid Sui address", val: undefined };
         }
 
-        if (props.validate) {
-            return props.validate(addr);
-        }
+        const inputRes = props.validateInput?.(input);
+        if (inputRes?.err) { return inputRes; }
 
-        return { err: null, val: addr };
+        const valueRes = props.validateValue?.(inputRes?.val ?? addr);
+        if (valueRes?.err) { return valueRes; }
+
+        return { err: null, val: valueRes?.val ?? inputRes?.val ?? addr };
     };
 
     return useInputBase({
@@ -242,7 +254,15 @@ export const useInputPrivateKey = (
 
         let result: ValidationResult<Keypair>;
         try {
-            result = { err: null, val: pairFromSecretKey(input) };
+            const pair = pairFromSecretKey(input);
+
+            const inputRes = props.validateInput?.(input);
+            if (inputRes?.err) { return inputRes; }
+
+            const valueRes = props.validateValue?.(inputRes?.val ?? pair);
+            if (valueRes?.err) { return valueRes; }
+
+            result = { err: null, val: valueRes?.val ?? inputRes?.val ?? pair };
         } catch (err) {
             result = { err: "Invalid private key", val: undefined };
         }
@@ -296,11 +316,13 @@ export const useInputUnsignedInt = (
             return { err: "Number is too large", val: undefined };
         }
 
-        if (props.validate) {
-            return props.validate(input);
-        }
+        const inputRes = props.validateInput?.(input);
+        if (inputRes?.err) { return inputRes; }
 
-        return { err: null, val: numValue };
+        const valueRes = props.validateValue?.(inputRes?.val ?? numValue);
+        if (valueRes?.err) { return valueRes; }
+
+        return { err: null, val: valueRes?.val ?? inputRes?.val ?? numValue };
     };
 
     return useInputBase({
@@ -345,11 +367,13 @@ export const useInputUnsignedBalance = (
             return { err: props.msgTooLarge ?? `Maximum value is ${formatBalance(max, props.decimals)}`, val: undefined };
         }
 
-        if (props.validate) {
-            return props.validate(input);
-        }
+        const inputRes = props.validateInput?.(input);
+        if (inputRes?.err) { return inputRes; }
 
-        return { err: null, val: bigInput };
+        const valueRes = props.validateValue?.(inputRes?.val ?? bigInput);
+        if (valueRes?.err) { return valueRes; }
+
+        return { err: null, val: valueRes?.val ?? inputRes?.val ?? bigInput };
     };
 
     return useInputBase({
@@ -367,7 +391,7 @@ export const useInputUnsignedBalance = (
  */
 export type TextAreaProps<T> = CommonInputProps<T> & {
     html?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
-    validate: InputValidator<T>;
+    validateInput: InputValidator<T>;
     deps: React.DependencyList;
 };
 
@@ -402,7 +426,7 @@ export const useTextArea = <T,>(
             setVal(undefined);
         } else {
             try {
-                const validation = props.validate(trimStr);
+                const validation = props.validateInput(trimStr);
                 setErr(validation.err);
                 setVal(validation.val);
             } catch (err) {
