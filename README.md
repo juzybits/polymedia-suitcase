@@ -226,6 +226,7 @@ The `suitcase-react` package provides components for React web apps.
 - `useInputBase()` - A base hook for creating input fields.
 - `useInputString()` - An input field for strings.
 - `useInputAddress()` - An input field for Sui addresses (or object IDs).
+- `useInputPrivateKey()` - An input field for Sui private keys that produces a Sui Keypair.
 - `useInputUnsignedInt()` - An input field for positive integers.
 - `useInputUnsignedBalance()` - Input field for positive Coin balances. Handles decimals (e.g. `"1 SUI"` → `1_000_000_000`).
 

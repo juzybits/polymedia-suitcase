@@ -1,5 +1,6 @@
-import { formatBalance, MAX_U64, REGEX_ADDRESS_NORMALIZED, stringToBalance, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
-import React, { useEffect, useState } from "react";
+import { Keypair, SUI_PRIVATE_KEY_PREFIX } from "@mysten/sui/cryptography";
+import { formatBalance, MAX_U64, pairFromSecretKey, REGEX_ADDRESS_NORMALIZED, stringToBalance, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
+import React, { useEffect, useRef, useState } from "react";
 
 // === common ===
 
@@ -173,7 +174,7 @@ export const useInputString = (
         return { err: null, val: input };
     };
 
-    return useInputBase<string>({
+    return useInputBase({
         html,
         validate,
         ...props,
@@ -207,7 +208,49 @@ export const useInputAddress = (
         return { err: null, val: addr };
     };
 
-    return useInputBase<string>({
+    return useInputBase({
+        html,
+        validate,
+        ...props,
+        deps: [props],
+    });
+};
+
+/**
+ * An input field for Sui private keys that produces a Sui Keypair.
+ */
+export const useInputPrivateKey = (
+    props: InputProps<Keypair>,
+): InputResult<Keypair> =>
+{
+    const html = props.html ?? {};
+    html.type = "text";
+    html.inputMode = "text";
+    html.pattern = `^${SUI_PRIVATE_KEY_PREFIX}.+$`;
+
+    const lastValidate = useRef<{input: string, result: ValidationResult<Keypair>}>();
+    const validate = (input: string): ValidationResult<Keypair> =>
+    {
+        if (input === "") {
+            return { err: null, val: undefined };
+        }
+
+        // Avoid creating a new object which will trigger a rerender
+        if (lastValidate.current?.input === input) {
+            return lastValidate.current.result;
+        }
+
+        let result: ValidationResult<Keypair>;
+        try {
+            result = { err: null, val: pairFromSecretKey(input) };
+        } catch (err) {
+            result = { err: "Invalid private key", val: undefined };
+        }
+        lastValidate.current = { input, result };
+        return result;
+    };
+
+    return useInputBase({
         html,
         validate,
         ...props,
@@ -260,7 +303,7 @@ export const useInputUnsignedInt = (
         return { err: null, val: numValue };
     };
 
-    return useInputBase<number>({
+    return useInputBase({
         html,
         validate,
         ...props,
@@ -309,7 +352,7 @@ export const useInputUnsignedBalance = (
         return { err: null, val: bigInput };
     };
 
-    return useInputBase<bigint>({
+    return useInputBase({
         html,
         validate,
         ...props,

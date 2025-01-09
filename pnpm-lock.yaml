@@ -95,6 +95,9 @@ importers:
 
   src/react:
     dependencies:
+      '@mysten/sui':
+        specifier: ^1.18.0
+        version: 1.18.0(typescript@5.7.2)
       '@polymedia/suitcase-core':
         specifier: workspace:*
         version: link:../core
