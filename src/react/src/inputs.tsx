@@ -389,11 +389,15 @@ export const useInputUnsignedBalance = (
 /**
  * Props for `<textarea>` fields.
  */
-export type TextAreaProps<T> = CommonInputProps<T> & {
-    html?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
-    validateInput: InputValidator<T>;
-    deps: React.DependencyList;
-};
+export type TextAreaProps<T> =
+    Omit<
+        CommonInputProps<T>,
+        'validateValue'
+    > & {
+        html?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+        validateInput: InputValidator<T>;
+        deps: React.DependencyList;
+    };
 
 /**
  * A <textarea> field with custom validation.
@@ -484,10 +488,14 @@ export type DropdownOption<T extends string> = {
 /**
  * Props for `<select>` fields.
  */
-export type DropdownProps<T extends string> = CommonInputProps<T> & {
-    options: DropdownOption<T>[];
-    html?: React.SelectHTMLAttributes<HTMLSelectElement> & { value?: T };
-};
+export type DropdownProps<T extends string> =
+    Omit<
+        CommonInputProps<T>,
+        'validateInput' | 'validateValue'
+    > & {
+        options: DropdownOption<T>[];
+        html?: React.SelectHTMLAttributes<HTMLSelectElement> & { value?: T };
+    };
 
 export type DropdownResult<T extends string> = Omit<InputResult<T>, "str">;
 
