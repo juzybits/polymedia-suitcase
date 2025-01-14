@@ -238,7 +238,7 @@ export const useInputPrivateKey = (
     const html = props.html ?? {};
     html.type = "text";
     html.inputMode = "text";
-    html.pattern = `^${SUI_PRIVATE_KEY_PREFIX}.+$`;
+    html.pattern = `^(${SUI_PRIVATE_KEY_PREFIX}.+)?$`;
 
     const lastValidate = useRef<{input: string, result: ValidationResult<Keypair>}>();
     const validate = (input: string): ValidationResult<Keypair> =>
@@ -542,7 +542,7 @@ export const useDropdown = <T extends string>(
                 onChange={onChange}
                 value={val ?? ""}
             >
-                <option value="">{props.msgRequired ?? "Select..."}</option>
+                <option value="">{"Select..."}</option>
                 {props.options.map(option => (
                     <option key={String(option.value)} value={option.value}>
                         {option.label}
