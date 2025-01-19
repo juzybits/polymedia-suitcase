@@ -125,7 +125,7 @@ export const useInputBase = <T,>(
             {props.label &&
             <div className="input-label">{props.label}</div>}
 
-            <input className="input"
+            <input className={`input ${err !== null ? "error" : ""}`}
                 {...html}
                 onChange={handleInputEvent}
                 value={str}
@@ -464,7 +464,7 @@ export const useTextArea = <T,>(
             <div className="input-label">{props.label}</div>}
 
             <textarea
-                className="input"
+                className={`input ${err !== null ? "error" : ""}`}
                 {...html}
                 onChange={onChangeTextArea}
                 value={str}
@@ -537,7 +537,7 @@ export const useDropdown = <T extends string>(
             <div className="input-label">{props.label}</div>}
 
             <select
-                className="input"
+                className={`input ${err !== null ? "error" : ""}`}
                 {...html}
                 onChange={onChange}
                 value={val ?? ""}
