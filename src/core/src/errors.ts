@@ -50,10 +50,10 @@ export class TxErrorParser
     /**
      * Extract the error code from a Move abort string.
      */
-    public parseErrCode(str: string): string {
+    public parseErrCode(str: string): string | null {
         const parsed = parseMoveAbort(str);
         if (!parsed || parsed.packageId !== this.packageId || !(parsed.code in this.errCodes)) {
-            return str;
+            return null;
         }
         return this.errCodes[parsed.code];
     }
@@ -82,17 +82,17 @@ export class TxErrorParser
         if (str.includes("InsufficientCoinBalance")) { return "You don't have enough balance"; }
 
         const code = this.parseErrCode(str);
+        if (code) {
+            // Check custom error messages passed to this method
+            if (customMsgs && code in customMsgs) {
+                return customMsgs[code];
+            }
 
-        // Check custom error messages passed to this method
-        if (customMsgs && code in customMsgs) {
-            return customMsgs[code];
+            // Check custom error messages passed to constructor
+            if (this.errMessages && code in this.errMessages) {
+                return this.errMessages[code];
+            }
         }
-
-        // Check custom error messages passed to constructor
-        if (this.errMessages && code in this.errMessages) {
-            return this.errMessages[code];
-        }
-
-        return code || defaultMsg;
+        return defaultMsg;
     }
 }
