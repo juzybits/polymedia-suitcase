@@ -42,36 +42,36 @@ export function parseMoveAbort(
 export class TxErrorParser
 {
     constructor(
-        private packageId: string,
-        private errCodes: Record<number, string>,
-        private errMessages?: Record<string, string>
+        public readonly packageId: string,
+        public readonly errCodes: Record<number, string>,
+        public readonly errMessages?: Record<string, string>
     ) {}
 
     /**
      * Extract the error code from a Move abort string.
      */
-    public parseErrCode(err: string): string {
-        const error = parseMoveAbort(err);
-        if (!error || error.packageId !== this.packageId || !(error.code in this.errCodes)) {
-            return err;
+    public parseErrCode(str: string): string {
+        const parsed = parseMoveAbort(str);
+        if (!parsed || parsed.packageId !== this.packageId || !(parsed.code in this.errCodes)) {
+            return str;
         }
-        return this.errCodes[error.code];
+        return this.errCodes[parsed.code];
     }
 
     /**
      * Convert a transaction error into a user-friendly message.
      * @param err The error object/string to parse
-     * @param defaultMessage Default message if error can't be parsed or is not a known error
-     * @param errMessages Optional map of error codes to custom messages
+     * @param defaultMsg Default message if error can't be parsed or is not a known error
+     * @param customMsgs Optional map of error codes to custom messages
      * @returns User-friendly error message or null if user rejected
      */
     public errToStr(
         err: unknown,
-        defaultMessage: string,
-        errMessages?: Record<string, string>
+        defaultMsg: string,
+        customMsgs?: Record<string, string>
     ): string | null
     {
-        if (!err) { return defaultMessage; }
+        if (!err) { return defaultMsg; }
 
         const str = err instanceof Error ? err.message
             : typeof err === "string" ? err
@@ -84,8 +84,8 @@ export class TxErrorParser
         const code = this.parseErrCode(str);
 
         // Check custom error messages passed to this method
-        if (errMessages && code in errMessages) {
-            return errMessages[code];
+        if (customMsgs && code in customMsgs) {
+            return customMsgs[code];
         }
 
         // Check custom error messages passed to constructor
@@ -93,6 +93,6 @@ export class TxErrorParser
             return this.errMessages[code];
         }
 
-        return code || defaultMessage;
+        return code || defaultMsg;
     }
 }
