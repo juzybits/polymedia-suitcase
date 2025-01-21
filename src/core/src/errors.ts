@@ -9,7 +9,7 @@ export type MoveAbort = {
 
 export type ErrorInfo = {
     symbol: string;
-    msg: string;
+    msg?: string;
 };
 
 export type ErrorInfos = Record<number, ErrorInfo>;
@@ -62,33 +62,20 @@ export function parseMoveAbort(
  * Parse transaction errors and convert them into user-friendly messages.
  *
  * @param packageId The package ID of the transaction.
- * @param errCodes A map of numeric errors to string error codes.
- * @param errMessages A map of string error codes to user-friendly messages.
+ * @param errCodes A map of numeric error codes to string error symbols (constant names).
  */
 export class TxErrorParser
 {
     constructor(
         public readonly packageId: string,
-        public readonly errCodes: Record<number, string>,
-        public readonly errMessages?: Record<string, string>
+        public readonly errInfos: ErrorInfos,
     ) {}
-
-    /**
-     * Extract the error code from a Move abort string.
-     */
-    public parseErrCode(str: string): string | null {
-        const parsed = parseMoveAbort(str);
-        if (!parsed || parsed.packageId !== this.packageId || !(parsed.code in this.errCodes)) {
-            return null;
-        }
-        return this.errCodes[parsed.code];
-    }
 
     /**
      * Convert a transaction error into a user-friendly message.
      * @param err The error object/string to parse
      * @param defaultMsg Default message if error can't be parsed or is not a known error
-     * @param customMsgs Optional map of error codes to custom messages
+     * @param customMsgs Optional map of error symbols to custom messages
      * @returns User-friendly error message or null if user rejected
      */
     public errToStr(
@@ -97,33 +84,25 @@ export class TxErrorParser
         customMsgs?: Record<string, string>
     ): string | null
     {
-        if (!err) { return defaultMsg; }
-
-        let str = err instanceof Error ? err.message
-            : typeof err === "string" ? err
-            : (() => {
-                try { return JSON.stringify(err); }
-                catch { return String(err); }
-            })();
-        str = str.trim();
+        const str = anyToStr(err);
         if (!str) { return defaultMsg; }
 
         // Handle common cases
-        if (str.includes("Rejected from user")) { return null; }
+        if (str.includes("User rejected")) { return null; }
         if (str.includes("InsufficientCoinBalance")) { return "You don't have enough balance"; }
 
-        const code = this.parseErrCode(str);
-        if (code) {
-            // Check custom error messages passed to this method
-            if (customMsgs && code in customMsgs) {
-                return customMsgs[code];
-            }
-
-            // Check custom error messages passed to constructor
-            if (this.errMessages && code in this.errMessages) {
-                return this.errMessages[code];
-            }
+        const parsed = parseMoveAbort(str);
+        if (!parsed || parsed.packageId !== this.packageId || !(parsed.code in this.errInfos)) {
+            return str;
         }
-        return defaultMsg;
+        const info = this.errInfos[parsed.code];
+
+        // Check custom error messages passed to this method
+        if (customMsgs && info.symbol in customMsgs) {
+            return customMsgs[info.symbol];
+        }
+
+        // Check custom error messages passed to constructor
+        return info.msg || info.symbol;
     }
 }
