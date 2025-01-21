@@ -82,9 +82,14 @@ export class TxErrorParser
     {
         if (!err) { return defaultMsg; }
 
-        const str = err instanceof Error ? err.message
+        let str = err instanceof Error ? err.message
             : typeof err === "string" ? err
-            : JSON.stringify(err);
+            : (() => {
+                try { return JSON.stringify(err); }
+                catch { return String(err); }
+            })();
+        str = str.trim();
+        if (!str) { return defaultMsg; }
 
         // Handle common cases
         if (str.includes("Rejected from user")) { return null; }
