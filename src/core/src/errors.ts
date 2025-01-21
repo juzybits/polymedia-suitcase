@@ -9,10 +9,27 @@ export type MoveAbort = {
 
 export type ErrorInfo = {
     symbol: string;
-    msg?: string;
+    msg: string;
 };
 
 export type ErrorInfos = Record<number, ErrorInfo>;
+
+/**
+ * Attempts to convert any kind of value into a readable string.
+ */
+export function anyToStr(val: unknown): string | null
+{
+    if (val === null || val === undefined) {
+        return null;
+    }
+    let str = val instanceof Error ? val.message
+        : typeof val === "string" ? val
+        : (() => {
+            try { return JSON.stringify(val); }
+            catch { return String(val); }
+        })();
+    return str.trim() || null;
+}
 
 /**
  * Parse a Move abort string into its different parts.

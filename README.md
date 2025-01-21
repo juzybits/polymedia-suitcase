@@ -57,6 +57,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Errors
 
+- `anyToStr()` - Attempts to convert any kind of value into a readable string.
 - `parseMoveAbort()` - Parse a Move abort string into its different parts.
 - `class TxErrorParser` - Parse transaction errors and convert them into user-friendly messages.
 
