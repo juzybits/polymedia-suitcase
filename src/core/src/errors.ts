@@ -1,3 +1,19 @@
+export type MoveAbort = {
+    packageId: string;
+    module: string;
+    function: string;
+    instruction: number;
+    code: number;
+    command: number;
+};
+
+export type ErrorInfo = {
+    symbol: string;
+    msg?: string;
+};
+
+export type ErrorInfos = Record<number, ErrorInfo>;
+
 /**
  * Parse a Move abort string into its different parts.
  *
@@ -8,14 +24,7 @@
  */
 export function parseMoveAbort(
     error: string,
-): {
-    packageId: string;
-    module: string;
-    function: string;
-    instruction: number;
-    code: number;
-    command: number;
-} | null
+): MoveAbort | null
 {
     const match = /MoveAbort.*address:\s*(.*?),.* name:.*Identifier\((.*?)\).*instruction:\s+(\d+),.*function_name:.*Some\((.*?)\).*},\s*(\d+).*in command\s*(\d+)/.exec(error);
     if (!match) {
