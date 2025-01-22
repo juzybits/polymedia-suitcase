@@ -76,14 +76,26 @@ export function setupSuiTransaction() {
  * Suppress "Client/Server api version mismatch" warnings.
  */
 export function suppressSuiVersionMismatchWarnings() {
-    const originalStderr = process.stderr.write;
-    process.stderr.write = function (buffer: Buffer | string | Uint8Array, ...args: any[]): boolean {
-        const text = buffer.toString();
-        if (text.includes("Client/Server api version mismatch")) {
+    // Skip if already wrapped
+    if ((process.stderr.write as any).__isSuppressingVersionMismatch) // eslint-disable-line
+        return;
+    // Store the original stderr.write function, properly bound to stderr
+    const originalStderr = process.stderr.write.bind(process.stderr);
+    // Wrap the original stderr.write in our custom function
+    process.stderr.write = function(
+        str: string | Uint8Array,
+        encoding?: BufferEncoding | ((err?: Error) => void),
+        cb?: (err?: Error) => void
+    ): boolean {
+        // If it's a version mismatch warning, return true (indicating success) without writing
+        if (str.toString().includes("Client/Server api version mismatch")) {
             return true;
         }
-        return originalStderr.call(process.stderr, buffer, ...args);
+        // For all other messages, pass through to the original stderr.write
+        return originalStderr(str, encoding as any, cb); // eslint-disable-line
     };
+    // Mark as wrapped in case this function is called multiple times
+    (process.stderr.write as any).__isSuppressingVersionMismatch = true; // eslint-disable-line
 }
 
 /**
@@ -93,7 +105,6 @@ export async function executeSuiTransaction(
     suiClient: SuiClient,
     tx: Transaction,
     signer: Signer,
-
 ): Promise<SuiTransactionBlockResponse> {
     return await suiClient.signAndExecuteTransaction({
         signer,
