@@ -4,7 +4,7 @@ import { Transaction } from "@mysten/sui/transactions";
 
 import { chunkArray } from "./misc.js";
 import { objResToId } from "./objects.js";
-import { SignTransaction } from "./txs.js";
+import { SignTx } from "./txs.js";
 /**
  * Options for `SuiClient.waitForTransaction()`.
  */
@@ -24,7 +24,7 @@ const MAX_OBJECTS_PER_REQUEST = 50;
 export abstract class SuiClientBase
 {
     public readonly suiClient: SuiClient;
-    public readonly signTx: SignTransaction;
+    public readonly signTx: SignTx;
     public readonly waitForTxOptions: WaitForTxOptions | false;
     public readonly txResponseOptions: SuiTransactionBlockResponseOptions;
 
@@ -36,7 +36,7 @@ export abstract class SuiClientBase
      */
     constructor(args: {
         suiClient: SuiClient;
-        signTx: SignTransaction;
+        signTx: SignTx;
         waitForTxOptions?: WaitForTxOptions | false;
         txResponseOptions?: SuiTransactionBlockResponseOptions;
     }) {

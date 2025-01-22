@@ -20,7 +20,7 @@ export type ObjectInput = TransactionObjectInput | SuiObjectRef;
  * For apps that use `@mysten/dapp-kit` to sign with a Sui wallet:
     ```
     const { mutateAsync: walletSignTx } = useSignTransaction();
-    const signTx: SignTransaction = async (tx) => {
+    const signTx: SignTx = async (tx) => {
         return walletSignTx({ transaction: tx });
     };
     ```
@@ -28,14 +28,14 @@ export type ObjectInput = TransactionObjectInput | SuiObjectRef;
     ```
     const secretKey = "suiprivkey1...";
     const signer = pairFromSecretKey(secretKey)
-    const signTx: SignTransaction = async (tx) => {
+    const signTx: SignTx = async (tx) => {
         tx.setSenderIfNotSet(signer.toSuiAddress());
         const txBytes = await tx.build({ client: suiClient });
         return signer.signTransaction(txBytes);
     };
     ```
  */
-export type SignTransaction = (tx: Transaction) => Promise<SignatureWithBytes>;
+export type SignTx = (tx: Transaction) => Promise<SignatureWithBytes>;
 
 /**
  * Get the value of a `SuiCallArg` (transaction input).
@@ -50,12 +50,12 @@ export function getArgVal<T>(arg: SuiCallArg): T {
 }
 
 /**
- * Create a `SignTransaction` function that uses a `Signer` to sign a `Transaction`.
+ * Create a `SignTx` function that uses a `Signer` to sign a `Transaction`.
  */
 export function newSignTx(
     suiClient: SuiClient,
     signer: Signer,
-): SignTransaction
+): SignTx
 {
     return async (tx: Transaction) => {
         tx.setSenderIfNotSet(signer.toSuiAddress());

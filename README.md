@@ -115,9 +115,9 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `type NestedResult` - An item in the array returned by a `Transaction.moveCall()` call.
 - `type ObjectInput` - Either a `TransactionObjectInput` or a `SuiObjectRef`.
-- `type SignTransaction` - A function that can sign a `Transaction`.
+- `type SignTx` - A function that can sign a `Transaction`.
 - `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.
-- `newSignTx()` - Create a `SignTransaction` function that uses a `Signer` to sign a `Transaction`.
+- `newSignTx()` - Create a `SignTx` function that uses a `Signer` to sign a `Transaction`.
 - `objectArg()` - Transform an `ObjectInput` into an argument for `Transaction.moveCall()`.
 - `txResToData()` - Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind and return its `.transaction.data`.
 - `TransferModule` - Build transactions for the `sui::transfer` module.
