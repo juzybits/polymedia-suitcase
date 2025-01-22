@@ -73,6 +73,20 @@ export function setupSuiTransaction() {
 }
 
 /**
+ * Suppress "Client/Server api version mismatch" warnings.
+ */
+export function suppressSuiVersionMismatchWarnings() {
+    const originalStderr = process.stderr.write;
+    process.stderr.write = function (buffer: Buffer | string | Uint8Array, ...args: any[]): boolean {
+        const text = buffer.toString();
+        if (text.includes("Client/Server api version mismatch")) {
+            return true;
+        }
+        return originalStderr.call(process.stderr, buffer, ...args);
+    };
+}
+
+/**
  * Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.
  */
 export async function executeSuiTransaction(
