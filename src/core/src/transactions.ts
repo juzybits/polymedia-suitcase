@@ -1,5 +1,5 @@
-import { SuiCallArg, SuiObjectRef, SuiTransactionBlockResponse } from "@mysten/sui/client";
-import { SignatureWithBytes } from "@mysten/sui/cryptography";
+import { SuiCallArg, SuiClient, SuiObjectRef, SuiTransactionBlockResponse } from "@mysten/sui/client";
+import { SignatureWithBytes, Signer } from "@mysten/sui/cryptography";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
 
 import { isSuiObjectRef } from "./guards.js";
@@ -47,6 +47,21 @@ export function getArgVal<T>(arg: SuiCallArg): T {
         return arg.value as T;
     }
     return arg.objectId as T;
+}
+
+/**
+ * Create a `SignTransaction` function that uses a `Signer` to sign a `Transaction`.
+ */
+export function newSignTx(
+    suiClient: SuiClient,
+    signer: Signer,
+): SignTransaction
+{
+    return async (tx: Transaction) => {
+        tx.setSenderIfNotSet(signer.toSuiAddress());
+        const txBytes = await tx.build({ client: suiClient });
+        return signer.signTransaction(txBytes);
+    };
 }
 
 /**
