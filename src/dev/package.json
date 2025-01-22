@@ -16,8 +16,8 @@
         "@polymedia/suitcase-node": "workspace:*"
     },
     "devDependencies": {
-        "@types/node": "^22.10.3",
-        "typescript": "^5.7.2"
+        "@types/node": "^22.10.7",
+        "typescript": "^5.7.3"
     },
     "type": "module",
     "sideEffects": false

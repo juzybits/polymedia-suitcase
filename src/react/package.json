@@ -25,15 +25,15 @@
         "typecheck": "tsc -p tsconfig.esm.json"
     },
     "dependencies": {
-        "@polymedia/suitcase-core": "workspace:*",
-        "@mysten/sui": "^1.18.0"
+        "@mysten/sui": "^1.20.0",
+        "@polymedia/suitcase-core": "workspace:*"
     },
     "peerDependencies": {
         "react": "^18.0.0"
     },
     "devDependencies": {
         "@types/react": "^18.3.18",
-        "typescript": "^5.7.2"
+        "typescript": "^5.7.3"
     },
     "type": "module",
     "sideEffects": false,
