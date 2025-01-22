@@ -22,11 +22,11 @@ export function anyToStr(val: unknown): string | null
     if (val === null || val === undefined) {
         return null;
     }
-    let str = val instanceof Error ? val.message
+    const str = val instanceof Error ? val.message
         : typeof val === "string" ? val
         : (() => {
             try { return JSON.stringify(val); }
-            catch { return String(val); }
+            catch { return String(val); } // eslint-disable-line @typescript-eslint/no-base-to-string
         })();
     return str.trim() || null;
 }

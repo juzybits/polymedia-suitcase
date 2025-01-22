@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+
 import { useClickOutside } from "./hooks";
 import { RadioOption, RadioSelector } from "./selectors";
 
@@ -80,7 +81,7 @@ export function NetworkDropdownSelector<NetworkName extends BaseNetworkName>(pro
 
     return <div
         id={props.id}
-        className={"network-selector " + (props.disabled ? "disabled " : "") + props.className}
+        className={"network-selector " + (props.disabled ? "disabled " : "") + (props.className ?? "")}
         ref={selectorRef}
         onMouseLeave={() => {setIsOpen(false);}}
     >

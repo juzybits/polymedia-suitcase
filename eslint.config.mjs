@@ -26,11 +26,33 @@ export default [
             import: eslintPluginImport,
         },
         rules: {
+            // === stylistic ===
             "@stylistic/jsx-quotes": [ "error", "prefer-double" ],
             "@stylistic/member-delimiter-style": [ "error", { multiline: { delimiter: "semi" }, singleline: { delimiter: "semi" } } ],
             "@stylistic/no-tabs": "error",
             "@stylistic/quotes": [ "error", "double", { avoidEscape: true } ],
             "@stylistic/semi": [ "error", "always" ],
+
+            // === import organization ===
+            "import/order": ["error", {
+                "groups": [
+                    "builtin",     // Node.js built-in modules (fs, path, etc.)
+                    "external",    // npm packages
+                    "internal",    // your own modules
+                    ["parent", "sibling"], // relative imports (.. and .)
+                    "index"       // index files
+                ],
+                "newlines-between": "always",  // Add blank lines between groups
+                "alphabetize": {               // Sort imports alphabetically
+                    "order": "asc",           // A-Z order
+                    "caseInsensitive": true   // Ignore case when sorting
+                }
+            }],
+            "import/first": "error",           // Imports must be at the top
+            "import/newline-after-import": "error", // Require blank line after imports
+            "import/no-duplicates": "error",   // No duplicate imports
+
+            // === typescript ===
             "@typescript-eslint/consistent-type-definitions": [ "error", "type" ],
             "@typescript-eslint/no-confusing-void-expression": "off",
             "@typescript-eslint/no-floating-promises": "off",
@@ -45,7 +67,11 @@ export default [
             "@typescript-eslint/prefer-nullish-coalescing": "off",
             "@typescript-eslint/restrict-template-expressions": "off",
             "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
+
+            // === general ===
             "no-constant-condition": "off",
+
+            // === react ===
             "react/display-name": "off",
             "react/no-unescaped-entities": "off",
             "react/prop-types": "off",

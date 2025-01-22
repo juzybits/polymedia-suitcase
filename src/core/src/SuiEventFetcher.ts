@@ -1,4 +1,5 @@
 import { EventId, SuiClient, SuiEvent } from "@mysten/sui/client";
+
 import { sleep } from "./misc.js";
 
 /**

@@ -240,7 +240,7 @@ export const useInputPrivateKey = (
     html.inputMode = "text";
     html.pattern = `^(${SUI_PRIVATE_KEY_PREFIX}.+)?$`;
 
-    const lastValidate = useRef<{input: string, result: ValidationResult<Keypair>}>();
+    const lastValidate = useRef<{input: string; result: ValidationResult<Keypair>}>();
     const validate = (input: string): ValidationResult<Keypair> =>
     {
         if (input === "") {
@@ -263,7 +263,7 @@ export const useInputPrivateKey = (
             if (valueRes?.err) { return valueRes; }
 
             result = { err: null, val: valueRes?.val ?? inputRes?.val ?? pair };
-        } catch (err) {
+        } catch (_err) {
             result = { err: "Invalid private key", val: undefined };
         }
         lastValidate.current = { input, result };
@@ -392,7 +392,7 @@ export const useInputUnsignedBalance = (
 export type TextAreaProps<T> =
     Omit<
         CommonInputProps<T>,
-        'validateValue'
+        "validateValue"
     > & {
         html?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
         validateInput: InputValidator<T>;
@@ -491,7 +491,7 @@ export type DropdownOption<T extends string> = {
 export type DropdownProps<T extends string> =
     Omit<
         CommonInputProps<T>,
-        'validateInput' | 'validateValue'
+        "validateInput" | "validateValue"
     > & {
         options: DropdownOption<T>[];
         html?: React.SelectHTMLAttributes<HTMLSelectElement> & { value?: T };

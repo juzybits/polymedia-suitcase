@@ -8,6 +8,7 @@ import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { Transaction } from "@mysten/sui/transactions";
 import { fromBase64 } from "@mysten/sui/utils";
 import { NetworkName, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
+
 import { readJsonFile } from "./file.js";
 
 /**
