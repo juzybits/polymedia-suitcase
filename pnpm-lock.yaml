@@ -51,7 +51,7 @@ importers:
   src/core:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.18.0
+        specifier: ^1.20.0
         version: 1.20.0(typescript@5.7.3)
     devDependencies:
       typescript:
@@ -77,7 +77,7 @@ importers:
   src/node:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.18.0
+        specifier: ^1.20.0
         version: 1.20.0(typescript@5.7.3)
       '@polymedia/suitcase-core':
         specifier: workspace:*
