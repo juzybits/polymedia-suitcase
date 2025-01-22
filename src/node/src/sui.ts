@@ -1,6 +1,8 @@
-import { execSync } from "child_process";
+import { exec } from "child_process";
+import fs from "fs";
 import { homedir } from "os";
 import path from "path";
+import { promisify } from "util";
 
 import { getFullnodeUrl, SuiClient, SuiTransactionBlockResponse } from "@mysten/sui/client";
 import { Signer } from "@mysten/sui/cryptography";
@@ -9,17 +11,15 @@ import { Transaction } from "@mysten/sui/transactions";
 import { fromBase64 } from "@mysten/sui/utils";
 import { NetworkName, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
 
-import { readJsonFile } from "./file.js";
+const execAsync = promisify(exec);
 
 /**
  * Get the current active address (sui client active-address).
  */
-export function getActiveAddress(): string {
-    const sender = execSync("sui client active-address", { encoding: "utf8" }).trim();
-    const address = validateAndNormalizeAddress(sender);
-    if (!address) {
-        throw new Error("No active address was found");
-    }
+export async function getActiveAddress(): Promise<string> {
+    const { stdout } = await execAsync("sui client active-address");
+    const address = validateAndNormalizeAddress(stdout.trim());
+    if (!address) throw new Error("No active address was found");
     return address;
 }
 
@@ -27,48 +27,42 @@ export function getActiveAddress(): string {
  * Build a `Ed25519Keypair` object for the current active address
  * by loading the secret key from ~/.sui/sui_config/sui.keystore
  */
-export function getActiveKeypair(): Ed25519Keypair {
-    const sender = getActiveAddress();
+export async function getActiveKeypair(): Promise<Ed25519Keypair> {
+    const sender = await getActiveAddress();
+    const keystorePath = path.join(homedir(), ".sui", "sui_config", "sui.keystore");
+    const keystore = await fs.promises.readFile(keystorePath, "utf8");
+    const keys = JSON.parse(keystore) as string[];
 
-    const signer = (() => {
-        const keystorePath = path.join(homedir(), ".sui", "sui_config", "sui.keystore");
-        const keystore = readJsonFile<string[]>(keystorePath);
-
-        for (const priv of keystore) {
-            const raw = fromBase64(priv);
-            if (raw[0] !== 0) {
-                continue;
-            }
-
-            const pair = Ed25519Keypair.fromSecretKey(raw.slice(1));
-            if (pair.getPublicKey().toSuiAddress() === sender) {
-                return pair;
-            }
+    for (const priv of keys) {
+        const raw = fromBase64(priv);
+        if (raw[0] !== 0) continue;
+        const pair = Ed25519Keypair.fromSecretKey(raw.slice(1));
+        if (pair.getPublicKey().toSuiAddress() === sender) {
+            return pair;
         }
-
-        throw new Error(`keypair not found for sender: ${sender}`);
-    })();
-
-    return signer;
+    }
+    throw new Error(`keypair not found for sender: ${sender}`);
 }
 
 /**
  * Get the active Sui environment from `sui client active-env`.
  */
-export function getActiveEnv(): NetworkName {
-    const activeEnv = execSync("sui client active-env", { encoding: "utf8" }).trim();
-    return activeEnv as NetworkName;
+export async function getActiveEnv(): Promise<NetworkName> {
+    const { stdout } = await execAsync("sui client active-env");
+    return stdout.trim() as NetworkName;
 }
 
 /**
  * Initialize objects to execute Sui transactions blocks
  * using the current Sui active network and address.
  */
-export function setupSuiTransaction() {
-    const network = getActiveEnv();
+export async function setupSuiTransaction() {
+    const [network, signer] = await Promise.all([
+        getActiveEnv(),
+        getActiveKeypair(),
+    ]);
     const suiClient = new SuiClient({ url: getFullnodeUrl(network) });
     const tx = new Transaction();
-    const signer = getActiveKeypair();
     return { network, suiClient, tx, signer };
 }
 
@@ -81,7 +75,7 @@ export function suppressSuiVersionMismatchWarnings() {
         return;
     // Store the original stderr.write function, properly bound to stderr
     const originalStderr = process.stderr.write.bind(process.stderr);
-    // Wrap the original stderr.write in our custom function
+    // Override stderr.write with our custom function
     process.stderr.write = function(
         str: string | Uint8Array,
         encoding?: BufferEncoding | ((err?: Error) => void),
