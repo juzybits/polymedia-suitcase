@@ -1,6 +1,5 @@
-import {
-    SuiCallArg, SuiObjectRef, SuiTransactionBlockResponse
-} from "@mysten/sui/client";
+import { SuiCallArg, SuiObjectRef, SuiTransactionBlockResponse } from "@mysten/sui/client";
+import { SignatureWithBytes } from "@mysten/sui/cryptography";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
 
 import { isSuiObjectRef } from "./guards.js";
@@ -16,16 +15,27 @@ export type NestedResult = ReturnType<Transaction["moveCall"]> extends (infer It
 export type ObjectInput = TransactionObjectInput | SuiObjectRef;
 
 /**
- * Transform an `ObjectInput` into an argument for `Transaction.moveCall()`.
+ * A function that can sign a `Transaction`.
+ *
+ * For apps that use `@mysten/dapp-kit` to sign with a Sui wallet:
+    ```
+    const { mutateAsync: walletSignTx } = useSignTransaction();
+    const signTx: SignTransaction = async (tx) => {
+        return walletSignTx({ transaction: tx });
+    };
+    ```
+ * For code that has direct access to the private key:
+    ```
+    const secretKey = "suiprivkey1...";
+    const signer = pairFromSecretKey(secretKey)
+    const signTx: SignTransaction = async (tx) => {
+        tx.setSenderIfNotSet(signer.toSuiAddress());
+        const txBytes = await tx.build({ client: suiClient });
+        return signer.signTransaction(txBytes);
+    };
+    ```
  */
-export function objectArg(
-    tx: Transaction,
-    obj: ObjectInput,
-) {
-    return isSuiObjectRef(obj)
-        ? tx.objectRef(obj)
-        : tx.object(obj);
-}
+export type SignTransaction = (tx: Transaction) => Promise<SignatureWithBytes>;
 
 /**
  * Get the value of a `SuiCallArg` (transaction input).
@@ -37,6 +47,18 @@ export function getArgVal<T>(arg: SuiCallArg): T {
         return arg.value as T;
     }
     return arg.objectId as T;
+}
+
+/**
+ * Transform an `ObjectInput` into an argument for `Transaction.moveCall()`.
+ */
+export function objectArg(
+    tx: Transaction,
+    obj: ObjectInput,
+) {
+    return isSuiObjectRef(obj)
+        ? tx.objectRef(obj)
+        : tx.object(obj);
 }
 
 /**

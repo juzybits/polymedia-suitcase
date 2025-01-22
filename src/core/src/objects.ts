@@ -5,7 +5,22 @@ import {
 } from "@mysten/sui/client";
 
 import { isOwnerKind, isParsedDataKind } from "./guards.js";
-import { ObjectDisplay } from "./types.js";
+
+/**
+ * A Sui object display with common properties and arbitrary ones.
+ */
+export type ObjectDisplay = {
+    [key: string]: string | null;
+    name: string | null;
+    description: string | null;
+    link: string | null;
+    image_url: string | null;
+    thumbnail_url: string | null;
+    project_name: string | null;
+    project_url: string | null;
+    project_image_url: string | null;
+    creator: string | null;
+};
 
 /**
  * Validate a `SuiObjectResponse` and return its `.data.content`.

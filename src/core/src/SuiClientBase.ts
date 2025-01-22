@@ -4,8 +4,7 @@ import { Transaction } from "@mysten/sui/transactions";
 
 import { chunkArray } from "./misc.js";
 import { objResToId } from "./objects.js";
-import { SignTransaction } from "./types.js";
-
+import { SignTransaction } from "./transactions.js";
 /**
  * Options for `SuiClient.waitForTransaction()`.
  */

@@ -88,6 +88,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Objects
 
+- `type ObjectDisplay` - A Sui object display with common properties and arbitrary ones.
 - `objResToContent()` - Validate a `SuiObjectResponse` and return its `.data.content`.
 - `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
     - `newEmptyDisplay()` - Create an `ObjectDisplay` object with all fields set to `null`.
@@ -114,6 +115,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `type NestedResult` - An item in the array returned by a `Transaction.moveCall()` call.
 - `type ObjectInput` - Either a `TransactionObjectInput` or a `SuiObjectRef`.
+- `type SignTransaction` - A function that can sign a `Transaction`.
 - `objectArg()` - Transform an `ObjectInput` into an argument for `Transaction.moveCall()`.
 - `getArgVal<T>()` - Get the value of a `SuiCallArg` (transaction input). If the argument is a pure value, return it. If the argument is an object, return its ID.
 - `txResToData()` - Validate a `SuiTransactionBlockResponse` of the `ProgrammableTransaction` kind and return its `.transaction.data`.
@@ -151,10 +153,8 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 - `const NETWORK_NAMES` - `["mainnet", "testnet", "devnet", "localnet"]`.
 - `type NetworkName` - `"mainnet" | "testnet" | "devnet" | "localnet"`.
-- `type ObjectDisplay` - A Sui object display with common properties and arbitrary ones.
 - `type PaginatedResponse<T>` - A paginated response from a Sui RPC call.
 - `type ReceivingRef` - The return type of `Transaction.receivingRef()`.
-- `type SignTransaction` - A function that can sign a `Transaction`.
 
 ## URLs
 
