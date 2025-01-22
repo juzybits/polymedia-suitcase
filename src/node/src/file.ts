@@ -49,7 +49,6 @@ export function writeJsonFile(filename: string, contents: unknown): void {
 /**
  * Read a JSON file and parse its contents into an object.
  */
-
 export function readJsonFile<T>(filename: string): T {
     const fileContent = fs.readFileSync(filename, "utf8");
     const jsonData = JSON.parse(fileContent) as T;
@@ -74,9 +73,10 @@ export function writeTsvFile(
 export function readTsvFile<T>(
     filename: string,
     parseLine: ParseLine<T>,
+    skipHeader = false,
     reverse = false,
 ): T[] {
-    return readDsvFile(filename, parseLine, "\t", reverse);
+    return readDsvFile(filename, parseLine, "\t", skipHeader, reverse);
 }
 
 // ===== CSV files =====
@@ -99,9 +99,10 @@ export function writeCsvFile(
 export function readCsvFile<T>(
     filename: string,
     parseLine: ParseLine<T>,
+    skipHeader = false,
     reverse = false,
 ): T[] {
-    return readDsvFile(filename, parseLine, ",", reverse);
+    return readDsvFile(filename, parseLine, ",", skipHeader, reverse);
 }
 
 // ===== DSV files (https://en.wikipedia.org/wiki/Delimiter-separated_values) =====
@@ -135,15 +136,18 @@ function readDsvFile<T>(
     filename: string,
     parseLine: ParseLine<T>,
     delimiter: string,
+    skipHeader = false,
     reverse = false,
 ): T[] {
     const results: T[] = [];
     const fileContent = fs.readFileSync(filename, "utf8");
 
-    // Split the content into lines and optionally reverse the array
     let lines = fileContent.split("\n");
     if (reverse) {
         lines = lines.reverse();
+    }
+    if (skipHeader && lines.length > 0) {
+        lines = lines.slice(1);
     }
 
     for (const line of lines) {
