@@ -3,6 +3,7 @@ import eslint from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import eslintPluginImport from "eslint-plugin-import";
 import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
+import unusedImports from "eslint-plugin-unused-imports";
 import tsEslint from "typescript-eslint";
 
 export default [
@@ -24,6 +25,7 @@ export default [
         plugins: {
             "@stylistic": stylistic,
             import: eslintPluginImport,
+            "unused-imports": unusedImports,
         },
         rules: {
             // === stylistic ===
@@ -58,6 +60,7 @@ export default [
                     "caseInsensitive": true,
                 }
             }],
+            "unused-imports/no-unused-imports": "error",
 
             // === typescript ===
             "@typescript-eslint/consistent-type-definitions": [ "error", "type" ],
@@ -69,8 +72,10 @@ export default [
             "@typescript-eslint/no-non-null-assertion": "off",
             "@typescript-eslint/no-unnecessary-condition": "off",
             "@typescript-eslint/no-unnecessary-type-parameters": "off",
-            "@typescript-eslint/no-unused-expressions": [ "error", { allowShortCircuit: true, allowTernary: true } ],
-            "@typescript-eslint/no-unused-vars": [ "error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" } ],
+            // "@typescript-eslint/no-unused-expressions": [ "error", { allowShortCircuit: true, allowTernary: true } ],
+            // "@typescript-eslint/no-unused-vars": [ "error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" } ],
+            "@typescript-eslint/no-unused-expressions": "off",
+            "@typescript-eslint/no-unused-vars": "off",
             "@typescript-eslint/prefer-nullish-coalescing": "off",
             "@typescript-eslint/restrict-template-expressions": "off",
             "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
