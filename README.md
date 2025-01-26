@@ -269,3 +269,4 @@ The `suitcase-react` package provides components for React web apps.
 ## Types
 
 - `type ReactSetter` - A function that updates the state of a `useState` or `useReducer` hook.
+- `type Setter` - A function that updates some state.
