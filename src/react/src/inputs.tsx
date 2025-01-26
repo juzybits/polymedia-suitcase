@@ -1,6 +1,7 @@
 import { Keypair, SUI_PRIVATE_KEY_PREFIX } from "@mysten/sui/cryptography";
-import { formatBalance, MAX_U64, pairFromSecretKey, REGEX_ADDRESS_NORMALIZED, stringToBalance, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
 import React, { useEffect, useRef, useState } from "react";
+
+import { formatBalance, MAX_U64, pairFromSecretKey, REGEX_ADDRESS_NORMALIZED, stringToBalance, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
 
 // === common ===
 

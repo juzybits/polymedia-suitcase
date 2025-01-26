@@ -1,5 +1,6 @@
-import { PaginatedResponse } from "@polymedia/suitcase-core";
 import { RefObject, useEffect, useState } from "react";
+
+import { PaginatedResponse } from "@polymedia/suitcase-core";
 
 export type UseFetchResult<T> = ReturnType<typeof useFetch<T>>;
 export type UseFetchAndLoadMoreResult<T, C> = ReturnType<typeof useFetchAndLoadMore<T, C>>;
