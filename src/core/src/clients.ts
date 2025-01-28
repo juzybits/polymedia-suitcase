@@ -11,6 +11,12 @@ import { removeAddressLeadingZeros } from "./addresses.js";
 import { sleep } from "./misc.js";
 
 /**
+ * Maximum number of results returned by a single Sui RPC request.
+ * (see sui/crates/sui-json-rpc-api/src/lib.rs)
+ */
+export const RPC_QUERY_MAX_RESULT_LIMIT = 50;
+
+/**
  * Call `SuiClient.devInspectTransactionBlock()` and return the execution results.
  */
 export async function devInspectAndGetExecutionResults(
@@ -92,35 +98,44 @@ export async function devInspectAndGetReturnValues<T extends any[]>(
 }
 
 /**
- * Get all dynamic object fields owned by an object.
+ * Get dynamic object fields owned by an object.
+ * If limit is not specified, fetch all DOFs.
  */
-export async function fetchAllDynamicFields(
-    suiClient: SuiClient,
-    parentId: string,
-    sleepBetweenRequests = 333, // milliseconds
-    verbose = false,
-): Promise<DynamicFieldInfo[]>
-{
-    const allFieldsInfo: DynamicFieldInfo[] = [];
-    let hasNextPage = true as boolean; // type cast so ESLint doesn't complain about 'no-unnecessary-condition'
-    let cursor: string|null = null;
-    let pageNumber = 1;
-    while (hasNextPage) {
-        if (verbose) {
-            console.log(`Fetching page ${pageNumber}`);
-        }
-        pageNumber++;
-        await suiClient.getDynamicFields({ parentId, cursor })
-        .then(async page => {
-            allFieldsInfo.push(...page.data);
-            hasNextPage = page.hasNextPage;
-            cursor = page.nextCursor;
-            if (sleepBetweenRequests > 0) {
-                await sleep(sleepBetweenRequests); // give the RPC a break
-            }
+export async function fetchDynamicFields({
+    client, parentId, limit, cursor, sleepMsBetweenReqs, onUpdate,
+}: {
+    client: SuiClient;
+    parentId: string;
+    limit?: number;
+    cursor?: string | null | undefined;
+    sleepMsBetweenReqs?: number;
+    onUpdate?: (msg: string) => unknown;
+}): Promise<{
+    data: DynamicFieldInfo[];
+    hasNextPage: boolean;
+    cursor: string | null | undefined;
+}> {
+    const fields: DynamicFieldInfo[] = [];
+    let hasNextPage = true;
+    while (hasNextPage && (!limit || fields.length < limit))
+    {
+        onUpdate?.(`Fetching batch ${fields.length}${limit ? `/${limit}` : ""}`);
+
+        const batchLimit = !limit
+            ? RPC_QUERY_MAX_RESULT_LIMIT
+            : Math.min(RPC_QUERY_MAX_RESULT_LIMIT, limit - fields.length)
+
+        const page = await client.getDynamicFields({
+            parentId, cursor, limit: batchLimit
         });
+
+        fields.push(...page.data);
+        hasNextPage = page.hasNextPage;
+        cursor = page.nextCursor;
+
+        sleepMsBetweenReqs && await sleep(sleepMsBetweenReqs);
     }
-    return allFieldsInfo;
+    return { data: fields, hasNextPage, cursor };
 }
 
 /**

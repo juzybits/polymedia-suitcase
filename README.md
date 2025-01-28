@@ -49,9 +49,10 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Client
 
+- `const RPC_QUERY_MAX_RESULT_LIMIT` - Maximum number of results returned by a single Sui RPC request.
 - `devInspectAndGetExecutionResults()` - Call `SuiClient.devInspectTransactionBlock()` and return the execution results.
 - `devInspectAndGetReturnValues()` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
-- `fetchAllDynamicFields()` - Get all dynamic object fields owned by an object.
+- `fetchDynamicFields()` - Get dynamic object fields owned by an object. If limit is not specified, fetch all DOFs.
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
 
