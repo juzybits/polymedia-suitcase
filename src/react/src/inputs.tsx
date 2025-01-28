@@ -241,7 +241,7 @@ export const useInputPrivateKey = (
 ): InputResult<Keypair> =>
 {
     const html = props.html ?? {};
-    html.type = "text";
+    html.type = "password";
     html.inputMode = "text";
     html.pattern = `^(${SUI_PRIVATE_KEY_PREFIX}.+)?$`;
 
