@@ -130,6 +130,10 @@ export const useInputBase = <T,>(
                 {...html}
                 onChange={handleInputEvent}
                 value={str}
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
+                autoComplete="off"
             />
 
             {err &&
@@ -469,6 +473,10 @@ export const useTextArea = <T,>(
                 {...html}
                 onChange={onChangeTextArea}
                 value={str}
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
+                autoComplete="off"
             />
 
             {err &&
