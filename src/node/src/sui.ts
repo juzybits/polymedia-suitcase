@@ -62,9 +62,9 @@ export async function setupSuiTransaction() {
         getActiveEnv(),
         getActiveKeypair(),
     ]);
-    const suiClient = new SuiClient({ url: getFullnodeUrl(network) });
+    const client = new SuiClient({ url: getFullnodeUrl(network) });
     const tx = new Transaction();
-    return { network, suiClient, tx, signer };
+    return { network, client, tx, signer };
 }
 
 /**
