@@ -123,7 +123,7 @@ export async function fetchDynamicFields({
 
         const batchLimit = !limit
             ? RPC_QUERY_MAX_RESULT_LIMIT
-            : Math.min(RPC_QUERY_MAX_RESULT_LIMIT, limit - fields.length)
+            : Math.min(RPC_QUERY_MAX_RESULT_LIMIT, limit - fields.length);
 
         const page = await client.getDynamicFields({
             parentId, cursor, limit: batchLimit
