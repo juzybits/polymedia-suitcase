@@ -63,16 +63,17 @@ export class SuiMultiClient {
      */
     public async executeInBatches<InputType, OutputType>(
         inputs: InputType[],
-        operation: (client: SuiClientWithEndpoint, input: InputType) => Promise<OutputType>
+        operation: (client: SuiClientWithEndpoint, input: InputType) => Promise<OutputType>,
+        onUpdate?: (msg: string) => unknown,
     ): Promise<OutputType[]> {
         const results = new Array<OutputType|null>(inputs.length).fill(null);
         const retries = new Array<InputType>();
         const batchSize = this.clients.length;
         const totalBatches = Math.ceil(inputs.length / batchSize);
-        console.debug(`[SuiMultiClient] Executing ${inputs.length} operations in batches of ${batchSize}`);
+        onUpdate?.(`[SuiMultiClient] Executing ${inputs.length} operations in batches of ${batchSize}`);
 
         for (let start = 0, batchNum = 1; start < inputs.length; start += batchSize, batchNum++) {
-            console.debug(`[SuiMultiClient] Processing batch ${batchNum} of ${totalBatches}`);
+            onUpdate?.(`[SuiMultiClient] Processing batch ${batchNum} of ${totalBatches}`);
 
             // Execute all operations in the current batch
             const batch = inputs.slice(start, start + batchSize);
@@ -90,7 +91,7 @@ export class SuiMultiClient {
                 if (result.status === "fulfilled") {
                     results[start + index] = result.value;
                 } else {
-                    console.warn(`[SuiMultiClient] status: ${result.status}, reason:`, result.reason);
+                    onUpdate?.(`[SuiMultiClient] ERROR. status: ${result.status}, reason: ${result.reason}`);
                     retries.push(batch[index]); // TODO: ignore failing RPC endpoints moving forward
                 }
             });
