@@ -4,13 +4,13 @@ import { homedir } from "os";
 import path from "path";
 import { promisify } from "util";
 
-import { getFullnodeUrl, SuiClient, SuiTransactionBlockResponse } from "@mysten/sui/client";
+import { getFullnodeUrl, SuiClient, SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
 import { Signer } from "@mysten/sui/cryptography";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { Transaction } from "@mysten/sui/transactions";
 import { fromBase64 } from "@mysten/sui/utils";
 
-import { NetworkName, validateAndNormalizeAddress } from "@polymedia/suitcase-core";
+import { NetworkName, validateAndNormalizeAddress, WaitForTxOptions } from "@polymedia/suitcase-core";
 
 const execAsync = promisify(exec);
 
@@ -96,17 +96,34 @@ export function suppressSuiVersionMismatchWarnings() {
 /**
  * Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.
  */
-export async function executeSuiTransaction(
-    suiClient: SuiClient,
-    tx: Transaction,
-    signer: Signer,
-): Promise<SuiTransactionBlockResponse> {
-    return await suiClient.signAndExecuteTransaction({
+export async function signAndExecuteTx({
+    client,
+    tx,
+    signer,
+    txRespOptions = { showEffects: true, showObjectChanges: true },
+    waitForTxOptions = { timeout: 60_000, pollInterval: 333 },
+}: {
+    client: SuiClient;
+    tx: Transaction;
+    signer: Signer;
+    txRespOptions?: SuiTransactionBlockResponseOptions;
+    waitForTxOptions?: WaitForTxOptions | false;
+}): Promise<SuiTransactionBlockResponse>
+{
+    const resp = await client.signAndExecuteTransaction({
         signer,
         transaction: tx,
-        options: {
-            showEffects: true,
-            showObjectChanges: true,
-        }
+        options: txRespOptions,
+    });
+
+    if (!waitForTxOptions) {
+        return resp;
+    }
+
+    return await client.waitForTransaction({
+        digest: resp.digest,
+        options: txRespOptions,
+        timeout: waitForTxOptions.timeout,
+        pollInterval: waitForTxOptions.pollInterval,
     });
 }
