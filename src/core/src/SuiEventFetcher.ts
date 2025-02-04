@@ -11,7 +11,7 @@ export class SuiEventFetcher<T> {
     private parseEvent: (suiEvent: SuiEvent) => T|null;
     private eventCursor: EventId|null;
     private suiClient: SuiClient;
-    private rateLimitDelay = 333; // how long to sleep between RPC requests, in milliseconds
+    private rateLimitDelay = 300; // how long to sleep between RPC requests, in milliseconds
 
     /**
      * @param eventType     The full Sui event object type, e.g. '0x123::your_module::YourEvent'.

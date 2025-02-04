@@ -19,7 +19,7 @@ export class SuiMultiClient {
      */
     constructor(
         endpointUrls: string[],
-        rateLimitDelay = 333,
+        rateLimitDelay = 300,
     ) {
         this.clients = [];
         this.clientIdx = 0;

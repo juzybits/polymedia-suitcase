@@ -43,7 +43,7 @@ export abstract class SuiClientBase
         this.suiClient = args.suiClient;
         this.signTx = args.signTx;
         this.txRespOptions = args.txRespOptions ?? { showEffects: true, showObjectChanges: true };
-        this.waitForTxOptions = args.waitForTxOptions ?? { timeout: 60_000, pollInterval: 333 };
+        this.waitForTxOptions = args.waitForTxOptions ?? { timeout: 60_000, pollInterval: 300 };
     }
 
     // === data fetching ===
