@@ -2,7 +2,14 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// ===== Generic file functions =====
+// === types ===
+
+/**
+ * A generic function to transform a CSV/TSV line into an object.
+ */
+export type ParseLine<T> = (values: string[]) => T | null;
+
+// === public functions ===
 
 /**
  * Check if a file exists in the filesystem.
@@ -25,25 +32,15 @@ export function getFileName(importMetaUrl: string): string {
 }
 
 /**
- * Write a string into a file.
+ * Read a CSV file and parse each line into an object.
  */
-export function writeTextFile(filename: string, contents: string): void {
-    fs.writeFileSync(
-        filename,
-        contents + "\n"
-    );
-}
-
-// ===== JSON files =====
-
-/**
- * Write an object's JSON representation into a file.
- */
-export function writeJsonFile(filename: string, contents: unknown): void {
-    writeTextFile(
-        filename,
-        JSON.stringify(contents, null, 4)
-    );
+export function readCsvFile<T>(
+    filename: string,
+    parseLine: ParseLine<T>,
+    skipHeader = false,
+    reverse = false,
+): T[] {
+    return readDsvFile(filename, parseLine, ",", skipHeader, reverse);
 }
 
 /**
@@ -53,18 +50,6 @@ export function readJsonFile<T>(filename: string): T {
     const fileContent = fs.readFileSync(filename, "utf8");
     const jsonData = JSON.parse(fileContent) as T;
     return jsonData;
-}
-
-// ===== TSV files =====
-
-/**
- * Write objects into a TSV file.
- */
-export function writeTsvFile(
-    filename: string,
-    data: unknown[][],
-): void {
-    writeDsvFile(filename, data, "\t");
 }
 
 /**
@@ -79,8 +64,6 @@ export function readTsvFile<T>(
     return readDsvFile(filename, parseLine, "\t", skipHeader, reverse);
 }
 
-// ===== CSV files =====
-
 /**
  * Write objects into a CSV file.
  * It won't work correctly if the input data contains commas.
@@ -94,40 +77,36 @@ export function writeCsvFile(
 }
 
 /**
- * Read a CSV file and parse each line into an object.
+ * Write an object's JSON representation into a file.
  */
-export function readCsvFile<T>(
-    filename: string,
-    parseLine: ParseLine<T>,
-    skipHeader = false,
-    reverse = false,
-): T[] {
-    return readDsvFile(filename, parseLine, ",", skipHeader, reverse);
-}
-
-// ===== DSV files (https://en.wikipedia.org/wiki/Delimiter-separated_values) =====
-
-/**
- * A generic function to transform a CSV/TSV line into an object.
- */
-export type ParseLine<T> = (values: string[]) => T | null;
-
-/**
- * Write objects into a DSV file.
- */
-function writeDsvFile(
-    filename: string,
-    data: unknown[][],
-    delimiter: string,
-): void {
-    const rows = data.map(line =>
-        makeDsvLine(Object.values(line), delimiter)
-    );
+export function writeJsonFile(filename: string, contents: unknown): void {
     writeTextFile(
         filename,
-        rows.join("\n"),
+        JSON.stringify(contents, null, 4)
     );
 }
+
+/**
+ * Write a string into a file.
+ */
+export function writeTextFile(filename: string, contents: string): void {
+    fs.writeFileSync(
+        filename,
+        contents + "\n"
+    );
+}
+
+/**
+ * Write objects into a TSV file.
+ */
+export function writeTsvFile(
+    filename: string,
+    data: unknown[][],
+): void {
+    writeDsvFile(filename, data, "\t");
+}
+
+// === private functions ===
 
 /**
  * Read a DSV file and parse each line into an object.
@@ -167,20 +146,9 @@ function readDsvFile<T>(
     return results;
 }
 
-function makeDsvLine(values: unknown[], delimiter: string): string {
-    return values.map(escapeDsvString).join(delimiter);
-}
-
 function splitDsvLine(line: string, delimiter: string): string[] {
     const values = line.split(delimiter);
     return values.map(value => unescapeDsvString(value));
-}
-
-function escapeDsvString(value: unknown): string {
-    return `"${String(value)
-        .replace(/"/g, '""')      // escape double quotes by doubling them
-        .replace(/\t/g, " ")      // replace tabs with a space
-        .replace(/(\r\n|\n|\r)/g, " ")}"`;  // replace newlines with a space
 }
 
 function unescapeDsvString(value: string): string {
@@ -193,4 +161,32 @@ function unescapeDsvString(value: string): string {
 
     // Return the processed string
     return value;
+}
+
+/**
+ * Write objects into a DSV file.
+ */
+function writeDsvFile(
+    filename: string,
+    data: unknown[][],
+    delimiter: string,
+): void {
+    const rows = data.map(line =>
+        makeDsvLine(Object.values(line), delimiter)
+    );
+    writeTextFile(
+        filename,
+        rows.join("\n"),
+    );
+}
+
+function makeDsvLine(values: unknown[], delimiter: string): string {
+    return values.map(escapeDsvString).join(delimiter);
+}
+
+function escapeDsvString(value: unknown): string {
+    return `"${String(value)
+        .replace(/"/g, '""')      // escape double quotes by doubling them
+        .replace(/\t/g, " ")      // replace tabs with a space
+        .replace(/(\r\n|\n|\r)/g, " ")}"`;  // replace newlines with a space
 }
