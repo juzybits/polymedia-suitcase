@@ -58,8 +58,10 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Coins
 
-- `getCoinMeta()` - Get the metadata for a coin type.
-- `getCoinMetas()` - Get the metadata for multiple coin types.
+- `class CoinMetaFetcher` - Fetch coin metadata from the RPC and cache it.
+    - `getCoinMeta()` - Fetch metadata for a single coin.
+    - `getCoinMetas()` - Fetch metadata for multiple coins.
+- `type CoinMeta` - Like `CoinMetadata` from `@mysten/sui`, but includes the coin `type`.
 
 ## Errors
 

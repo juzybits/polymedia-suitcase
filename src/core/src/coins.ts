@@ -1,64 +1,122 @@
 import { SuiClient } from "@mysten/sui/client";
 import { normalizeStructTag } from "@mysten/sui/utils";
 
+/**
+ * Like `CoinMetadata` from `@mysten/sui`, but includes the coin `type`.
+ */
 export type CoinMeta = {
-    id: string | null;
     type: string;
     symbol: string;
     decimals: number;
     name: string;
     description: string;
+    id: string | null;
     iconUrl: string | null;
 };
 
-const cache = new Map<string, CoinMeta | null>();
-
-export async function getCoinMeta(
-    client: SuiClient,
-    coinType: string,
-): Promise<CoinMeta | null>
+/**
+ * Fetch coin metadata from the RPC and cache it.
+ */
+export class CoinMetaFetcher
 {
-    const normalizedType = normalizeStructTag(coinType);
-    const cachedMeta = cache.get(normalizedType);
-    if (cachedMeta !== undefined) {
-        return cachedMeta;
+    protected readonly client: SuiClient;
+    protected readonly cache = new Map<string, CoinMeta | null>()
+
+    constructor({
+        client,
+        preloadUrl = "https://coinmeta.polymedia.app/api/data.json",
+        preloadData,
+    }: {
+        client: SuiClient;
+        preloadUrl?: string;
+        preloadData?: CoinMeta[];
+    })
+    {
+        this.client = client;
+
+        if (preloadData) {
+            preloadData.forEach(coinMeta => {
+                this.cache.set(coinMeta.type, coinMeta);
+            });
+        }
+
+        if (preloadUrl) {
+            (async () => {
+                try {
+                    const resp = await fetch(preloadUrl);
+                    const data = await resp.json();
+                    if (!Array.isArray(data)) {
+                        throw new Error("Invalid preload data");
+                    }
+                    for (const m of data) {
+                        if (typeof m !== "object" || m === null) {
+                            throw new Error("Invalid preload data");
+                        }
+                        if (
+                            typeof m.type !== "string" ||
+                            typeof m.symbol !== "string" ||
+                            typeof m.decimals !== "number" ||
+                            typeof m.name !== "string" ||
+                            typeof m.description !== "string" ||
+                            (m.id !== undefined && typeof m.id !== "string" && m.id !== null) ||
+                            (m.iconUrl !== undefined && typeof m.iconUrl !== "string" && m.iconUrl !== null)
+                        ) {
+                            continue;
+                        }
+                        this.cache.set(m.type, m);
+                    }
+                } catch (err) {
+                    console.warn(`Failed to preload coin metadata from "${preloadUrl}":`, err);
+                }
+            })();
+        }
     }
 
-    const rawMeta = await client.getCoinMetadata({ coinType: normalizedType });
-    const coinMeta = !rawMeta ? null : {
-        id: rawMeta.id ?? null,
-        type: normalizedType,
-        symbol: rawMeta.symbol,
-        decimals: rawMeta.decimals,
-        name: rawMeta.name,
-        description: rawMeta.description,
-        iconUrl: rawMeta.iconUrl ?? null,
-    };
-    cache.set(normalizedType, coinMeta);
+    public async getCoinMeta(
+        coinType: string,
+    ): Promise<CoinMeta | null>
+    {
+        const normalizedType = normalizeStructTag(coinType);
+        const cachedMeta = this.cache.get(normalizedType);
+        if (cachedMeta !== undefined) {
+            return cachedMeta;
+        }
 
-    return coinMeta;
-}
+        const rawMeta = await this.client.getCoinMetadata({ coinType: normalizedType });
+        const coinMeta = !rawMeta ? null : {
+            id: rawMeta.id ?? null,
+            type: normalizedType,
+            symbol: rawMeta.symbol,
+            decimals: rawMeta.decimals,
+            name: rawMeta.name,
+            description: rawMeta.description,
+            iconUrl: rawMeta.iconUrl ?? null,
+        };
+        this.cache.set(normalizedType, coinMeta);
 
-export async function getCoinMetas(
-    client: SuiClient,
-    coinTypes: string[],
-): Promise<Map<string, CoinMeta | null>>
-{
-    const uniqueTypes = Array.from(new Set(
-        coinTypes.map(coinType => normalizeStructTag(coinType))
-    ));
+        return coinMeta;
+    }
 
-    const results = await Promise.allSettled(
-        uniqueTypes.map(coinType => getCoinMeta(client, coinType))
-    );
+    public async getCoinMetas(
+        coinTypes: string[],
+    ): Promise<Map<string, CoinMeta | null>>
+    {
+        const uniqueTypes = Array.from(new Set(
+            coinTypes.map(coinType => normalizeStructTag(coinType))
+        ));
 
-    const metas = new Map<string, CoinMeta | null>();
-    results.forEach((result, index) => {
-        metas.set(
-            uniqueTypes[index],
-            result.status === "fulfilled" ? result.value : null
+        const results = await Promise.allSettled(
+            uniqueTypes.map(coinType => this.getCoinMeta(coinType))
         );
-    });
 
-    return metas;
+        const metas = new Map<string, CoinMeta | null>();
+        results.forEach((result, index) => {
+            metas.set(
+                uniqueTypes[index],
+                result.status === "fulfilled" ? result.value : null
+            );
+        });
+
+        return metas;
+    }
 }
