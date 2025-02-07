@@ -56,6 +56,11 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `getCoinOfValue()` - Get a `Coin<T>` of a given value from the owner. Handles coin merging and splitting.
 - `getSuiObjectRef()` - Fetch the latest version of an object and return its `SuiObjectRef`.
 
+## Coins
+
+- `getCoinMeta()` - Get the metadata for a coin type.
+- `getCoinMetas()` - Get the metadata for multiple coin types.
+
 ## Errors
 
 - `anyToStr()` - Attempts to convert any kind of value into a readable string.
