@@ -62,9 +62,9 @@ export function useFetch<T>(
 
     const fetchData = async () =>
     {
-        setData(undefined);
-        setErr(null);
         setIsLoading(true);
+        setErr(null);
+        setData(undefined);
         try {
             const result = await fetchFunction();
             setData(result);
