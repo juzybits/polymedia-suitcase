@@ -21,6 +21,7 @@
         "copy-styles": "cp src/styles.less dist/styles.less",
         "clean": "rm -rf dist/ node_modules/ .turbo/",
         "dev": "tsc --watch -p tsconfig.esm.json",
+        "dev:all": "concurrently \"pnpm dev:styles\" \"pnpm dev\"",
         "dev:styles": "fswatch -0 src/styles.less | xargs -0 -I {} cp src/styles.less dist/styles.less",
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
         "test": "jest --verbose --passWithNoTests",
@@ -38,6 +39,7 @@
     },
     "devDependencies": {
         "@types/react": "^18.3.18",
+        "concurrently": "^9.1.2",
         "typescript": "^5.7.3"
     },
     "type": "module",
