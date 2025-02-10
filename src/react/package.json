@@ -34,7 +34,6 @@
         "react-router-dom": "^7.0.0"
     },
     "devDependencies": {
-        "@mysten/dapp-kit": "^0.14.50",
         "@types/react": "^18.3.18",
         "typescript": "^5.7.3"
     },

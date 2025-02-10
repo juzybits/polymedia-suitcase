@@ -95,6 +95,9 @@ importers:
 
   src/react:
     dependencies:
+      '@mysten/dapp-kit':
+        specifier: ^0.14.50
+        version: 0.14.50(@tanstack/react-query@5.66.0(react@18.3.1))(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(typescript@5.7.3)
       '@mysten/sui':
         specifier: ^1.21.2
         version: 1.21.2(typescript@5.7.3)
@@ -108,9 +111,6 @@ importers:
         specifier: ^7.0.0
         version: 7.1.5(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
     devDependencies:
-      '@mysten/dapp-kit':
-        specifier: ^0.14.50
-        version: 0.14.50(@tanstack/react-query@5.66.0(react@18.3.1))(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)(typescript@5.7.3)
       '@types/react':
         specifier: ^18.3.18
         version: 18.3.18
