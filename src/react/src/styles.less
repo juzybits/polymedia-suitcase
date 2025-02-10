@@ -1059,11 +1059,15 @@ a.card, .card.link {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 4.5rem 2.5rem;
     gap: 1.5rem;
+    padding: 4.5rem 2.5rem;
+    @media (max-width: @screen-medium) {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
     border-bottom: 1px solid @color-border-gray;
     background: linear-gradient(
-      to right,
+        to right,
       fade(@color-card-bg, 0%),
       fade(@color-card-bg, 100%),
       fade(@color-card-bg, 0%)
@@ -1076,9 +1080,6 @@ a.card, .card.link {
     .hero-description {
         padding: 1rem 0;
         line-height: 1.35em;
-    }
-    @media (max-width: @screen-medium) {
-        padding: 2rem;
     }
 }
 .dev-open-graph {
