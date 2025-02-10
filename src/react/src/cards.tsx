@@ -39,3 +39,14 @@ const FullCardMsg = ({ children }: {
         </div>
     </div>;
 };
+
+export const CardDetail = ({ label, val, className }: {
+    label: string;
+    val: ReactNode;
+    className?: string;
+}) => {
+    return <div className={`detail ${className ?? ""}`}>
+        <span className="label">{label}</span>
+        <span className="value">{val}</span>
+    </div>;
+};
