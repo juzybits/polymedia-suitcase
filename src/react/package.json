@@ -17,12 +17,11 @@
         "react"
     ],
     "scripts": {
-        "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && pnpm copy-styles",
-        "copy-styles": "cp src/styles.less dist/styles.less",
+        "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && cp src/styles.less dist/",
         "clean": "rm -rf dist/ node_modules/ .turbo/",
         "dev": "tsc --watch -p tsconfig.esm.json",
-        "dev:all": "concurrently \"pnpm dev:styles\" \"pnpm dev\"",
-        "dev:styles": "fswatch -0 src/styles.less | xargs -0 -I {} cp src/styles.less dist/styles.less",
+        "dev:all": "concurrently 'pnpm dev' 'pnpm dev:styles'",
+        "dev:styles": "fswatch -0 src/styles.less | xargs -0 -I {} cp src/styles.less dist/",
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
         "test": "jest --verbose --passWithNoTests",
         "typecheck": "tsc -p tsconfig.esm.json"
