@@ -1,6 +1,8 @@
-import { RefObject, useState } from "react";
+import { ComponentProps, forwardRef, RefObject, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { useFetchAndPaginate } from "./hooks";
+import { LinkExternal } from "./links";
 
 /**
  * A button component.
@@ -40,6 +42,40 @@ export const Btn: React.FC<{
         </button>
     );
 };
+
+export const BtnSubmit: typeof Btn = (props) => {
+    return (
+        <div className="btn-submit">
+            <Btn {...props} />
+        </div>
+    );
+};
+
+export const BtnLinkExternal = (props: ComponentProps<typeof LinkExternal> & { disabled?: boolean }) => {
+    let className = "btn";
+    if (props.className) { className += ` ${props.className}`; }
+    if (props.disabled)  { className += " disabled"; }
+    return (
+        <div className="btn-submit">
+            <LinkExternal {...props} className={className} />
+        </div>
+    );
+};
+
+export const BtnLinkInternal = forwardRef<
+    HTMLAnchorElement,
+    ComponentProps<typeof Link> & { disabled?: boolean }
+>((props, ref) => {
+    let className = "btn";
+    if (props.className) { className += ` ${props.className}`; }
+    if (props.disabled)  { className += " disabled"; }
+    return (
+        <div className="btn-submit">
+            <Link {...props} className={className} ref={ref} />
+        </div>
+    );
+});
+
 
 /**
  * A button component to navigate through paginated data (see `useFetchAndPaginate()`).
