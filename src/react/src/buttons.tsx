@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef, RefObject, useState } from "react";
+import { ComponentProps, forwardRef, ReactNode, RefObject, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useFetchAndPaginate } from "./hooks";
@@ -7,16 +7,16 @@ import { LinkExternal } from "./links";
 /**
  * A button component.
  */
-export const Btn: React.FC<{
-    onClick: () => Promise<unknown>;
-    children: React.ReactNode;
-    disabled?: boolean;
-    className?: string;
-}> = ({
+export const Btn = ({
     onClick,
     children,
     disabled = undefined,
     className = undefined,
+}: {
+    onClick: () => Promise<unknown>;
+    children: ReactNode;
+    disabled?: boolean;
+    className?: string;
 }) =>
 {
     const [working, setIsWorking] = useState(false);
@@ -43,7 +43,9 @@ export const Btn: React.FC<{
     );
 };
 
-export const BtnSubmit: typeof Btn = (props) => {
+export const BtnSubmit: typeof Btn = (
+    props
+) => {
     return (
         <div className="btn-submit">
             <Btn {...props} />
@@ -51,7 +53,9 @@ export const BtnSubmit: typeof Btn = (props) => {
     );
 };
 
-export const BtnLinkExternal = (props: ComponentProps<typeof LinkExternal> & { disabled?: boolean }) => {
+export const BtnLinkExternal = (
+    props: ComponentProps<typeof LinkExternal> & { disabled?: boolean }
+) => {
     let className = "btn";
     if (props.className) { className += ` ${props.className}`; }
     if (props.disabled)  { className += " disabled"; }
@@ -65,7 +69,8 @@ export const BtnLinkExternal = (props: ComponentProps<typeof LinkExternal> & { d
 export const BtnLinkInternal = forwardRef<
     HTMLAnchorElement,
     ComponentProps<typeof Link> & { disabled?: boolean }
->((props, ref) => {
+>((props, ref) =>
+{
     let className = "btn";
     if (props.className) { className += ` ${props.className}`; }
     if (props.disabled)  { className += " disabled"; }
@@ -76,19 +81,19 @@ export const BtnLinkInternal = forwardRef<
     );
 });
 
-
 /**
  * A button component to navigate through paginated data (see `useFetchAndPaginate()`).
  */
-export const BtnPrevNext: React.FC<{
-    data: ReturnType<typeof useFetchAndPaginate>;
-    onPageChange?: () => void;
-    scrollToRefOnPageChange?: RefObject<HTMLElement>;
-}> = ({
+export const BtnPrevNext = ({
     data,
     onPageChange,
     scrollToRefOnPageChange,
-}) => {
+}: {
+    data: ReturnType<typeof useFetchAndPaginate>;
+    onPageChange?: () => void;
+    scrollToRefOnPageChange?: RefObject<HTMLElement>;
+}) =>
+{
     if (!data.hasMultiplePages) {
         return null;
     }
