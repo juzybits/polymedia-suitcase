@@ -28,11 +28,13 @@
         "@polymedia/suitcase-core": "workspace:*"
     },
     "peerDependencies": {
+        "@mysten/dapp-kit": "^0.14.50",
         "@mysten/sui": "^1.21.2",
         "react": "^18.0.0",
         "react-router-dom": "^7.0.0"
     },
     "devDependencies": {
+        "@mysten/dapp-kit": "^0.14.50",
         "@types/react": "^18.3.18",
         "typescript": "^5.7.3"
     },
