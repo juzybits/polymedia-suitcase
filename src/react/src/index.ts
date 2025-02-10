@@ -2,6 +2,8 @@ export * from "./buttons";
 export * from "./cards";
 export * from "./connect";
 export * from "./explorers";
+export * from "./glitch";
+export * from "./hero";
 export * from "./hooks";
 export * from "./icons";
 export * from "./inputs";
