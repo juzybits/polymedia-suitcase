@@ -20,7 +20,7 @@ export type CoinMeta = {
 export class CoinMetaFetcher
 {
     protected readonly client: SuiClient;
-    protected readonly cache = new Map<string, CoinMeta | null>()
+    protected readonly cache = new Map<string, CoinMeta | null>();
 
     constructor({
         client,
@@ -43,6 +43,7 @@ export class CoinMetaFetcher
         if (preloadUrl) {
             (async () => {
                 try {
+                    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
                     const resp = await fetch(preloadUrl);
                     const data = await resp.json();
                     if (!Array.isArray(data)) {
@@ -65,6 +66,7 @@ export class CoinMetaFetcher
                         }
                         this.cache.set(m.type, m);
                     }
+                    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
                 } catch (err) {
                     console.warn(`Failed to preload coin metadata from "${preloadUrl}":`, err);
                 }
