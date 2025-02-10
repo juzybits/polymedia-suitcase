@@ -29,7 +29,8 @@
     },
     "peerDependencies": {
         "@mysten/sui": "^1.21.2",
-        "react": "^18.0.0"
+        "react": "^18.0.0",
+        "react-router-dom": "^7.0.0"
     },
     "devDependencies": {
         "@types/react": "^18.3.18",
