@@ -14,7 +14,7 @@
     "scripts": {
         "build": "turbo run build",
         "bump-version": "node src/dev/dist/bump-version.js",
-        "clean": "turbo run clean && rm -rf dist/ node_modules/ .turbo/ src/sui*/build/",
+        "clean": "turbo run clean && rm -rf dist/ node_modules/ .turbo/ src/sui*/build/ src/sui*/.coverage_map.mvcov src/sui*/.trace",
         "dev": "turbo run dev",
         "lint": "turbo run lint",
         "publish-all": "pnpm clean && pnpm i && pnpm build && pnpm publish -r --filter=./src/*",

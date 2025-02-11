@@ -30,7 +30,7 @@ export abstract class SuiClientBase
 
     /**
      * @param suiClient The client used to communicate with Sui.
-     * @param signTransaction A function that signs transactions.
+     * @param signTx A function that can sign a `Transaction`.
      * @param txRespOptions Which fields to include in transaction responses.
      * @param waitForTxOptions Options for `SuiClient.waitForTransaction()`.
      */
@@ -43,7 +43,7 @@ export abstract class SuiClientBase
         this.suiClient = args.suiClient;
         this.signTx = args.signTx;
         this.txRespOptions = args.txRespOptions ?? { showEffects: true, showObjectChanges: true };
-        this.waitForTxOptions = args.waitForTxOptions ?? { timeout: 60_000, pollInterval: 300 };
+        this.waitForTxOptions = args.waitForTxOptions ?? { timeout: 45_000, pollInterval: 250 };
     }
 
     // === data fetching ===
