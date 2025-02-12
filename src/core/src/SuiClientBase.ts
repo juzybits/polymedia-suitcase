@@ -168,11 +168,14 @@ export abstract class SuiClientBase
     ): Promise<SuiTransactionBlockResponse>
     {
         if (dryRun) {
-            const results = await this.suiClient.devInspectTransactionBlock({
+            const resp = await this.suiClient.devInspectTransactionBlock({
                 sender,
                 transactionBlock: tx,
             });
-            return { digest: "", ...results };
+            if (resp.effects && resp.effects.status.status !== "success") {
+                throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
+            }
+            return { digest: "", ...resp };
         } else {
             return await this.signAndExecuteTx(tx);
         }
