@@ -167,7 +167,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## URLs
 
-- `type SuiExplorerItem` - A Sui explorer item type (address/object/package/txblock).
+- `type SuiExplorerItem` - A Sui explorer item type (address/object/package/tx/coin).
 - `makePolymediaUrl()` - Build an explorer.polymedia.app URL.
 - `makeSuiscanUrl()` - Build a suiscan.xyz URL.
 - `makeSuivisionUrl()` - Build a suivision.xyz URL.

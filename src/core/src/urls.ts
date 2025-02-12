@@ -1,11 +1,10 @@
 /**
  * A Sui explorer item type, as in:
- * https://explorer.polymedia.app/address/...
- * https://explorer.polymedia.app/object/...
- * https://explorer.polymedia.app/package/...
- * https://explorer.polymedia.app/txblock/...
+ * https://explorer.polymedia.app/address/0x...
+ * https://explorer.polymedia.app/object/0x...
+ * etc
  */
-export type SuiExplorerItem = "address" | "object" | "package" | "txblock" | "coin";
+export type SuiExplorerItem = "address" | "object" | "package" | "tx" | "coin";
 
 export type ExplorerUrlMaker = (
     network: string,
@@ -26,14 +25,19 @@ export const makePolymediaUrl: ExplorerUrlMaker = (
         ? "http://localhost:3000"
         : "https://explorer.polymedia.app";
 
-    if (kind === "package") {
-        kind = "object";
+    let path: string;
+    if (kind === "tx") {
+        path = "txblock";
+    } else if (kind === "package") {
+        path = "object";
     } else if (kind === "coin") {
-        kind = "object";
+        path = "object";
         address = address.split("::")[0];
+    } else {
+        path = kind;
     }
 
-    let url = `${baseUrl}/${kind}/${address}`;
+    let url = `${baseUrl}/${path}/${address}`;
     if (network !== "mainnet") {
         const networkLabel = network === "localnet" ? "local" : network;
         url += `?network=${networkLabel}`;
@@ -58,8 +62,6 @@ export const makeSuiscanUrl: ExplorerUrlMaker = (
     let path: string;
     if (kind === "address") {
         path = "account";
-    } else if (kind === "txblock") {
-        path = "tx";
     } else if (kind === "package") {
         path = "object";
     } else {
@@ -87,7 +89,9 @@ export const makeSuivisionUrl: ExplorerUrlMaker = (
         : `https://${network}.suivision.xyz`;
 
     let path: string;
-    if (kind === "address") {
+    if (kind === "tx") {
+        path = "txblock";
+    } else if (kind === "address") {
         path = "account";
     } else {
         path = kind;
