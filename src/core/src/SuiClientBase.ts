@@ -34,16 +34,21 @@ export abstract class SuiClientBase
      * @param txRespOptions Which fields to include in transaction responses.
      * @param waitForTxOptions Options for `SuiClient.waitForTransaction()`.
      */
-    constructor(args: {
+    constructor({
+        suiClient,
+        signTx,
+        txRespOptions = { showEffects: true, showObjectChanges: true },
+        waitForTxOptions = { timeout: 45_000, pollInterval: 250 },
+    }: {
         suiClient: SuiClient;
         signTx: SignTx;
         txRespOptions?: SuiTransactionBlockResponseOptions;
         waitForTxOptions?: WaitForTxOptions | false;
     }) {
-        this.suiClient = args.suiClient;
-        this.signTx = args.signTx;
-        this.txRespOptions = args.txRespOptions ?? { showEffects: true, showObjectChanges: true };
-        this.waitForTxOptions = args.waitForTxOptions ?? { timeout: 45_000, pollInterval: 250 };
+        this.suiClient = suiClient;
+        this.signTx = signTx;
+        this.txRespOptions = txRespOptions;
+        this.waitForTxOptions = waitForTxOptions;
     }
 
     // === data fetching ===
@@ -56,17 +61,22 @@ export abstract class SuiClientBase
      * @param parseFn A function that parses a `SuiObjectResponse` into an object.
      * @returns The parsed objects.
      */
-    public async fetchAndParseObjs<T>(
-        objectIds: string[],
-        fetchFn: (ids: string[]) => Promise<SuiObjectResponse[]>,
-        parseFn: (resp: SuiObjectResponse) => T | null,
-        cache?: Map<string, T>,
-    ): Promise<T[]>
+    public async fetchAndParseObjs<T>({
+        objIds,
+        fetchFn,
+        parseFn,
+        cache,
+    }: {
+        objIds: string[];
+        fetchFn: (ids: string[]) => Promise<SuiObjectResponse[]>;
+        parseFn: (resp: SuiObjectResponse) => T | null;
+        cache?: Map<string, T>;
+    }): Promise<T[]>
     {
         const results: T[] = [];
         const uncachedIds: string[] = [];
 
-        for (const id of objectIds) {
+        for (const id of objIds) {
             const cachedObject = cache ? cache.get(id) : undefined;
             if (cachedObject) {
                 results.push(cachedObject);
@@ -102,10 +112,13 @@ export abstract class SuiClientBase
     /**
      * Fetch and parse transactions from the RPC.
      */
-    public async fetchAndParseTxs<T>(
+    public async fetchAndParseTxs<T>({
+        parseFn,
+        query,
+    }: {
         parseFn: (resp: SuiTransactionBlockResponse) => T | null,
         query: QueryTransactionBlocksParams,
-    ) {
+    }) {
         const pagTxRes = await this.suiClient.queryTransactionBlocks(query);
 
         const results = {
@@ -121,11 +134,15 @@ export abstract class SuiClientBase
 
     // === transactions ===
 
-    public async executeTx(
-        signedTx: SignatureWithBytes,
-        waitForTxOptions: WaitForTxOptions | false = this.waitForTxOptions,
-        txRespOptions: SuiTransactionBlockResponseOptions = this.txRespOptions,
-    ): Promise<SuiTransactionBlockResponse>
+    public async executeTx({
+        signedTx,
+        waitForTxOptions = this.waitForTxOptions,
+        txRespOptions = this.txRespOptions,
+    }: {
+        signedTx: SignatureWithBytes;
+        waitForTxOptions?: WaitForTxOptions | false;
+        txRespOptions?: SuiTransactionBlockResponseOptions;
+    }): Promise<SuiTransactionBlockResponse>
     {
         const resp = await this.suiClient.executeTransactionBlock({
             transactionBlock: signedTx.bytes,
@@ -145,14 +162,18 @@ export abstract class SuiClientBase
         });
     }
 
-    public async signAndExecuteTx(
-        tx: Transaction,
-        waitForTxOptions: WaitForTxOptions | false = this.waitForTxOptions,
-        txRespOptions: SuiTransactionBlockResponseOptions = this.txRespOptions,
-    ): Promise<SuiTransactionBlockResponse>
+    public async signAndExecuteTx({
+        tx,
+        waitForTxOptions = this.waitForTxOptions,
+        txRespOptions = this.txRespOptions,
+    }: {
+        tx: Transaction;
+        waitForTxOptions?: WaitForTxOptions | false;
+        txRespOptions?: SuiTransactionBlockResponseOptions;
+    }): Promise<SuiTransactionBlockResponse>
     {
         const signedTx = await this.signTx(tx);
-        const resp = await this.executeTx(signedTx, waitForTxOptions, txRespOptions);
+        const resp = await this.executeTx({ signedTx, waitForTxOptions, txRespOptions });
 
         if (resp.effects && resp.effects.status.status !== "success") {
             throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
@@ -161,11 +182,15 @@ export abstract class SuiClientBase
         return resp;
     }
 
-    public async dryRunOrSignAndExecute(
-        tx: Transaction,
-        dryRun?: boolean,
-        sender: string = "0x7777777777777777777777777777777777777777777777777777777777777777",
-    ): Promise<SuiTransactionBlockResponse>
+    public async dryRunOrSignAndExecuteTx({
+        tx,
+        dryRun = false,
+        sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
+    }: {
+        tx: Transaction;
+        dryRun?: boolean;
+        sender?: string;
+    }): Promise<SuiTransactionBlockResponse>
     {
         if (dryRun) {
             const resp = await this.suiClient.devInspectTransactionBlock({
@@ -177,7 +202,7 @@ export abstract class SuiClientBase
             }
             return { digest: "", ...resp };
         } else {
-            return await this.signAndExecuteTx(tx);
+            return await this.signAndExecuteTx({ tx });
         }
     }
 }
