@@ -1,4 +1,4 @@
-import { QueryTransactionBlocksParams, SuiClient, SuiObjectResponse, SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
+import { DevInspectTransactionBlockParams, QueryTransactionBlocksParams, SuiClient, SuiObjectResponse, SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
 import { SignatureWithBytes } from "@mysten/sui/cryptography";
 import { Transaction } from "@mysten/sui/transactions";
 
@@ -138,12 +138,20 @@ export abstract class SuiClientBase
         signedTx,
         waitForTxOptions = this.waitForTxOptions,
         txRespOptions = this.txRespOptions,
+        dryRun = false,
+        sender,
     }: {
         signedTx: SignatureWithBytes;
         waitForTxOptions?: WaitForTxOptions | false;
         txRespOptions?: SuiTransactionBlockResponseOptions;
+        dryRun?: boolean;
+        sender?: string;
     }): Promise<SuiTransactionBlockResponse>
     {
+        if (dryRun) {
+            return this.dryRunTx({ tx: signedTx.bytes, sender });
+        }
+
         const resp = await this.suiClient.executeTransactionBlock({
             transactionBlock: signedTx.bytes,
             signature: signedTx.signature,
@@ -166,12 +174,20 @@ export abstract class SuiClientBase
         tx,
         waitForTxOptions = this.waitForTxOptions,
         txRespOptions = this.txRespOptions,
+        dryRun = false,
+        sender,
     }: {
         tx: Transaction;
         waitForTxOptions?: WaitForTxOptions | false;
         txRespOptions?: SuiTransactionBlockResponseOptions;
+        dryRun?: boolean;
+        sender?: string;
     }): Promise<SuiTransactionBlockResponse>
     {
+        if (dryRun) {
+            return await this.dryRunTx({ tx, sender });
+        }
+
         const signedTx = await this.signTx(tx);
         const resp = await this.executeTx({ signedTx, waitForTxOptions, txRespOptions });
 
@@ -182,27 +198,21 @@ export abstract class SuiClientBase
         return resp;
     }
 
-    public async dryRunOrSignAndExecuteTx({
+    public async dryRunTx({
         tx,
-        dryRun = false,
         sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
     }: {
-        tx: Transaction;
-        dryRun?: boolean;
+        tx: DevInspectTransactionBlockParams['transactionBlock'];
         sender?: string;
     }): Promise<SuiTransactionBlockResponse>
     {
-        if (dryRun) {
-            const resp = await this.suiClient.devInspectTransactionBlock({
-                sender,
-                transactionBlock: tx,
-            });
-            if (resp.effects && resp.effects.status.status !== "success") {
-                throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
-            }
-            return { digest: "", ...resp };
-        } else {
-            return await this.signAndExecuteTx({ tx });
+        const resp = await this.suiClient.devInspectTransactionBlock({
+            sender,
+            transactionBlock: tx,
+        });
+        if (resp.effects && resp.effects.status.status !== "success") {
+            throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
         }
+        return { digest: "", ...resp };
     }
 }
