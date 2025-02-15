@@ -21,9 +21,7 @@ export const makePolymediaUrl: ExplorerUrlMaker = (
     address: string,
 ): string =>
 {
-    const baseUrl = isLocalnet(network)
-        ? "http://localhost:3000"
-        : "https://explorer.polymedia.app";
+    const baseUrl = "https://explorer.polymedia.app";
 
     let path: string;
     if (kind === "tx") {

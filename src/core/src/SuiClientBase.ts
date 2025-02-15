@@ -116,8 +116,8 @@ export abstract class SuiClientBase
         parseFn,
         query,
     }: {
-        parseFn: (resp: SuiTransactionBlockResponse) => T | null,
-        query: QueryTransactionBlocksParams,
+        parseFn: (resp: SuiTransactionBlockResponse) => T | null;
+        query: QueryTransactionBlocksParams;
     }) {
         const pagTxRes = await this.suiClient.queryTransactionBlocks(query);
 
@@ -202,7 +202,7 @@ export abstract class SuiClientBase
         tx,
         sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
     }: {
-        tx: DevInspectTransactionBlockParams['transactionBlock'];
+        tx: DevInspectTransactionBlockParams["transactionBlock"];
         sender?: string;
     }): Promise<SuiTransactionBlockResponse>
     {
