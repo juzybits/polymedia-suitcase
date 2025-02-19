@@ -3,7 +3,7 @@
 set -o nounset      # Treat unset variables as an error when substituting
 set -o errexit      # Exit immediately if any command returns a non-zero status
 set -o pipefail     # Prevent errors in a pipeline from being masked
-set -o xtrace       # Print each command to the terminal before execution
+# set -o xtrace       # Print each command to the terminal before execution
 
 SCRIPT_DIR="$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )"
 PATH_PROJECT="$( cd "$SCRIPT_DIR/../.." && pwd )"

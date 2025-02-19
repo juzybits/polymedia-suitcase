@@ -62,12 +62,12 @@ export abstract class SuiClientBase
      * @returns The parsed objects.
      */
     public async fetchAndParseObjs<T>({
-        objIds,
+        ids,
         fetchFn,
         parseFn,
         cache,
     }: {
-        objIds: string[];
+        ids: string[];
         fetchFn: (ids: string[]) => Promise<SuiObjectResponse[]>;
         parseFn: (resp: SuiObjectResponse) => T | null;
         cache?: Map<string, T>;
@@ -76,7 +76,7 @@ export abstract class SuiClientBase
         const results: T[] = [];
         const uncachedIds: string[] = [];
 
-        for (const id of objIds) {
+        for (const id of ids) {
             const cachedObject = cache ? cache.get(id) : undefined;
             if (cachedObject) {
                 results.push(cachedObject);
