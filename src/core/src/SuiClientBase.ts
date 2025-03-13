@@ -5,6 +5,7 @@ import { Transaction } from "@mysten/sui/transactions";
 import { chunkArray } from "./misc.js";
 import { objResToId } from "./objects.js";
 import { SignTx } from "./txs.js";
+
 /**
  * Options for `SuiClient.waitForTransaction()`.
  */
@@ -158,6 +159,10 @@ export abstract class SuiClientBase
             options: txRespOptions,
         });
 
+        if (resp.effects && resp.effects.status.status !== "success") {
+            throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
+        }
+
         if (!waitForTxOptions) {
             return resp;
         }
@@ -190,10 +195,6 @@ export abstract class SuiClientBase
 
         const signedTx = await this.signTx(tx);
         const resp = await this.executeTx({ signedTx, waitForTxOptions, txRespOptions });
-
-        if (resp.effects && resp.effects.status.status !== "success") {
-            throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
-        }
 
         return resp;
     }

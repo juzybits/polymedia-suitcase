@@ -158,7 +158,6 @@ export async function getCoinOfValue(
     }
     else {
         const paginatedCoins = await suiClient.getCoins({ owner, coinType });
-        // if (paginatedCoins.hasNextPage) // TODO
 
         // Merge all coins into one
         const [firstCoin, ...otherCoins] = paginatedCoins.data;
