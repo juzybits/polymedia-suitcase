@@ -28,7 +28,7 @@
         "@mysten/sui": "^1.26.1"
     },
     "devDependencies": {
-        "typescript": "^5.8.2"
+        "typescript": "^5.8.3"
     },
     "type": "module",
     "sideEffects": false,

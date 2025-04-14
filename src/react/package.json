@@ -31,15 +31,15 @@
         "normalize.css": "^8.0.1"
     },
     "peerDependencies": {
-        "@mysten/dapp-kit": "^0.15.2",
-        "@mysten/sui": "^1.26.1",
+        "@mysten/dapp-kit": "^0.15.3",
+        "@mysten/sui": "^1.27.0",
         "react": "^18.0.0",
         "react-router-dom": "^7.0.0"
     },
     "devDependencies": {
         "@types/react": "^18.3.20",
         "concurrently": "^9.1.2",
-        "typescript": "^5.8.2"
+        "typescript": "^5.8.3"
     },
     "type": "module",
     "sideEffects": false,
