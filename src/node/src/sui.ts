@@ -101,7 +101,7 @@ export async function signAndExecuteTx({
     tx,
     signer,
     txRespOptions = { showEffects: true, showObjectChanges: true },
-    waitForTxOptions = { timeout: 60_000, pollInterval: 300 },
+    waitForTxOptions = { timeout: 60_000, pollInterval: 250 },
 }: {
     client: SuiClient;
     tx: Transaction;
