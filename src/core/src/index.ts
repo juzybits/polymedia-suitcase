@@ -1,3 +1,6 @@
+// @ts-expect-error Property 'toJSON' does not exist on type 'BigInt'
+BigInt.prototype.toJSON = function() { return this.toString(); };
+
 export * from "./SuiClientBase.js";
 export * from "./SuiEventFetcher.js";
 export * from "./SuiMultiClient.js";

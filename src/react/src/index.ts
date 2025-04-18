@@ -1,3 +1,6 @@
+// @ts-expect-error Property 'toJSON' does not exist on type 'BigInt'
+BigInt.prototype.toJSON = function() { return this.toString(); };
+
 export * from "./buttons";
 export * from "./cards";
 export * from "./connect";
