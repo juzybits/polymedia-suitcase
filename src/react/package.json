@@ -31,8 +31,8 @@
         "normalize.css": "^8.0.1"
     },
     "peerDependencies": {
-        "@mysten/dapp-kit": "^0.15.3",
-        "@mysten/sui": "^1.27.0",
+        "@mysten/dapp-kit": "^0.15.6",
+        "@mysten/sui": "^1.28.0",
         "react": "^18.0.0",
         "react-router-dom": "^7.0.0"
     },
