@@ -54,8 +54,8 @@ importers:
   src/core:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.28.0
-        version: 1.28.0(typescript@5.8.3)
+        specifier: ^1.28.1
+        version: 1.28.1(typescript@5.8.3)
     devDependencies:
       typescript:
         specifier: ^5.8.3
@@ -80,8 +80,8 @@ importers:
   src/node:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.28.0
-        version: 1.28.0(typescript@5.8.3)
+        specifier: ^1.28.1
+        version: 1.28.1(typescript@5.8.3)
       '@polymedia/suitcase-core':
         specifier: workspace:*
         version: link:../core
@@ -96,11 +96,11 @@ importers:
   src/react:
     dependencies:
       '@mysten/dapp-kit':
-        specifier: ^0.15.6
-        version: 0.15.6(@tanstack/react-query@5.74.4(react@18.3.1))(@types/react@18.3.20)(react-dom@19.1.0(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
+        specifier: ^0.15.7
+        version: 0.15.7(@tanstack/react-query@5.74.4(react@18.3.1))(@types/react@18.3.20)(react-dom@19.1.0(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
       '@mysten/sui':
-        specifier: ^1.28.0
-        version: 1.28.0(typescript@5.8.3)
+        specifier: ^1.28.1
+        version: 1.28.1(typescript@5.8.3)
       '@polymedia/suitcase-core':
         specifier: workspace:*
         version: link:../core
@@ -514,30 +514,34 @@ packages:
   '@mysten/bcs@1.6.0':
     resolution: {integrity: sha512-ydDRYdIkIFCpHCcPvAkMC91fVwumjzbTgjqds0KsphDQI3jUlH3jFG5lfYNTmV6V3pkhOiRk1fupLBcsQsiszg==}
 
-  '@mysten/dapp-kit@0.15.6':
-    resolution: {integrity: sha512-14tJRXE82OIGzB+I0KegPHnLyzZwDQ5r0ti+4e1reK/JHYbdlo+N9F7dKXJvivjovO8UGOHPImSvfEmfV29fqw==}
+  '@mysten/dapp-kit@0.15.7':
+    resolution: {integrity: sha512-88mE4JFmvv5qph3KrU0l6e1Kq8dtykCf8Ta3PFINjKXU+8ya2HgmptLbKRoJvNG+v6vhb8NE6IEc0LsprDB+QQ==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
       react: '*'
 
-  '@mysten/sui@1.28.0':
-    resolution: {integrity: sha512-ABcKc+QBpazBl5/ByLChxHOiPjqxISSdXnBuU1rLm1frp5tjMSCChiL7Reth2zcxWO2qYFK70ewEkYVtJvJQvw==}
+  '@mysten/sui@1.28.1':
+    resolution: {integrity: sha512-kvrcUKiC/92N4u3Ncb8j1uLeBhCjrnTZyBjIX0zNTukFFCMbZkDYEr9IVjPrvnOEwOXZ3fpYmpmw3LB9dEU5FA==}
     engines: {node: '>=18'}
 
   '@mysten/utils@0.0.0':
     resolution: {integrity: sha512-KRI57Qow3E7TGqczimazwGf7+fwukdOi+6a31igSCzz0kPjAXbyK1a1gXaxeLMF8xEZ07ouW3RnsWt+EaUuHUw==}
 
-  '@mysten/wallet-standard@0.14.5':
-    resolution: {integrity: sha512-UtwDvhCx6qZneoStQu9hiFqX8+XEimbnAcWUBSN2T9hRDf+o0Btyr30XZ3zuqIyTQIwvFHUQ0RrRQhAhLpSDww==}
+  '@mysten/wallet-standard@0.14.6':
+    resolution: {integrity: sha512-jgSOcOL48Np+Yy3dVS8MHNFMMSOjA1mIuYqTc0h5PjOmeIOkzSHHC3hsSReqg7Hcm/SBb99DvvZ3XQaVPno23Q==}
 
   '@mysten/window-wallet-core@0.0.2':
     resolution: {integrity: sha512-u57gHFlLYPDTK5bDeabRjkIdyLaiFVwL3bVbnBtu5WJpfFOv/KMOpIQt4820ICBG843jN35tzlulQ0nlbWCYeA==}
 
-  '@mysten/zksend@0.12.26':
-    resolution: {integrity: sha512-/ECWBXe3RzS6AEy5thjjGrBM1GZ2pkXsHKK+83+jiEiKRtFuDU1tIw6wK87a+8ChqhpZLryFTPCQ6MRO+XMJEQ==}
+  '@mysten/zksend@0.12.27':
+    resolution: {integrity: sha512-HRgC8RnLn24SFyq1eiB3Fq/mKQWQAoYvsMV6lPQu0dUwjlehZg7jeUJbqjC2mgV91NsY9RRnCX5kFnysdUdHew==}
 
   '@noble/curves@1.8.2':
     resolution: {integrity: sha512-vnI7V6lFNe0tLAuJMu+2sX+FcL14TaCWy1qiczg1VwRmPrpQCdq5ESXQMqUc2tluRNf6irBXrWbl1mGN8uaU/g==}
+    engines: {node: ^14.21.3 || >=16}
+
+  '@noble/curves@1.9.0':
+    resolution: {integrity: sha512-7YDlXiNMdO1YZeH6t/kvopHHbIZzlxrCV9WLqCY6QhcXOoXiNCMDqJIglZ9Yjx5+w7Dz30TITFrlTjnRg7sKEg==}
     engines: {node: ^14.21.3 || >=16}
 
   '@noble/hashes@1.7.2':
@@ -3311,12 +3315,12 @@ snapshots:
     dependencies:
       '@scure/base': 1.2.4
 
-  '@mysten/dapp-kit@0.15.6(@tanstack/react-query@5.74.4(react@18.3.1))(@types/react@18.3.20)(react-dom@19.1.0(react@18.3.1))(react@18.3.1)(typescript@5.8.3)':
+  '@mysten/dapp-kit@0.15.7(@tanstack/react-query@5.74.4(react@18.3.1))(@types/react@18.3.20)(react-dom@19.1.0(react@18.3.1))(react@18.3.1)(typescript@5.8.3)':
     dependencies:
-      '@mysten/sui': 1.28.0(typescript@5.8.3)
+      '@mysten/sui': 1.28.1(typescript@5.8.3)
       '@mysten/utils': 0.0.0
-      '@mysten/wallet-standard': 0.14.5(typescript@5.8.3)
-      '@mysten/zksend': 0.12.26(typescript@5.8.3)
+      '@mysten/wallet-standard': 0.14.6(typescript@5.8.3)
+      '@mysten/zksend': 0.12.27(typescript@5.8.3)
       '@radix-ui/react-dialog': 1.1.11(@types/react@18.3.20)(react-dom@19.1.0(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu': 2.1.12(@types/react@18.3.20)(react-dom@19.1.0(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot': 1.2.0(@types/react@18.3.20)(react@18.3.1)
@@ -3337,12 +3341,12 @@ snapshots:
       - react-dom
       - typescript
 
-  '@mysten/sui@1.28.0(typescript@5.8.3)':
+  '@mysten/sui@1.28.1(typescript@5.8.3)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.10.0)
       '@mysten/bcs': 1.6.0
       '@mysten/utils': 0.0.0
-      '@noble/curves': 1.8.2
+      '@noble/curves': 1.9.0
       '@noble/hashes': 1.8.0
       '@scure/base': 1.2.4
       '@scure/bip32': 1.6.2
@@ -3360,9 +3364,9 @@ snapshots:
     dependencies:
       '@scure/base': 1.2.4
 
-  '@mysten/wallet-standard@0.14.5(typescript@5.8.3)':
+  '@mysten/wallet-standard@0.14.6(typescript@5.8.3)':
     dependencies:
-      '@mysten/sui': 1.28.0(typescript@5.8.3)
+      '@mysten/sui': 1.28.1(typescript@5.8.3)
       '@wallet-standard/core': 1.1.0
     transitivePeerDependencies:
       - '@gql.tada/svelte-support'
@@ -3375,11 +3379,11 @@ snapshots:
       jose: 6.0.10
       valibot: 0.36.0
 
-  '@mysten/zksend@0.12.26(typescript@5.8.3)':
+  '@mysten/zksend@0.12.27(typescript@5.8.3)':
     dependencies:
-      '@mysten/sui': 1.28.0(typescript@5.8.3)
+      '@mysten/sui': 1.28.1(typescript@5.8.3)
       '@mysten/utils': 0.0.0
-      '@mysten/wallet-standard': 0.14.5(typescript@5.8.3)
+      '@mysten/wallet-standard': 0.14.6(typescript@5.8.3)
       '@mysten/window-wallet-core': 0.0.2
       mitt: 3.0.1
       nanostores: 0.10.3
@@ -3392,6 +3396,10 @@ snapshots:
   '@noble/curves@1.8.2':
     dependencies:
       '@noble/hashes': 1.7.2
+
+  '@noble/curves@1.9.0':
+    dependencies:
+      '@noble/hashes': 1.8.0
 
   '@noble/hashes@1.7.2': {}
 
