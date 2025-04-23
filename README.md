@@ -13,7 +13,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Addresses
 
-- `const ZERO_ADDRESS` - The 0x0 address.
 - `generateRandomAddress()` - Generate a random Sui address (for development only).
 - `removeAddressLeadingZeros()` - Remove leading zeros from a Sui address (lossless).
 - `shortenAddress()` - Abbreviate a Sui address for display purposes (lossy).
@@ -49,7 +48,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Client
 
-- `const RPC_QUERY_MAX_RESULT_LIMIT` - Maximum number of results returned by a single Sui RPC request.
 - `devInspectAndGetExecutionResults()` - Call `SuiClient.devInspectTransactionBlock()` and return the execution results.
 - `devInspectAndGetReturnValues()` - Call `SuiClient.devInspectTransactionBlock()` and return the deserialized return values.
 - `fetchDynamicFields()` - Get dynamic object fields owned by an object. If limit is not specified, fetch all DOFs.
@@ -62,6 +60,18 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
     - `getCoinMeta()` - Fetch metadata for a single coin.
     - `getCoinMetas()` - Fetch metadata for multiple coins.
 - `type CoinMeta` - Like `CoinMetadata` from `@mysten/sui`, but includes the coin `type`.
+
+## Constants
+
+- `const MAX_U64` - The maximum value for a 64-bit unsigned integer.
+- `const NORMALIZED_0x0_ADDRESS` - The normalized 0x0 address (0x000…000).
+- `const NORMALIZED_SUI_TYPE` - The normalized SUI type (0x000…002::sui::SUI).
+- `const REGEX_ADDRESS` - Match a Sui address.
+- `const REGEX_ADDRESS_NORMALIZED` - Match a normalized Sui address.
+- `const REGEX_MODULE_NAME` - Match a Sui module name.
+- `const REGEX_STRUCT_NAME` - Match a Sui struct name.
+- `const REGEX_TYPE_BASIC` - Match a Sui type without generic parameters (e.g. `0x123::module::Struct`).
+- `const RPC_QUERY_MAX_RESULTS` - Maximum number of results returned by a single Sui RPC request.
 
 ## Errors
 
@@ -84,7 +94,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 
 ## Misc
 
-- `const MAX_U64` - The maximum value for a 64-bit unsigned integer.
 - `chunkArray()` - Split an array into multiple chunks of a certain size.
 - `chunkString()` - Split a string into multiple chunks of a certain size.
 - `makeRanges()` - Generate an array of ranges of a certain size between two numbers.
@@ -106,13 +115,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
 - `objResToType()` - Validate a `SuiObjectResponse` and return its `.data.type`.
 
-## Regular expressions
-
-- `const REGEX_ADDRESS` - Match a Sui address.
-- `const REGEX_ADDRESS_NORMALIZED` - Match a normalized Sui address.
-- `const REGEX_MODULE_NAME` - Match a Sui module name.
-- `const REGEX_STRUCT_NAME` - Match a Sui struct name.
-- `const REGEX_TYPE_BASIC` - Match a Sui type without generic parameters (e.g. `0x123::module::Struct`).
 ## RPCs
 
 - `const RPC_ENDPOINTS` - A list of public RPCs for Sui mainnet, testnet, and devnet.

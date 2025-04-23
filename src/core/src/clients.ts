@@ -8,13 +8,8 @@ import {
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
 
 import { removeAddressLeadingZeros } from "./addresses.js";
+import { RPC_QUERY_MAX_RESULTS } from "./constants.js";
 import { sleep } from "./misc.js";
-
-/**
- * Maximum number of results returned by a single Sui RPC request.
- * (see sui/crates/sui-json-rpc-api/src/lib.rs)
- */
-export const RPC_QUERY_MAX_RESULT_LIMIT = 50;
 
 /**
  * Call `SuiClient.devInspectTransactionBlock()` and return the execution results.
@@ -122,8 +117,8 @@ export async function fetchDynamicFields({
         onUpdate?.(`Fetching batch ${fields.length}${limit ? `/${limit}` : ""}`);
 
         const batchLimit = !limit
-            ? RPC_QUERY_MAX_RESULT_LIMIT
-            : Math.min(RPC_QUERY_MAX_RESULT_LIMIT, limit - fields.length);
+            ? RPC_QUERY_MAX_RESULTS
+            : Math.min(RPC_QUERY_MAX_RESULTS, limit - fields.length);
 
         const page = await client.getDynamicFields({
             parentId, cursor, limit: batchLimit

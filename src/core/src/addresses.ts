@@ -1,11 +1,6 @@
 import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui/utils";
 
 /**
- * The 0x0 address.
- */
-export const ZERO_ADDRESS = normalizeSuiAddress("0x0");
-
-/**
  * Generate a random Sui address (for development only).
  */
 export function generateRandomAddress() {

@@ -1,9 +1,4 @@
 /**
- * The maximum value for a 64-bit unsigned integer.
- */
-export const MAX_U64 = 18446744073709551615n;
-
-/**
  * Split an array into multiple chunks of a certain size.
  */
 export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
