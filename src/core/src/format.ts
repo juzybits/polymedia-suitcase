@@ -1,12 +1,3 @@
-const TIME_LABEL = {
-    year: { full: "year", short: "y" },
-    month: { full: "month", short: "m" },
-    day: { full: "day", short: "d" },
-    hour: { full: "hour", short: "h" },
-    min: { full: "min", short: "m" },
-    sec: { full: "sec", short: "s" },
-};
-
 /** Time units in milliseconds. */
 export enum TimeUnit {
     ONE_SECOND = 1000,
@@ -55,52 +46,93 @@ export const formatDuration = (ms: number): string =>
  * Return a human-readable string with the time difference between two timestamps.
  * E.g. "30s"/"30 sec", "1h"/"1 hour", "2d"/"2 days".
  */
-export function formatTimeDiff(
+export function formatTimeDiff({
+    timestamp,
+    now = Date.now(),
+    format = "short",
+    minTimeUnit = TimeUnit.ONE_SECOND,
+}: {
     timestamp: number,
-    now: number = Date.now(),
-    shortenTimeLabel = true,
-    endLabel = "< 1 sec",
-    maxTimeUnit: TimeUnit = TimeUnit.ONE_DAY
-): string {
+    now?: number,
+    format?: "short" | "long",
+    minTimeUnit?: TimeUnit,
+}): string {
     if (!timestamp) return "";
 
-    const dateKeyType = shortenTimeLabel ? "short" : "full";
-    let timeCol = Math.abs(now - timestamp);
+    let diff = Math.abs(now - timestamp);
+
+    if (diff < Number(minTimeUnit)) {
+        return getEndLabel(minTimeUnit, format);
+    }
 
     let timeUnit: [string, number][];
-    if (timeCol >= Number(maxTimeUnit) && Number(maxTimeUnit) >= Number(TimeUnit.ONE_DAY)) {
+    if (diff >= Number(TimeUnit.ONE_DAY)) {
         timeUnit = [
-            [TIME_LABEL.day[dateKeyType], TimeUnit.ONE_DAY],
-            [TIME_LABEL.hour[dateKeyType], TimeUnit.ONE_HOUR],
+            [TIME_LABEL.day[format], TimeUnit.ONE_DAY],
+            [TIME_LABEL.hour[format], TimeUnit.ONE_HOUR],
         ];
-    } else if (timeCol >= Number(TimeUnit.ONE_HOUR)) {
+    } else if (diff >= Number(TimeUnit.ONE_HOUR)) {
         timeUnit = [
-            [TIME_LABEL.hour[dateKeyType], TimeUnit.ONE_HOUR],
-            [TIME_LABEL.min[dateKeyType], TimeUnit.ONE_MINUTE],
+            [TIME_LABEL.hour[format], TimeUnit.ONE_HOUR],
+            [TIME_LABEL.min[format], TimeUnit.ONE_MINUTE],
         ];
     } else {
         timeUnit = [
-            [TIME_LABEL.min[dateKeyType], TimeUnit.ONE_MINUTE],
-            [TIME_LABEL.sec[dateKeyType], TimeUnit.ONE_SECOND],
+            [TIME_LABEL.min[format], TimeUnit.ONE_MINUTE],
+            [TIME_LABEL.sec[format], TimeUnit.ONE_SECOND],
         ];
     }
 
     const convertAmount = (amount: number, label: string) => {
-        const spacing = shortenTimeLabel ? "" : " ";
-        if (amount > 1) return `${amount}${spacing}${label}${!shortenTimeLabel ? "s" : ""}`;
+        const spacing = format === "short" ? "" : " ";
+        if (amount > 1) return `${amount}${spacing}${label}${format === "long" ? "s" : ""}`;
         if (amount === 1) return `${amount}${spacing}${label}`;
         return "";
     };
 
     const resultArr = timeUnit.map(([label, denom]) => {
-        const whole = Math.floor(timeCol / denom);
-        timeCol = timeCol - whole * denom;
+        const whole = Math.floor(diff / denom);
+        diff = diff - whole * denom;
         return convertAmount(whole, label);
     });
 
     const result = resultArr.join(" ").trim();
 
-    return result || endLabel;
+    return result || getEndLabel(minTimeUnit, format);
+}
+
+const TIME_LABEL = {
+    year: { long: "year", short: "y" },
+    month: { long: "month", short: "m" },
+    day: { long: "day", short: "d" },
+    hour: { long: "hour", short: "h" },
+    min: { long: "min", short: "m" },
+    sec: { long: "sec", short: "s" },
+};
+
+function getEndLabel(
+    minTimeUnit: TimeUnit,
+    format: "short" | "long",
+): string {
+    let minLabel = "";
+    switch (minTimeUnit) {
+        case TimeUnit.ONE_DAY:
+            minLabel = TIME_LABEL.day[format];
+            break;
+        case TimeUnit.ONE_HOUR:
+            minLabel = TIME_LABEL.hour[format];
+            break;
+        case TimeUnit.ONE_MINUTE:
+            minLabel = TIME_LABEL.min[format];
+            break;
+        default:
+            minLabel = TIME_LABEL.sec[format];
+    }
+    if (format === "short") {
+        return `< 1${minLabel}`;
+    } else {
+        return `< 1 ${minLabel}`;
+    }
 }
 
 /**
