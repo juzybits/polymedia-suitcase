@@ -13,7 +13,7 @@ export type UseFetchAndPaginateResult<T, C> = ReturnType<typeof useFetchAndPagin
  * @param onClickOutside Function to call when a click or touch is detected outside the target element.
  */
 export function useClickOutside(
-    domElementRef: RefObject<HTMLElement>,
+    domElementRef: RefObject<HTMLElement | null>,
     onClickOutside: () => void,
 ): void
 {

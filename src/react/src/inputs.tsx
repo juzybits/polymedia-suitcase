@@ -43,7 +43,7 @@ export type InputResult<T> = {
     str: string;
     val: T | undefined;
     err: string | null;
-    input: JSX.Element;
+    input: React.ReactElement;
     clear: () => void;
 };
 
@@ -245,7 +245,7 @@ export const useInputPrivateKey = (
     html.inputMode = "text";
     html.pattern = `^(${SUI_PRIVATE_KEY_PREFIX}.+)?$`;
 
-    const lastValidate = useRef<{input: string; result: ValidationResult<Keypair>}>();
+    const lastValidate = useRef<{input: string; result: ValidationResult<Keypair>} | undefined>(undefined);
     const validate = (input: string): ValidationResult<Keypair> =>
     {
         if (input === "") {

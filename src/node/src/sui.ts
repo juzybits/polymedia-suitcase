@@ -79,8 +79,8 @@ export function suppressSuiVersionMismatchWarnings() {
     // Override stderr.write with our custom function
     process.stderr.write = function(
         str: string | Uint8Array,
-        encoding?: BufferEncoding | ((err?: Error) => void),
-        cb?: (err?: Error) => void
+        encoding?: BufferEncoding | ((err?: Error | null) => void),
+        cb?: (err?: Error | null) => void
     ): boolean {
         // If it's a version mismatch warning, return true (indicating success) without writing
         if (str.toString().includes("Client/Server api version mismatch")) {
