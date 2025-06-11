@@ -29,6 +29,10 @@ export const Modal: React.FC<{
         };
     }, [onClose]);
 
+    if (!React.Children.count(children)) {
+        return null;
+    }
+
     return (
         <div className="poly-modal-background">
             <div className="card poly-modal-content" ref={modalContentRef}>
