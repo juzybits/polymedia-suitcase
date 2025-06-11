@@ -57,7 +57,7 @@ importers:
   src/core:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.28.2
+        specifier: ^1.31.0
         version: 1.31.0(typescript@5.8.3)
 
   src/dev:
@@ -76,7 +76,7 @@ importers:
   src/node:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.28.2
+        specifier: ^1.31.0
         version: 1.31.0(typescript@5.8.3)
       '@polymedia/suitcase-core':
         specifier: workspace:*
@@ -89,10 +89,10 @@ importers:
   src/react:
     dependencies:
       '@mysten/dapp-kit':
-        specifier: ^0.16.0
+        specifier: ^0.16.10
         version: 0.16.10(@tanstack/react-query@5.74.4(react@19.1.0))(@types/react@19.1.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
       '@mysten/sui':
-        specifier: ^1.28.2
+        specifier: ^1.31.0
         version: 1.31.0(typescript@5.8.3)
       '@polymedia/suitcase-core':
         specifier: workspace:*
