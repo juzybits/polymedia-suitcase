@@ -91,7 +91,7 @@ export const BtnPrevNext = ({
 }: {
     data: ReturnType<typeof useFetchAndPaginate>;
     onPageChange?: () => void;
-    scrollToRefOnPageChange?: RefObject<HTMLElement>;
+    scrollToRefOnPageChange?: RefObject<HTMLElement | null>;
 }) =>
 {
     if (!data.hasMultiplePages) {
