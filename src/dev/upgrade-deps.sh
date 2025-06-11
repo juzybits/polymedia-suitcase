@@ -8,15 +8,15 @@ set -o pipefail     # Prevent errors in a pipeline from being masked
 SCRIPT_DIR="$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )"
 PATH_PROJECT="$( cd "$SCRIPT_DIR/../.." && pwd )"
 
-REACT_VERSION="^18.0.0"
+# REACT_VERSION="^18.0.0"
 
 cd $PATH_PROJECT
 pnpm up --latest --recursive
 pnpm up --latest -w
 
-cd $PATH_PROJECT/src/react
-pnpm add -D @types/react@$REACT_VERSION
+# cd $PATH_PROJECT/src/react
+# pnpm add -D @types/react@$REACT_VERSION
 
-cd $PATH_PROJECT
-pnpm up --recursive
-pnpm up -w
+# cd $PATH_PROJECT
+# pnpm up --recursive
+# pnpm up -w
