@@ -28,10 +28,10 @@
         "@polymedia/suitcase-core": "workspace:*"
     },
     "peerDependencies": {
-        "@mysten/sui": "^1.31.0"
+        "@mysten/sui": "^1.32.0"
     },
     "devDependencies": {
-        "@types/node": "^24.0.0"
+        "@types/node": "^24.0.1"
     },
     "type": "module",
     "sideEffects": false,
