@@ -20,5 +20,5 @@ export function pairFromSecretKey(secretKey: string): Keypair
         return Secp256r1Keypair.fromSecretKey(pair.secretKey);
     }
 
-    throw new Error(`Unrecognized keypair schema: ${pair.schema}`);
+    throw new Error(`Unrecognized keypair schema: ${pair.scheme}`);
 }

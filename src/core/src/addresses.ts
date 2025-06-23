@@ -1,5 +1,6 @@
 import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui/utils";
-import { REGEX_ADDRESS } from "./constants";
+
+import { REGEX_ADDRESS } from "./constants.js";
 
 /**
  * Generate a random Sui address (for development only).

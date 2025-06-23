@@ -52,10 +52,10 @@ export function formatTimeDiff({
     format = "short",
     minTimeUnit = TimeUnit.ONE_SECOND,
 }: {
-    timestamp: number,
-    now?: number,
-    format?: "short" | "long",
-    minTimeUnit?: TimeUnit,
+    timestamp: number;
+    now?: number;
+    format?: "short" | "long";
+    minTimeUnit?: TimeUnit;
 }): string {
     if (!timestamp) return "";
 
