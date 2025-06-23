@@ -10,13 +10,13 @@ export function pairFromSecretKey(secretKey: string): Keypair
 {
     const pair = decodeSuiPrivateKey(secretKey);
 
-    if (pair.schema === "ED25519") {
+    if (pair.scheme === "ED25519") {
         return Ed25519Keypair.fromSecretKey(pair.secretKey);
     }
-    if (pair.schema === "Secp256k1") {
+    if (pair.scheme === "Secp256k1") {
         return Secp256k1Keypair.fromSecretKey(pair.secretKey);
     }
-    if (pair.schema === "Secp256r1") {
+    if (pair.scheme === "Secp256r1") {
         return Secp256r1Keypair.fromSecretKey(pair.secretKey);
     }
 

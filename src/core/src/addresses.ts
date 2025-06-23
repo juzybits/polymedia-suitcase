@@ -1,4 +1,5 @@
 import { isValidSuiAddress, normalizeSuiAddress } from "@mysten/sui/utils";
+import { REGEX_ADDRESS } from "./constants";
 
 /**
  * Generate a random Sui address (for development only).
@@ -30,9 +31,9 @@ export function removeAddressLeadingZeros(
 export function shortenAddress(
     text: string|null|undefined, start=4, end=4, separator="…", prefix="0x",
 ): string {
-    if (!text) return "";
+    if (typeof text !== "string") return "";
 
-    const addressRegex = /0[xX][a-fA-F0-9]{1,}/g;
+    const addressRegex = new RegExp(`\\b${REGEX_ADDRESS}\\b`, "g");
 
     return text.replace(addressRegex, (match) => {
         // check if the address is too short to be abbreviated
