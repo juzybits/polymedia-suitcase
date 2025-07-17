@@ -206,6 +206,7 @@ The `suitcase-node` package provides utilities for Node.js projects (command lin
 - `parseArguments()` - Parse command line arguments and show usage instructions.
 - `promptUser()` - Display a query to the user and wait for their input. Return true if the user enters `y`.
 - `suppressSuiVersionMismatchWarnings()` - Suppress "Client/Server api version mismatch" warnings.
+
 # React
 
 The `suitcase-react` package provides components for React web apps.

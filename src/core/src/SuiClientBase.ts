@@ -160,7 +160,7 @@ export abstract class SuiClientBase
         });
 
         if (resp.effects && resp.effects.status.status !== "success") {
-            throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
+            throw new Error(`transaction failed: ${JSON.stringify(resp, null, 2)}`);
         }
 
         if (!waitForTxOptions) {
@@ -212,7 +212,7 @@ export abstract class SuiClientBase
             transactionBlock: tx,
         });
         if (resp.effects && resp.effects.status.status !== "success") {
-            throw new Error(`Transaction failed: ${JSON.stringify(resp, null, 2)}`);
+            throw new Error(`devInspect failed: ${JSON.stringify(resp, null, 2)}`);
         }
         return { digest: "", ...resp };
     }
