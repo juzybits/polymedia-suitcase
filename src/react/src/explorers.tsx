@@ -43,16 +43,10 @@ export function loadExplorer(
     defaultExplorer: ExplorerName,
 ): ExplorerName
 {
-    if (!isExplorerName(defaultExplorer)) {
-        throw new Error(`Explorer not supported: ${defaultExplorer}`);
-    }
-
     const explorer = localStorage.getItem("polymedia.explorer");
     if (isExplorerName(explorer)) {
         return explorer;
     }
-
-    localStorage.setItem("polymedia.explorer", defaultExplorer);
     return defaultExplorer;
 }
 
@@ -63,9 +57,6 @@ export function switchExplorer(
     newExplorer: ExplorerName,
     onSwitch?: (newExplorer: ExplorerName) => void
 ): void {
-    if (!isExplorerName(newExplorer)) {
-        throw new Error(`Explorer not supported: ${newExplorer}`);
-    }
     localStorage.setItem("polymedia.explorer", newExplorer);
     if (onSwitch) {
         onSwitch(newExplorer);
