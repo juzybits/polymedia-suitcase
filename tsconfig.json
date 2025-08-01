@@ -31,12 +31,15 @@
         "forceConsistentCasingInFileNames": true,           /* Ensure that casing is correct in imports. */
 
         /* Type Checking */
-        "strict": true,                                     /* Enable all strict type-checking options. */
-        "noUnusedLocals": true,                             /* Enable error reporting when local variables aren't read. */
-        "noUnusedParameters": true,                         /* Raise an error when a function parameter isn't read. */
-        "noImplicitReturns": true,                          /* Enable error reporting for codepaths that do not explicitly return in a function. */
-        "noFallthroughCasesInSwitch": true,                 /* Enable error reporting for fallthrough cases in switch statements. */
-        "exactOptionalPropertyTypes": true,                 /* Distinguish between undefined and missing optional properties */
+		"strict": true, // Enable all strict type-checking options.
+		"noUnusedLocals": true, // Enable error reporting when local variables aren't read.
+		"noUnusedParameters": true, // Raise an error when a function parameter isn't read.
+		"noImplicitReturns": true, // Check all code paths in a function to ensure they return a value.
+		"noImplicitOverride": true, // Function overrides must be explicitly marked with the `override` modifier.
+		"noFallthroughCasesInSwitch": true, // Ensure that non-empty cases inside a switch statement include either break, return, or throw.
+		// "noUncheckedIndexedAccess": true, // obj["key"] returns `string | undefined`.
+		"noPropertyAccessFromIndexSignature": true, // obj.unknownProp → error, use obj["unknownProp"].
+		"exactOptionalPropertyTypes": true, // Distinguish between undefined and missing optional properties.
 
         /* Completeness */
         "skipLibCheck": true                                /* Skip type checking all .d.ts files. */
