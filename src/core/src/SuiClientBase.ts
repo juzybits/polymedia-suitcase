@@ -204,7 +204,7 @@ export abstract class SuiClientBase
         sender = "0x7777777777777777777777777777777777777777777777777777777777777777",
     }: {
         tx: DevInspectTransactionBlockParams["transactionBlock"];
-        sender?: string;
+        sender?: string | undefined;
     }): Promise<SuiTransactionBlockResponse>
     {
         const resp = await this.suiClient.devInspectTransactionBlock({

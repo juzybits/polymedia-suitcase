@@ -75,7 +75,7 @@ export async function measureRpcLatency({ // TODO: average, p-50, p-90
     rpcRequest = async (client: SuiClient) => { await client.getObject({ id: "0x123" }); }
 }: {
     endpoints: string[];
-    rpcRequest?: (client: SuiClient) => Promise<void>;
+    rpcRequest?: ((client: SuiClient) => Promise<void>) | undefined;
 }): Promise<RpcLatencyResult[]>
 {
     const promises = endpoints.map(async (url) =>

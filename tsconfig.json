@@ -36,6 +36,7 @@
         "noUnusedParameters": true,                         /* Raise an error when a function parameter isn't read. */
         "noImplicitReturns": true,                          /* Enable error reporting for codepaths that do not explicitly return in a function. */
         "noFallthroughCasesInSwitch": true,                 /* Enable error reporting for fallthrough cases in switch statements. */
+        "exactOptionalPropertyTypes": true,                 /* Distinguish between undefined and missing optional properties */
 
         /* Completeness */
         "skipLibCheck": true                                /* Skip type checking all .d.ts files. */

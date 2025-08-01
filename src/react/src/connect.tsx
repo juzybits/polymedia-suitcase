@@ -4,13 +4,13 @@ import { ReactNode } from "react";
 import { BtnSubmit } from "./buttons";
 
 export type BtnConnectProps = {
-    btnMsg?: string;
+    btnMsg?: string | undefined;
     isWorking: boolean;
     openConnectModal: () => void;
 };
 
 export type ConnectToGetStartedProps = {
-    connectMsg?: string;
+    connectMsg?: string | undefined;
 } & BtnConnectProps;
 
 export type ConnectOrProps = {
