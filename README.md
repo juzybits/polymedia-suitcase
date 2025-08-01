@@ -106,6 +106,7 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 ## Objects
 
 - `type ObjectDisplay` - A Sui object display with common properties and arbitrary ones.
+- `objResToBcs()` - Validate a `SuiObjectResponse` and return its `.data.bcs.bcsBytes`.
 - `objResToContent()` - Validate a `SuiObjectResponse` and return its `.data.content`.
 - `objResToDisplay()` - Validate a `SuiObjectResponse` and return its `.data.display.data` or `null`.
     - `newEmptyDisplay()` - Create an `ObjectDisplay` object with all fields set to `null`.

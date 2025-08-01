@@ -23,14 +23,24 @@ export type ObjectDisplay = {
 };
 
 /**
+ * Validate a `SuiObjectResponse` and return its `.data.bcs.bcsBytes`.
+ */
+export function objResToBcs(
+    resp: SuiObjectResponse,
+): string
+{
+    if (resp.data?.bcs?.dataType !== "moveObject") {
+        throw Error(`response bcs missing: ${JSON.stringify(resp, null, 2)}`);
+    }
+    return resp.data.bcs.bcsBytes;
+}
+
+/**
  * Validate a `SuiObjectResponse` and return its `.data.content`.
  */
 export function objResToContent(
     resp: SuiObjectResponse,
 ): SuiParsedData {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
     if (!resp.data?.content) {
         throw Error(`response has no content: ${JSON.stringify(resp, null, 2)}`);
     }
@@ -44,9 +54,6 @@ export function objResToDisplay(
     resp: SuiObjectResponse,
 ): ObjectDisplay
 {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
     if (!resp.data?.display) {
         throw Error(`response has no display: ${JSON.stringify(resp, null, 2)}`);
     }
@@ -81,9 +88,6 @@ export function objResToFields(
     resp: SuiObjectResponse,
 ): Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
     if (resp.data?.content?.dataType !== "moveObject") {
         throw Error(`response content missing: ${JSON.stringify(resp, null, 2)}`);
     }
@@ -96,9 +100,6 @@ export function objResToFields(
 export function objResToId(
     resp: SuiObjectResponse,
 ): string {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
     if (!resp.data) {
         throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
     }
@@ -112,9 +113,6 @@ export function objResToOwner(
     resp: SuiObjectResponse,
 ): string
 {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
     if (!resp.data?.owner) {
         throw Error(`response has no owner data: ${JSON.stringify(resp, null, 2)}`);
     }
@@ -139,9 +137,6 @@ export function objResToOwner(
 export function objResToRef(
     resp: SuiObjectResponse,
 ): SuiObjectRef {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
     if (!resp.data) {
         throw Error(`response has no data: ${JSON.stringify(resp, null, 2)}`);
     }
@@ -158,9 +153,6 @@ export function objResToRef(
 export function objResToType(
     resp: SuiObjectResponse,
 ): string {
-    if (resp.error) {
-        throw Error(`response error: ${JSON.stringify(resp, null, 2)}`);
-    }
     if (!resp.data?.content) {
         throw Error(`response has no content: ${JSON.stringify(resp, null, 2)}`);
     }
