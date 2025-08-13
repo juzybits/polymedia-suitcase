@@ -207,7 +207,7 @@ export const useInputAddress = (
     const html = props.html ?? {};
     html.type = "text";
     html.inputMode = "text";
-    html.pattern = `^${REGEX_ADDRESS_NORMALIZED}$`;
+    html.pattern = `^${REGEX_ADDRESS_NORMALIZED.source}$`;
 
     const validate: InputValidator<string> = (input: string) =>
     {

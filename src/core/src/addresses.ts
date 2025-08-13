@@ -34,7 +34,7 @@ export function shortenAddress(
 ): string {
     if (typeof text !== "string") return "";
 
-    const addressRegex = new RegExp(`\\b${REGEX_ADDRESS}\\b`, "g");
+    const addressRegex = new RegExp(`\\b${REGEX_ADDRESS.source}\\b`, "g");
 
     return text.replace(addressRegex, (match) => {
         // check if the address is too short to be abbreviated
