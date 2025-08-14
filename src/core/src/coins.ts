@@ -19,20 +19,20 @@ export type CoinMeta = {
  */
 export class CoinMetaFetcher
 {
-    protected readonly client: SuiClient;
+    protected readonly suiClient: SuiClient;
     protected readonly cache = new Map<string, CoinMeta | null>();
 
     constructor({
-        client,
+        suiClient,
         preloadUrl = "https://coinmeta.polymedia.app/api/data.json",
         preloadData,
     }: {
-        client: SuiClient;
+        suiClient: SuiClient;
         preloadUrl?: string;
         preloadData?: CoinMeta[];
     })
     {
-        this.client = client;
+        this.suiClient = suiClient;
 
         if (preloadData) {
             preloadData.forEach(coinMeta => {
@@ -84,7 +84,7 @@ export class CoinMetaFetcher
             return cachedMeta;
         }
 
-        const rawMeta = await this.client.getCoinMetadata({ coinType: normalizedType });
+        const rawMeta = await this.suiClient.getCoinMetadata({ coinType: normalizedType });
         const coinMeta = !rawMeta ? null : {
             id: rawMeta.id ?? null,
             type: normalizedType,
