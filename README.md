@@ -114,7 +114,6 @@ The `suitcase-core` package provides utilities for all TypeScript environments (
 - `objResToId()` - Validate a `SuiObjectResponse` and return its `.data.objectId`.
 - `objResToOwner()` - Validate a `SuiObjectResponse` and return its owner: an address, object ID, "shared" or "immutable".
 - `objResToRef()` - Validate a `SuiObjectResponse` and return its `{.data.objectId, .data.digest, .data.version}`.
-- `objResToType()` - Validate a `SuiObjectResponse` and return its `.data.type`.
 
 ## RPCs
 

@@ -146,18 +146,3 @@ export function objResToRef(
         version: resp.data.version,
     };
 }
-
-/**
- * Validate a `SuiObjectResponse` and return its `.data.content.type`.
- */
-export function objResToType(
-    resp: SuiObjectResponse,
-): string {
-    if (!resp.data?.content) {
-        throw Error(`response has no content: ${JSON.stringify(resp, null, 2)}`);
-    }
-    if (!isParsedDataKind(resp.data.content, "moveObject")) {
-        throw Error(`response data is not a moveObject: ${JSON.stringify(resp, null, 2)}`);
-    }
-    return resp.data.content.type;
-}
