@@ -4,7 +4,7 @@ import {
     SuiParsedData
 } from "@mysten/sui/client";
 
-import { isOwnerKind, isParsedDataKind } from "./guards.js";
+import { isOwnerKind } from "./guards.js";
 
 /**
  * A Sui object display with common properties and arbitrary ones.
