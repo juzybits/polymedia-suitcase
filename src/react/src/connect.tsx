@@ -1,63 +1,54 @@
 import { useCurrentAccount } from "@mysten/dapp-kit";
-import { ReactNode } from "react";
-
-import { BtnSubmit } from "./buttons";
+import type { ReactNode } from "react";
+import { Btn } from "./buttons";
 
 export type BtnConnectProps = {
-    btnMsg?: string | undefined;
-    isWorking: boolean;
-    openConnectModal: () => void;
+	btnMsg?: string | undefined;
+	openConnectModal: () => void;
 };
 
 export type ConnectToGetStartedProps = {
-    connectMsg?: string | undefined;
+	connectMsg?: string | undefined;
 } & BtnConnectProps;
 
 export type ConnectOrProps = {
-    children: ReactNode;
+	children: ReactNode;
 } & ConnectToGetStartedProps;
 
-export const BtnConnect = ({
-    btnMsg, isWorking, openConnectModal,
-}: BtnConnectProps) =>
-{
-    return (
-        <BtnSubmit disabled={isWorking} onClick={() => Promise.resolve(openConnectModal())}>
-            {btnMsg ?? "CONNECT"}
-        </BtnSubmit>
-    );
+export const BtnConnect = ({ btnMsg, openConnectModal }: BtnConnectProps) => {
+	return (
+		<Btn onClick={() => Promise.resolve(openConnectModal())}>{btnMsg ?? "CONNECT"}</Btn>
+	);
 };
 
 export const ConnectToGetStarted = ({
-    btnMsg, connectMsg, isWorking, openConnectModal,
-}: ConnectToGetStartedProps) =>
-{
-    return <>
-        {connectMsg &&
-            <div className="card-desc">
-                {connectMsg}
-            </div>
-        }
-        <BtnConnect
-            btnMsg={btnMsg}
-            isWorking={isWorking}
-            openConnectModal={openConnectModal}
-        />
-    </>;
+	btnMsg,
+	connectMsg,
+	openConnectModal,
+}: ConnectToGetStartedProps) => {
+	return (
+		<>
+			{connectMsg && <div className="card-desc">{connectMsg}</div>}
+			<BtnConnect btnMsg={btnMsg} openConnectModal={openConnectModal} />
+		</>
+	);
 };
 
 export const ConnectOr = ({
-    btnMsg, connectMsg, isWorking, openConnectModal, children,
-}: ConnectOrProps) =>
-{
-    const currAcct = useCurrentAccount();
-    if (currAcct) {
-        return children;
-    }
-    return <ConnectToGetStarted
-        connectMsg={connectMsg}
-        btnMsg={btnMsg}
-        isWorking={isWorking}
-        openConnectModal={openConnectModal}
-    />;
+	btnMsg,
+	connectMsg,
+	openConnectModal,
+	children,
+}: ConnectOrProps) => {
+	const currAcct = useCurrentAccount();
+	if (currAcct) {
+		return children;
+	}
+	return (
+		<ConnectToGetStarted
+			connectMsg={connectMsg}
+			btnMsg={btnMsg}
+			openConnectModal={openConnectModal}
+		/>
+	);
 };

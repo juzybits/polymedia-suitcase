@@ -1,0 +1,101 @@
+.poly-modal-background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100dvh;
+	z-index: 1000;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	padding: 2rem;
+
+	@media (max-width: 700px) {
+		/* dup: screen-medium */
+		padding: 1.5rem;
+	}
+}
+
+.poly-modal-content {
+	position: relative;
+	width: min(700px, 100%);
+	max-height: calc(100dvh - 4rem);
+	background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+	color: var(--color-text);
+	border: none;
+	border-radius: var(--border-radius);
+	box-shadow: 0 0 2rem rgba(0, 0, 0, 1);
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* modal animation */
+	animation: modalFadeIn 0.1s ease-in-out forwards;
+}
+
+.poly-modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 0.75rem 0.75rem 1.5rem;
+	border-bottom: var(--border-gray);
+	flex-shrink: 0;
+	gap: 1rem;
+
+	h2 {
+		margin: 0;
+		font-size: 1.3em;
+		font-weight: bold;
+		color: var(--color-text);
+		flex: 1;
+		min-width: 0;
+		align-self: center;
+	}
+
+	.poly-modal-close {
+		cursor: pointer;
+		height: 2rem;
+		width: 2rem;
+		background: none;
+		border: none;
+		color: var(--color-text);
+		font-size: 1.5em;
+		border-radius: 100%;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		align-self: flex-start;
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+	}
+}
+
+.poly-modal-body {
+	padding: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	color: var(--color-text);
+	flex-grow: 1;
+}
+
+@keyframes modalFadeIn {
+	from {
+		transform: scale(0.95);
+	}
+	to {
+		transform: scale(1);
+	}
+}
