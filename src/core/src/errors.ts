@@ -33,7 +33,7 @@ export function anyToStr(val: unknown): string | null {
 							return JSON.stringify(val);
 						} catch {
 							return String(val);
-						} // eslint-disable-line @typescript-eslint/no-base-to-string
+						}
 					})();
 	return str.trim() || null;
 }

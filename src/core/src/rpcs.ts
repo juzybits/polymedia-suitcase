@@ -100,7 +100,7 @@ export async function measureRpcLatency({
 			// should never happen
 			return {
 				endpoint: "Unknown endpoint",
-				error: String(result.reason.message) || "Unknown error", // eslint-disable-line
+				error: String(result.reason.message) || "Unknown error",
 			};
 		}
 	});

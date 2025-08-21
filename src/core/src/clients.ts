@@ -47,7 +47,7 @@ export async function devInspectAndGetExecutionResults(
     ]);
     ```
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: iykyk
 export async function devInspectAndGetReturnValues<T extends any[]>(
 	suiClient: SuiClient,
 	tx: Transaction | Uint8Array | string,

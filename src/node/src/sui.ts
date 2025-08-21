@@ -71,14 +71,13 @@ export async function setupSuiTransaction() {
 	return { network, client, tx, signer };
 }
 
+// biome-ignore-start lint/suspicious/noExplicitAny: iykyk
 /**
  * Suppress "Client/Server api version mismatch" warnings.
  */
 export function suppressSuiVersionMismatchWarnings() {
 	// Skip if already wrapped
-	if ((process.stderr.write as any).__isSuppressingVersionMismatch)
-		// eslint-disable-line
-		return;
+	if ((process.stderr.write as any).__isSuppressingVersionMismatch) return;
 	// Store the original stderr.write function, properly bound to stderr
 	const originalStderr = process.stderr.write.bind(process.stderr);
 	// Override stderr.write with our custom function
@@ -92,11 +91,12 @@ export function suppressSuiVersionMismatchWarnings() {
 			return true;
 		}
 		// For all other messages, pass through to the original stderr.write
-		return originalStderr(str, encoding as any, cb); // eslint-disable-line
+		return originalStderr(str, encoding as any, cb);
 	};
 	// Mark as wrapped in case this function is called multiple times
-	(process.stderr.write as any).__isSuppressingVersionMismatch = true; // eslint-disable-line
+	(process.stderr.write as any).__isSuppressingVersionMismatch = true;
 }
+// biome-ignore-end lint/suspicious/noExplicitAny: iykyk
 
 /**
  * Execute a transaction block with `showEffects` and `showObjectChanges` set to `true`.

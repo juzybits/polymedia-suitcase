@@ -72,12 +72,13 @@ export function newEmptyDisplay(): ObjectDisplay {
 /**
  * Validate a `SuiObjectResponse` and return its `.data.content.fields`.
  */
+// biome-ignore lint/suspicious/noExplicitAny: iykyk
 export function objResToFields(resp: SuiObjectResponse): Record<string, any> {
-	// eslint-disable-line @typescript-eslint/no-explicit-any
 	if (resp.data?.content?.dataType !== "moveObject") {
 		throw Error(`response content missing: ${JSON.stringify(resp, null, 2)}`);
 	}
-	return resp.data.content.fields as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+	// biome-ignore lint/suspicious/noExplicitAny: iykyk
+	return resp.data.content.fields as Record<string, any>;
 }
 
 /**
