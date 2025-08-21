@@ -123,7 +123,6 @@ export async function signAndExecuteTx({
     return await client.waitForTransaction({
         digest: resp.digest,
         options: txRespOptions,
-        timeout: waitForTxOptions.timeout,
-        pollInterval: waitForTxOptions.pollInterval,
+        ...waitForTxOptions,
     });
 }

@@ -1,8 +1,10 @@
-import { SuiCallArg, SuiClient, SuiObjectRef, SuiTransactionBlockResponse } from "@mysten/sui/client";
+import { SuiCallArg, SuiClient, SuiObjectRef, SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
 import { SignatureWithBytes, Signer } from "@mysten/sui/cryptography";
 import { Transaction, TransactionObjectInput, TransactionResult } from "@mysten/sui/transactions";
 
 import { isSuiObjectRef } from "./guards.js";
+
+// === misc ===
 
 /**
  * An item in the array returned by a `Transaction.moveCall()` call.
@@ -15,29 +17,6 @@ export type NestedResult = ReturnType<Transaction["moveCall"]> extends (infer It
 export type ObjectInput = TransactionObjectInput | SuiObjectRef;
 
 /**
- * A function that can sign a `Transaction`.
- *
- * For apps that use `@mysten/dapp-kit` to sign with a Sui wallet:
-    ```
-    const { mutateAsync: walletSignTx } = useSignTransaction();
-    const signTx: SignTx = async (tx) => {
-        return walletSignTx({ transaction: tx });
-    };
-    ```
- * For code that has direct access to the private key:
-    ```
-    const secretKey = "suiprivkey1...";
-    const signer = pairFromSecretKey(secretKey)
-    const signTx: SignTx = async (tx) => {
-        tx.setSenderIfNotSet(signer.toSuiAddress());
-        const txBytes = await tx.build({ client: suiClient });
-        return signer.signTransaction(txBytes);
-    };
-    ```
- */
-export type SignTx = (tx: Transaction) => Promise<SignatureWithBytes>;
-
-/**
  * Get the value of a `SuiCallArg` (transaction input).
  * If the argument is a pure value, return it.
  * If the argument is an object, return its ID.
@@ -47,21 +26,6 @@ export function getArgVal<T>(arg: SuiCallArg): T {
         return arg.value as T;
     }
     return arg.objectId as T;
-}
-
-/**
- * Create a `SignTx` function that uses a `Signer` to sign a `Transaction`.
- */
-export function newSignTx(
-    suiClient: SuiClient,
-    signer: Signer,
-): SignTx
-{
-    return async (tx: Transaction) => {
-        tx.setSenderIfNotSet(signer.toSuiAddress());
-        const txBytes = await tx.build({ client: suiClient });
-        return signer.signTransaction(txBytes);
-    };
 }
 
 /**
@@ -97,6 +61,136 @@ export function txResToData(
         txs: resp.transaction.data.transaction.transactions,
     };
 }
+
+// === tx signing and submitting ===
+
+/**
+ * A function that can sign a `Transaction`.
+ *
+ * For apps that use `@mysten/dapp-kit` to sign with a Sui wallet:
+    ```
+    const { mutateAsync: walletSignTx } = useSignTransaction();
+    const signTx: SignTx = async (tx) => {
+        return walletSignTx({ transaction: tx });
+    };
+    ```
+ * For code that has direct access to the private key:
+    ```
+    const secretKey = "suiprivkey1...";
+    const signer = pairFromSecretKey(secretKey)
+    const signTx: SignTx = async (tx) => {
+        tx.setSenderIfNotSet(signer.toSuiAddress());
+        const txBytes = await tx.build({ client: suiClient });
+        return signer.signTransaction(txBytes);
+    };
+    ```
+ */
+export type SignTx = (tx: Transaction) => Promise<SignatureWithBytes>;
+
+/**
+ * Create a `SignTx` function that uses a `Signer` to sign a `Transaction`.
+ */
+export function newSignTx(
+    suiClient: SuiClient,
+    signer: Signer,
+): SignTx
+{
+    return async (tx: Transaction) => {
+        tx.setSenderIfNotSet(signer.toSuiAddress());
+        const txBytes = await tx.build({ client: suiClient });
+        return signer.signTransaction(txBytes);
+    };
+}
+
+/**
+ * Options for `SuiClient.waitForTransaction()`.
+ */
+export type WaitForTxOptions = {
+	pollInterval: number;
+	timeout?: number;
+};
+
+const DEFAULT_RESPONSE_OPTIONS: SuiTransactionBlockResponseOptions = {
+	showEffects: true,
+	showObjectChanges: true,
+};
+
+const DEFAULT_WAIT_FOR_TX_OPTIONS: WaitForTxOptions = {
+	pollInterval: 250,
+};
+
+export type SignAndExecuteTx = ReturnType<typeof newSignAndExecuteTx>;
+
+/**
+ * Create a function that signs and executes a `Transaction`.
+ */
+export function newSignAndExecuteTx({
+	suiClient,
+	signTx,
+	sender: _sender = undefined,
+	txRespOptions: _txRespOptions = DEFAULT_RESPONSE_OPTIONS,
+	waitForTxOptions: _waitForTxOptions = DEFAULT_WAIT_FOR_TX_OPTIONS,
+}: {
+	suiClient: SuiClient;
+	signTx: SignTx;
+	sender?: string | undefined;
+	txRespOptions?: SuiTransactionBlockResponseOptions;
+	waitForTxOptions?: WaitForTxOptions | false;
+}) {
+	return async ({
+		tx,
+		sender = _sender,
+		txRespOptions = _txRespOptions,
+		waitForTxOptions = _waitForTxOptions,
+		dryRun = false,
+	}: {
+		tx: Transaction;
+		sender?: string;
+		txRespOptions?: SuiTransactionBlockResponseOptions;
+		waitForTxOptions?: WaitForTxOptions | false;
+		dryRun?: boolean;
+	}): Promise<SuiTransactionBlockResponse> => {
+		if (sender) {
+			tx.setSenderIfNotSet(sender);
+		}
+
+		if (dryRun) {
+			const dryRunRes = await suiClient.devInspectTransactionBlock({
+				sender:
+					sender ?? "0x7777777777777777777777777777777777777777777777777777777777777777",
+				transactionBlock: tx,
+			});
+			if (dryRunRes.effects.status.status !== "success") {
+				throw new Error(`devInspect failed: ${dryRunRes.effects.status.error}`);
+			}
+			return { digest: "", ...dryRunRes };
+		}
+
+		const signedTx = await signTx(tx);
+
+		const resp = await suiClient.executeTransactionBlock({
+			transactionBlock: signedTx.bytes,
+			signature: signedTx.signature,
+			options: txRespOptions,
+		});
+
+		if (resp.effects && resp.effects.status.status !== "success") {
+			throw new Error(`transaction failed: ${resp.effects.status.status}`);
+		}
+
+		if (!waitForTxOptions) {
+			return resp;
+		}
+
+		return suiClient.waitForTransaction({
+			digest: resp.digest,
+			options: txRespOptions,
+			...waitForTxOptions,
+		});
+	};
+}
+
+// === sui::transfer module ===
 
 /**
  * Build transactions for the `sui::transfer` module.

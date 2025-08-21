@@ -4,15 +4,7 @@ import { Transaction } from "@mysten/sui/transactions";
 
 import { chunkArray } from "./misc.js";
 import { objResToId } from "./objects.js";
-import { SignTx } from "./txs.js";
-
-/**
- * Options for `SuiClient.waitForTransaction()`.
- */
-export type WaitForTxOptions = {
-    timeout: number;
-    pollInterval: number;
-};
+import { SignTx, type WaitForTxOptions } from "./txs.js";
 
 /**
  * The maximum number of objects that can be fetched from the RPC in a single request.
@@ -170,8 +162,7 @@ export abstract class SuiClientBase
         return await this.suiClient.waitForTransaction({
             digest: resp.digest,
             options: txRespOptions,
-            timeout: waitForTxOptions.timeout,
-            pollInterval: waitForTxOptions.pollInterval,
+            ...waitForTxOptions,
         });
     }
 
