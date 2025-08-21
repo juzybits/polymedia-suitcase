@@ -17,11 +17,11 @@
         "react"
     ],
     "scripts": {
-        "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && cp src/styles.less dist/",
+        "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && cp src/*.css dist/esm/ && cp src/*.css dist/cjs/",
         "clean": "rm -rf dist/ node_modules/ .turbo/",
         "dev": "tsc --watch -p tsconfig.esm.json",
         "dev:all": "concurrently 'pnpm dev' 'pnpm dev:styles'",
-        "dev:styles": "fswatch -0 src/styles.less | xargs -0 -I {} cp src/styles.less dist/",
+        "dev:styles": "fswatch -0 src/*.css | xargs -0 -I {} cp src/*.css dist/esm/ && cp src/*.css dist/cjs/",
         "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
         "test": "jest --verbose --passWithNoTests",
         "typecheck": "tsc -p tsconfig.esm.json"
@@ -56,9 +56,9 @@
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
         },
-        "./*.less": {
-            "import": "./dist/*.less",
-            "require": "./dist/*.less"
+        "./*.css": {
+            "import": "./dist/esm/*.css",
+            "require": "./dist/cjs/*.css"
         }
     }
 }
