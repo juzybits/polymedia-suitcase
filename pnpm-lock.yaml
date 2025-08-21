@@ -57,8 +57,8 @@ importers:
   src/core:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.37.3
-        version: 1.37.3(typescript@5.9.2)
+        specifier: ^1.37.4
+        version: 1.37.4(typescript@5.9.2)
 
   src/dev:
     dependencies:
@@ -76,8 +76,8 @@ importers:
   src/node:
     dependencies:
       '@mysten/sui':
-        specifier: ^1.37.3
-        version: 1.37.3(typescript@5.9.2)
+        specifier: ^1.37.4
+        version: 1.37.4(typescript@5.9.2)
       '@polymedia/suitcase-core':
         specifier: workspace:*
         version: link:../core
@@ -89,11 +89,11 @@ importers:
   src/react:
     dependencies:
       '@mysten/dapp-kit':
-        specifier: ^0.17.4
-        version: 0.17.4(@tanstack/react-query@5.74.4(react@19.1.0))(@types/react@19.1.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
+        specifier: ^0.17.5
+        version: 0.17.5(@tanstack/react-query@5.74.4(react@19.1.0))(@types/react@19.1.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
       '@mysten/sui':
-        specifier: ^1.37.3
-        version: 1.37.3(typescript@5.9.2)
+        specifier: ^1.37.4
+        version: 1.37.4(typescript@5.9.2)
       '@polymedia/suitcase-core':
         specifier: workspace:*
         version: link:../core
@@ -526,24 +526,24 @@ packages:
   '@mysten/bcs@1.7.0':
     resolution: {integrity: sha512-8zE2Jzj2ai55RlVXx2pEMbbq+X3vB+uPGBvZr0F79IdTwuwcu4QdFG3PT/zHsytsvATkn+z0f2YDWhM5916u2A==}
 
-  '@mysten/dapp-kit@0.17.4':
-    resolution: {integrity: sha512-b0Rb5ehT8DfjShFMbNuSv3yWPjA83scDZ5rroSyqM4L6X1tLLkJ2yg9D8EYol0fgFMDBiGjpAMQzDvubwuDzQw==}
+  '@mysten/dapp-kit@0.17.5':
+    resolution: {integrity: sha512-cJPMWehWkb1sDhcDIYVC+zRmccr/PqbySucO20Mm4Xze3PAg+kNU2lcyew2mTIuhjiLAnjxTE08KuekTlVY46Q==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
       react: '*'
 
-  '@mysten/slush-wallet@0.1.21':
-    resolution: {integrity: sha512-6I75GihQW2t8PJnl3ohLFtObI0X86XB+xiGKWfzAFyFF6cg/hpYjvwvF3Ylc2iKcBXXJmMNxgXMRAOQPKaV/6g==}
+  '@mysten/slush-wallet@0.1.22':
+    resolution: {integrity: sha512-p0VCLactPvy4CcFIEBw0FNYZqWDB88tVrnLFRgGq/5tQ70PkLIoMdZ5l9PepzAEw3kFff/6YyOLi9Zfq1a+ARA==}
 
-  '@mysten/sui@1.37.3':
-    resolution: {integrity: sha512-Sk4gBp1Nanqndyd1SUq+TSThMKj/20K8qf3QKIO8OHiSMSH2Z+UTWgbVfxk+EyUsmPYm4Zed18qEMqgifjkbpw==}
+  '@mysten/sui@1.37.4':
+    resolution: {integrity: sha512-3dKddNEF7XTfPnYIfVyHHTX+9fraQrKFxiBJ8nveISqo4skyClH/nDyS8Nkh7coknbWghuSSsD82liCOZX2uLw==}
     engines: {node: '>=18'}
 
   '@mysten/utils@0.1.1':
     resolution: {integrity: sha512-jvhJC6/2la1QHltukQXzfyTZ+VVHxe187JjPx+mEXRUWyAo6jCSdioOQJIfaGu4K4i+37KeiydXRwV/bq/7UJQ==}
 
-  '@mysten/wallet-standard@0.16.11':
-    resolution: {integrity: sha512-kMdzoes69HIMmrcGSnLCifsV98K1pYkG14Y9e8lEJrpKM8cSgEMGgwaThTttmt3njFea9Ni19XMdBg8bDofFHA==}
+  '@mysten/wallet-standard@0.16.12':
+    resolution: {integrity: sha512-zyWMGsXk8uZKa+rvkMWpi1Dfm6+Dorx8/9fCQw2SOkwM/hR4GjGL5TyypM8hxLej9KouUmbAS2Bij3kIITTVjw==}
 
   '@mysten/window-wallet-core@0.0.6':
     resolution: {integrity: sha512-uYjdUVok0pAaMGMxAdZfmW+2SCXgdQok9YtKmno5Tj8zlRQGv9Qet7EuCnDcBKquSbtqid3yhug7fcD+t8/KmA==}
@@ -1197,8 +1197,8 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
-  browserslist@4.25.2:
-    resolution: {integrity: sha512-0si2SJK3ooGzIawRu61ZdPCO1IncZwS8IzuX73sPZsXW6EQ/w/DAfPyKI8l1ETTCr2MnvqWitmlCUxgdul45jA==}
+  browserslist@4.25.3:
+    resolution: {integrity: sha512-cDGv1kkDI4/0e5yON9yM5G/0A5u8sf5TnmdX5C9qHzI9PPu++sQ9zjm1k9NiOrf3riY4OkK0zSGqfvJyJsgCBQ==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
@@ -1236,8 +1236,8 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
 
-  caniuse-lite@1.0.30001735:
-    resolution: {integrity: sha512-EV/laoX7Wq2J9TQlyIXRxTJqIw4sxfXS4OYgudGxBYRuTv0q7AM6yMEpU/Vo1I94thg9U6EZ2NfZx9GJq83u7w==}
+  caniuse-lite@1.0.30001736:
+    resolution: {integrity: sha512-ImpN5gLEY8gWeqfLUyEF4b7mYWcYoR2Si1VhnrbM4JizRFmfGaAQ12PhNykq6nvI4XvKLrsp8Xde74D5phJOSw==}
 
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
@@ -1405,8 +1405,8 @@ packages:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
 
-  electron-to-chromium@1.5.204:
-    resolution: {integrity: sha512-s9VbBXWxfDrl67PlO4avwh0/GU2vcwx8Fph3wlR8LJl7ySGYId59EFE17VWVcuC3sLWNPENm6Z/uGqKbkPCcXA==}
+  electron-to-chromium@1.5.208:
+    resolution: {integrity: sha512-ozZyibehoe7tOhNaf16lKmljVf+3npZcJIEbJRVftVsmAg5TeA1mGS9dVCZzOwr2xT7xK15V0p7+GZqSPgkuPg==}
 
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -2985,7 +2985,7 @@ snapshots:
     dependencies:
       '@babel/compat-data': 7.28.0
       '@babel/helper-validator-option': 7.27.1
-      browserslist: 4.25.2
+      browserslist: 4.25.3
       lru-cache: 5.1.1
       semver: 6.3.1
 
@@ -3476,12 +3476,12 @@ snapshots:
       '@mysten/utils': 0.1.1
       '@scure/base': 1.2.6
 
-  '@mysten/dapp-kit@0.17.4(@tanstack/react-query@5.74.4(react@19.1.0))(@types/react@19.1.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)':
+  '@mysten/dapp-kit@0.17.5(@tanstack/react-query@5.74.4(react@19.1.0))(@types/react@19.1.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)':
     dependencies:
-      '@mysten/slush-wallet': 0.1.21(typescript@5.9.2)
-      '@mysten/sui': 1.37.3(typescript@5.9.2)
+      '@mysten/slush-wallet': 0.1.22(typescript@5.9.2)
+      '@mysten/sui': 1.37.4(typescript@5.9.2)
       '@mysten/utils': 0.1.1
-      '@mysten/wallet-standard': 0.16.11(typescript@5.9.2)
+      '@mysten/wallet-standard': 0.16.12(typescript@5.9.2)
       '@radix-ui/react-dialog': 1.1.14(@types/react@19.1.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-dropdown-menu': 2.1.15(@types/react@19.1.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-slot': 1.2.3(@types/react@19.1.10)(react@19.1.0)
@@ -3502,11 +3502,11 @@ snapshots:
       - react-dom
       - typescript
 
-  '@mysten/slush-wallet@0.1.21(typescript@5.9.2)':
+  '@mysten/slush-wallet@0.1.22(typescript@5.9.2)':
     dependencies:
-      '@mysten/sui': 1.37.3(typescript@5.9.2)
+      '@mysten/sui': 1.37.4(typescript@5.9.2)
       '@mysten/utils': 0.1.1
-      '@mysten/wallet-standard': 0.16.11(typescript@5.9.2)
+      '@mysten/wallet-standard': 0.16.12(typescript@5.9.2)
       '@mysten/window-wallet-core': 0.0.6
       mitt: 3.0.1
       valibot: 0.36.0
@@ -3515,7 +3515,7 @@ snapshots:
       - '@gql.tada/vue-support'
       - typescript
 
-  '@mysten/sui@1.37.3(typescript@5.9.2)':
+  '@mysten/sui@1.37.4(typescript@5.9.2)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
       '@mysten/bcs': 1.7.0
@@ -3538,9 +3538,9 @@ snapshots:
     dependencies:
       '@scure/base': 1.2.6
 
-  '@mysten/wallet-standard@0.16.11(typescript@5.9.2)':
+  '@mysten/wallet-standard@0.16.12(typescript@5.9.2)':
     dependencies:
-      '@mysten/sui': 1.37.3(typescript@5.9.2)
+      '@mysten/sui': 1.37.4(typescript@5.9.2)
       '@wallet-standard/core': 1.1.1
     transitivePeerDependencies:
       - '@gql.tada/svelte-support'
@@ -4314,12 +4314,12 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
-  browserslist@4.25.2:
+  browserslist@4.25.3:
     dependencies:
-      caniuse-lite: 1.0.30001735
-      electron-to-chromium: 1.5.204
+      caniuse-lite: 1.0.30001736
+      electron-to-chromium: 1.5.208
       node-releases: 2.0.19
-      update-browserslist-db: 1.1.3(browserslist@4.25.2)
+      update-browserslist-db: 1.1.3(browserslist@4.25.3)
 
   bs-logger@0.2.6:
     dependencies:
@@ -4354,7 +4354,7 @@ snapshots:
 
   camelcase@6.3.0: {}
 
-  caniuse-lite@1.0.30001735: {}
+  caniuse-lite@1.0.30001736: {}
 
   chalk@4.1.2:
     dependencies:
@@ -4501,7 +4501,7 @@ snapshots:
       es-errors: 1.3.0
       gopd: 1.2.0
 
-  electron-to-chromium@1.5.204: {}
+  electron-to-chromium@1.5.208: {}
 
   emittery@0.13.1: {}
 
@@ -6243,9 +6243,9 @@ snapshots:
 
   undici-types@7.10.0: {}
 
-  update-browserslist-db@1.1.3(browserslist@4.25.2):
+  update-browserslist-db@1.1.3(browserslist@4.25.3):
     dependencies:
-      browserslist: 4.25.2
+      browserslist: 4.25.3
       escalade: 3.2.0
       picocolors: 1.1.1
 
