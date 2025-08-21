@@ -13,9 +13,6 @@
             "cache": false,
             "persistent": true
         },
-        "lint": {
-            "outputs": []
-        },
         "test": {
             "outputs": []
         },

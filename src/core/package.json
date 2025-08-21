@@ -20,7 +20,9 @@
         "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
         "clean": "rm -rf dist/ node_modules/ .turbo/ .wrangler/",
         "dev": "tsc --watch -p tsconfig.esm.json",
-        "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
+		"lint:fix": "biome check --write *.* src/",
+		"lint:unsafe": "biome check --write --unsafe *.* src/",
+		"lint": "biome check *.* src/",
         "test": "jest --verbose --passWithNoTests",
         "typecheck": "tsc -p tsconfig.esm.json"
     },

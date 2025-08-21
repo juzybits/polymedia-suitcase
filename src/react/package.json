@@ -22,7 +22,9 @@
         "dev": "tsc --watch -p tsconfig.esm.json",
         "dev:all": "concurrently 'pnpm dev' 'pnpm dev:styles'",
         "dev:styles": "fswatch -0 src/*.css | xargs -0 -I {} cp src/*.css dist/esm/ && cp src/*.css dist/cjs/",
-        "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
+		"lint:fix": "biome check --write *.* src/",
+		"lint:unsafe": "biome check --write --unsafe *.* src/",
+		"lint": "biome check *.* src/",
         "test": "jest --verbose --passWithNoTests",
         "typecheck": "tsc -p tsconfig.esm.json"
     },

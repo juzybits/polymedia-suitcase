@@ -7,7 +7,9 @@
         "build": "tsc",
         "clean": "rm -rf dist/ node_modules/ .turbo/",
         "dev": "tsc --watch",
-        "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
+		"lint:fix": "biome check --write *.* src/",
+		"lint:unsafe": "biome check --write --unsafe *.* src/",
+		"lint": "biome check *.* src/",
         "test": "jest --verbose --passWithNoTests",
         "typecheck": "tsc -b"
     },
