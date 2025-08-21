@@ -80,11 +80,11 @@ describe("shortenAddress", () => {
 	// === Regex validation ===
 	it("should respect the 64 character limit with word boundaries", () => {
 		// Valid: exactly 64 hex chars
-		const validLongAddress = "0x" + "1".repeat(64);
+		const validLongAddress = `0x${"1".repeat(64)}`;
 		expect(shortenAddress(validLongAddress)).toBe("0x1111…1111");
 
 		// Invalid: 65 hex chars (exceeds limit)
-		const invalidLongAddress = "0x" + "1".repeat(65);
+		const invalidLongAddress = `0x${"1".repeat(65)}`;
 		expect(shortenAddress(invalidLongAddress)).toBe(invalidLongAddress); // unchanged
 	});
 

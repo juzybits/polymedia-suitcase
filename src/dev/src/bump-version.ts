@@ -5,9 +5,9 @@
  *   node src/dev/bump-version.mjs
  */
 
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Get the directory name of the current file
 const currentFile = fileURLToPath(import.meta.url);
@@ -23,7 +23,7 @@ const packagePaths = [
 // Increment the version number from 0.0.[N] to 0.0.[N+1]
 function incrementVersion(version: string) {
 	const versionParts = version.split(".");
-	const patchNumber = parseInt(versionParts[2]);
+	const patchNumber = parseInt(versionParts[2], 10);
 	versionParts[2] = (patchNumber + 1).toString();
 	return versionParts.join(".");
 }
@@ -40,7 +40,7 @@ function bumpVersion(packageJsonPath: string) {
 		packageData.version = newVersion;
 
 		// Write the updated package.json
-		const newFileContent = JSON.stringify(packageData, null, 4) + "\n";
+		const newFileContent = `${JSON.stringify(packageData, null, 4)}\n`;
 		fs.writeFileSync(packageJsonPath, newFileContent, "utf8");
 
 		console.log(

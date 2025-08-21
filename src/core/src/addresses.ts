@@ -13,7 +13,7 @@ export function generateRandomAddress() {
 			.padStart(2, "0");
 
 	// Generate 32 random bytes and convert each to hex
-	const address = "0x" + Array.from({ length: 32 }, randomByteHex).join("");
+	const address = `0x${Array.from({ length: 32 }, randomByteHex).join("")}`;
 
 	return address;
 }

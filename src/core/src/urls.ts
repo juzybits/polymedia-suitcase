@@ -96,5 +96,5 @@ export const makeSuivisionUrl: ExplorerUrlMaker = (
 };
 
 function isLocalnet(network: string): boolean {
-	return network === "localnet" || network == "http://127.0.0.1:9000";
+	return network === "localnet" || network === "http://127.0.0.1:9000";
 }

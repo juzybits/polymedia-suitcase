@@ -95,11 +95,11 @@ function formatNumberCompact(num: number): string {
 	if (num < 1_000_000) {
 		return formatNumberStandard(num);
 	} else if (num < 1_000_000_000) {
-		return formatNumberStandard(num / 1_000_000) + "M";
+		return `${formatNumberStandard(num / 1_000_000)}M`;
 	} else if (num < 1_000_000_000_000) {
-		return formatNumberStandard(num / 1_000_000_000) + "B";
+		return `${formatNumberStandard(num / 1_000_000_000)}B`;
 	} else {
-		return formatNumberStandard(num / 1_000_000_000_000) + "T";
+		return `${formatNumberStandard(num / 1_000_000_000_000)}T`;
 	}
 }
 
@@ -135,7 +135,7 @@ export function formatBalance(
 			? formatBigIntStandard(integerPart, fractionalPart)
 			: formatBigIntCompact(integerPart, fractionalPart);
 
-	return isNegative ? "-" + result : result;
+	return isNegative ? `-${result}` : result;
 }
 
 function formatBigIntStandard(integerPart: string, fractionalPart: string): string {

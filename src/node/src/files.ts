@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // === types ===
 
@@ -84,7 +84,7 @@ export function writeJsonFile(filename: string, contents: unknown): void {
  * Write a string into a file.
  */
 export function writeTextFile(filename: string, contents: string): void {
-	fs.writeFileSync(filename, contents + "\n");
+	fs.writeFileSync(filename, `${contents}\n`);
 }
 
 /**

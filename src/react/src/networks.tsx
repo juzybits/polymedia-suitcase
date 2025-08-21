@@ -144,7 +144,7 @@ export function loadNetwork<NetworkName extends BaseNetworkName>(
 		params.delete("network");
 		const newQuery = params.toString();
 		const newUrl =
-			window.location.pathname + (newQuery ? "?" + newQuery : "") + window.location.hash;
+			window.location.pathname + (newQuery ? `?${newQuery}` : "") + window.location.hash;
 		window.history.replaceState({}, document.title, newUrl);
 
 		localStorage.setItem("polymedia.network", networkFromUrl);

@@ -323,7 +323,7 @@ export const useInputUnsignedInt = (
 
 		const numValue = Number(input);
 
-		if (isNaN(numValue) || numValue < 0) {
+		if (Number.isNaN(numValue) || numValue < 0) {
 			return { err: "Invalid number", val: undefined };
 		}
 		if (props.min !== undefined && numValue < props.min) {

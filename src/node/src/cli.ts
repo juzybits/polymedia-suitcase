@@ -1,4 +1,4 @@
-import { createInterface } from "readline";
+import { createInterface } from "node:readline";
 
 /**
  * Parse command line arguments and show usage instructions.

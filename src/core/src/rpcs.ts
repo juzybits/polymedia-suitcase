@@ -50,11 +50,11 @@ export const RPC_ENDPOINTS: Record<NetworkName, string[]> = {
 	],
 	localnet: [
 		// to simulate multiple RPC endpoints locally
-		getFullnodeUrl("localnet") + "?localnet-1",
-		getFullnodeUrl("localnet") + "?localnet-2",
-		getFullnodeUrl("localnet") + "?localnet-3",
-		getFullnodeUrl("localnet") + "?localnet-4",
-		getFullnodeUrl("localnet") + "?localnet-5",
+		`${getFullnodeUrl("localnet")}?localnet-1`,
+		`${getFullnodeUrl("localnet")}?localnet-2`,
+		`${getFullnodeUrl("localnet")}?localnet-3`,
+		`${getFullnodeUrl("localnet")}?localnet-4`,
+		`${getFullnodeUrl("localnet")}?localnet-5`,
 	],
 };
 

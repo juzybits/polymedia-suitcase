@@ -83,7 +83,7 @@ describe("stringToBalance", () => {
 	});
 
 	it("should handle exceedingly long inputs", () => {
-		const longInput = "1".repeat(100) + "." + "9".repeat(50);
+		const longInput = `${"1".repeat(100)}.${"9".repeat(50)}`;
 		const expectedOutput = BigInt("1".repeat(100) + "9".repeat(9));
 		expect(stringToBalance(longInput, 9)).toBe(expectedOutput);
 	});
