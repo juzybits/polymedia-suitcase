@@ -36,7 +36,7 @@ export const REGEX_STRUCT_NAME = /[A-Z][a-zA-Z0-9_]*/;
 /**
  * Match a Sui type without generic parameters (e.g. `0x123::module::Struct`).
  */
-export const REGEX_TYPE_BASIC = new RegExp(`${REGEX_ADDRESS}::${REGEX_MODULE_NAME}::${REGEX_STRUCT_NAME}`);
+export const REGEX_TYPE_BASIC = new RegExp(`${REGEX_ADDRESS.source}::${REGEX_MODULE_NAME.source}::${REGEX_STRUCT_NAME.source}`);
 
 /**
  * Maximum number of results returned by a single Sui RPC request.

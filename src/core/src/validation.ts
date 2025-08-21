@@ -3,6 +3,7 @@
 
 import { TypeTagSerializer } from "@mysten/sui/bcs";
 import type { CoinMetaFetcher } from "./coins.js";
+import { REGEX_TYPE_BASIC } from "./constants.js";
 
 export const REGEX_FLOAT = /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/;
 
@@ -38,11 +39,8 @@ export function validateFloat({
 
 // === coin type ===
 
-export const REGEX_TYPE_BASIC =
-	"0[xX][0-9a-fA-F]{1,64}::[A-Za-z][A-Za-z0-9_]*::[A-Z][a-zA-Z0-9_]*";
-
 export function isBasicSuiType(val: string): boolean {
-	return new RegExp(`^${REGEX_TYPE_BASIC}$`).test(val);
+	return new RegExp(`^${REGEX_TYPE_BASIC.source}$`).test(val);
 }
 
 export async function validateCoinType({
@@ -83,7 +81,7 @@ export function validateStructType({
 	if (required && !value.length) {
 		return "Required";
 	}
-	const startsOk = new RegExp(`^${REGEX_TYPE_BASIC}`).test(value);
+	const startsOk = REGEX_TYPE_BASIC.test(value);
 	if (!startsOk) {
 		return "Invalid type";
 	}
