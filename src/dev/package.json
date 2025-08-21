@@ -1,25 +1,25 @@
 {
-    "private": true,
-    "version": "0.0.0",
-    "name": "polymedia-suitcase-dev",
-    "license": "Apache-2.0",
-    "scripts": {
-        "build": "tsc",
-        "clean": "rm -rf dist/ node_modules/ .turbo/",
-        "dev": "tsc --watch",
+	"private": true,
+	"version": "0.0.0",
+	"name": "polymedia-suitcase-dev",
+	"license": "Apache-2.0",
+	"scripts": {
+		"build": "tsc",
+		"clean": "rm -rf dist/ node_modules/ .turbo/",
+		"dev": "tsc --watch",
 		"lint:fix": "biome check --write *.* src/",
 		"lint:unsafe": "biome check --write --unsafe *.* src/",
 		"lint": "biome check *.* src/",
-        "test": "jest --verbose --passWithNoTests",
-        "typecheck": "tsc -b"
-    },
-    "dependencies": {
-        "@polymedia/suitcase-core": "workspace:*",
-        "@polymedia/suitcase-node": "workspace:*"
-    },
-    "devDependencies": {
-        "@types/node": "^24.3.0"
-    },
-    "type": "module",
-    "sideEffects": false
+		"test": "jest --verbose --passWithNoTests",
+		"typecheck": "tsc -b"
+	},
+	"dependencies": {
+		"@polymedia/suitcase-core": "workspace:*",
+		"@polymedia/suitcase-node": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/node": "^24.3.0"
+	},
+	"type": "module",
+	"sideEffects": false
 }

@@ -1,10 +1,13 @@
-import { RefObject, useEffect, useState } from "react";
-
-import { PaginatedResponse } from "@polymedia/suitcase-core";
+import type { PaginatedResponse } from "@polymedia/suitcase-core";
+import { type RefObject, useEffect, useState } from "react";
 
 export type UseFetchResult<T> = ReturnType<typeof useFetch<T>>;
-export type UseFetchAndLoadMoreResult<T, C> = ReturnType<typeof useFetchAndLoadMore<T, C>>;
-export type UseFetchAndPaginateResult<T, C> = ReturnType<typeof useFetchAndPaginate<T, C>>;
+export type UseFetchAndLoadMoreResult<T, C> = ReturnType<
+	typeof useFetchAndLoadMore<T, C>
+>;
+export type UseFetchAndPaginateResult<T, C> = ReturnType<
+	typeof useFetchAndPaginate<T, C>
+>;
 
 /**
  * A hook that detects when a click or touch event occurs outside a DOM element.
@@ -13,28 +16,27 @@ export type UseFetchAndPaginateResult<T, C> = ReturnType<typeof useFetchAndPagin
  * @param onClickOutside Function to call when a click or touch is detected outside the target element.
  */
 export function useClickOutside(
-    domElementRef: RefObject<HTMLElement | null>,
-    onClickOutside: () => void,
-): void
-{
-    const handleClickOutside = (event: MouseEvent|TouchEvent) =>
-    {
-        if (domElementRef.current
-            && event.target instanceof Node
-            && !domElementRef.current.contains(event.target)
-        ) {
-            onClickOutside();
-        }
-    };
+	domElementRef: RefObject<HTMLElement | null>,
+	onClickOutside: () => void,
+): void {
+	const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+		if (
+			domElementRef.current &&
+			event.target instanceof Node &&
+			!domElementRef.current.contains(event.target)
+		) {
+			onClickOutside();
+		}
+	};
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        document.addEventListener("touchstart", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            document.removeEventListener("touchstart", handleClickOutside);
-        };
-    });
+	useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside);
+		document.addEventListener("touchstart", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+			document.removeEventListener("touchstart", handleClickOutside);
+		};
+	});
 }
 
 /**
@@ -49,34 +51,33 @@ export function useClickOutside(
  *   - isLoading: Whether data is currently being fetched
  */
 export function useFetch<T>(
-    fetchFunction: () => Promise<T>,
-    dependencies: unknown[] = [],
+	fetchFunction: () => Promise<T>,
+	dependencies: unknown[] = [],
 ) {
-    const [data, setData] = useState<T | undefined>(undefined);
-    const [err, setErr] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+	const [data, setData] = useState<T | undefined>(undefined);
+	const [err, setErr] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        fetchData();
-    }, dependencies);
+	useEffect(() => {
+		fetchData();
+	}, dependencies);
 
-    const fetchData = async () =>
-    {
-        setIsLoading(true);
-        setErr(null);
-        setData(undefined);
-        try {
-            const result = await fetchFunction();
-            setData(result);
-        } catch (err) {
-            setErr(err instanceof Error ? err.message : "An unknown error occurred");
-            console.warn("[useFetch]", err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+	const fetchData = async () => {
+		setIsLoading(true);
+		setErr(null);
+		setData(undefined);
+		try {
+			const result = await fetchFunction();
+			setData(result);
+		} catch (err) {
+			setErr(err instanceof Error ? err.message : "An unknown error occurred");
+			console.warn("[useFetch]", err);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-    return { data, err, isLoading, refetch: fetchData };
+	return { data, err, isLoading, refetch: fetchData };
 }
 
 /**
@@ -95,46 +96,45 @@ export function useFetch<T>(
  *   - loadMore: A function to load more data
  */
 export function useFetchAndLoadMore<T, C>(
-    fetchFunction: (cursor: C | undefined) => Promise<PaginatedResponse<T, C>>,
-    dependencies: unknown[] = [],
+	fetchFunction: (cursor: C | undefined) => Promise<PaginatedResponse<T, C>>,
+	dependencies: unknown[] = [],
 ) {
-    const [ data, setData ] = useState<T[]>([]);
-    const [ err, setErr ] = useState<string | null>(null);
-    const [ isLoading, setIsLoading ] = useState(true);
-    const [ hasNextPage, setHasNextPage ] = useState(true);
-    const [ nextCursor, setNextCursor ] = useState<C | undefined>(undefined);
+	const [data, setData] = useState<T[]>([]);
+	const [err, setErr] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [hasNextPage, setHasNextPage] = useState(true);
+	const [nextCursor, setNextCursor] = useState<C | undefined>(undefined);
 
-    useEffect(() => {
-        // reset state
-        setData([]);
-        setErr(null);
-        setIsLoading(true);
-        setHasNextPage(true);
-        setNextCursor(undefined);
-        // fetch initial data
-        loadMore();
-    }, dependencies);
+	useEffect(() => {
+		// reset state
+		setData([]);
+		setErr(null);
+		setIsLoading(true);
+		setHasNextPage(true);
+		setNextCursor(undefined);
+		// fetch initial data
+		loadMore();
+	}, dependencies);
 
-    const loadMore = async () =>
-    {
-        if (!hasNextPage) return;
+	const loadMore = async () => {
+		if (!hasNextPage) return;
 
-        setErr(null);
-        setIsLoading(true);
-        try {
-            const response = await fetchFunction(nextCursor);
-            setData((prevData) => [...prevData, ...response.data]);
-            setHasNextPage(response.hasNextPage);
-            setNextCursor(response.nextCursor);
-        } catch (err) {
-            setErr(err instanceof Error ? err.message : "Failed to load more data");
-            console.warn("[useFetchAndLoadMore]", err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+		setErr(null);
+		setIsLoading(true);
+		try {
+			const response = await fetchFunction(nextCursor);
+			setData((prevData) => [...prevData, ...response.data]);
+			setHasNextPage(response.hasNextPage);
+			setNextCursor(response.nextCursor);
+		} catch (err) {
+			setErr(err instanceof Error ? err.message : "Failed to load more data");
+			console.warn("[useFetchAndLoadMore]", err);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-    return { data, err, isLoading, hasNextPage, loadMore };
+	return { data, err, isLoading, hasNextPage, loadMore };
 }
 
 /**
@@ -156,70 +156,70 @@ export function useFetchAndLoadMore<T, C>(
  *   - goToPreviousPage: Function to navigate to the previous page
  */
 export function useFetchAndPaginate<T, C>(
-    fetchFunction: (cursor: C | undefined) => Promise<PaginatedResponse<T, C>>,
-    dependencies: unknown[] = [],
+	fetchFunction: (cursor: C | undefined) => Promise<PaginatedResponse<T, C>>,
+	dependencies: unknown[] = [],
 ) {
-    const [ pages, setPages ] = useState<T[][]>([]);
-    const [ err, setErr ] = useState<string | null>(null);
-    const [ isLoading, setIsLoading ] = useState(true);
-    const [ pageIndex, setPageIndex ] = useState(-1);
-    const [ hasNextPage, setHasNextPage ] = useState(true);
-    const [ nextCursor, setNextCursor ] = useState<C | undefined>(undefined);
+	const [pages, setPages] = useState<T[][]>([]);
+	const [err, setErr] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [pageIndex, setPageIndex] = useState(-1);
+	const [hasNextPage, setHasNextPage] = useState(true);
+	const [nextCursor, setNextCursor] = useState<C | undefined>(undefined);
 
-    useEffect(() => {
-        // reset state
-        setPages([]);
-        setErr(null);
-        setIsLoading(true);
-        setPageIndex(-1);
-        setHasNextPage(true);
-        setNextCursor(undefined);
-        // fetch initial data
-        goToNextPage();
-    }, dependencies);
+	useEffect(() => {
+		// reset state
+		setPages([]);
+		setErr(null);
+		setIsLoading(true);
+		setPageIndex(-1);
+		setHasNextPage(true);
+		setNextCursor(undefined);
+		// fetch initial data
+		goToNextPage();
+	}, dependencies);
 
-    const goToNextPage = async () =>
-    {
-        const isLastPage = pageIndex === pages.length - 1;
-        const nextPageIndex = pageIndex + 1;
+	const goToNextPage = async () => {
+		const isLastPage = pageIndex === pages.length - 1;
+		const nextPageIndex = pageIndex + 1;
 
-        if (isLastPage && !hasNextPage) return; // no more pages available
-        if (!isLastPage) { // next page already fetched
-            setPageIndex(nextPageIndex);
-            return;
-        }
-        // fetch the next page
-        setErr(null);
-        setIsLoading(true);
-        try {
-            const response = await fetchFunction(nextCursor);
-            setPages((prevPages) => [...prevPages, response.data]);
-            setHasNextPage(response.hasNextPage);
-            setNextCursor(response.nextCursor);
-            setPageIndex(nextPageIndex);
-        } catch (err) {
-            setErr(err instanceof Error ? err.message : "Failed to load more data");
-            console.warn("[useFetchAndPaginate]", err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+		if (isLastPage && !hasNextPage) return; // no more pages available
+		if (!isLastPage) {
+			// next page already fetched
+			setPageIndex(nextPageIndex);
+			return;
+		}
+		// fetch the next page
+		setErr(null);
+		setIsLoading(true);
+		try {
+			const response = await fetchFunction(nextCursor);
+			setPages((prevPages) => [...prevPages, response.data]);
+			setHasNextPage(response.hasNextPage);
+			setNextCursor(response.nextCursor);
+			setPageIndex(nextPageIndex);
+		} catch (err) {
+			setErr(err instanceof Error ? err.message : "Failed to load more data");
+			console.warn("[useFetchAndPaginate]", err);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-    const goToPreviousPage = () => {
-        if (pageIndex > 0) {
-            setPageIndex(pageIndex - 1);
-        }
-    };
+	const goToPreviousPage = () => {
+		if (pageIndex > 0) {
+			setPageIndex(pageIndex - 1);
+		}
+	};
 
-    return {
-        page: pages[pageIndex] ?? [],
-        err,
-        isLoading,
-        hasMultiplePages: pages.length > 1 || (pages.length === 1 && hasNextPage),
-        isFirstPage: pageIndex === 0,
-        isLastPage: pageIndex === pages.length - 1,
-        hasNextPage,
-        goToNextPage,
-        goToPreviousPage,
-    };
+	return {
+		page: pages[pageIndex] ?? [],
+		err,
+		isLoading,
+		hasMultiplePages: pages.length > 1 || (pages.length === 1 && hasNextPage),
+		isFirstPage: pageIndex === 0,
+		isLastPage: pageIndex === pages.length - 1,
+		hasNextPage,
+		goToNextPage,
+		goToPreviousPage,
+	};
 }

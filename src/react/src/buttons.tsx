@@ -6,8 +6,8 @@ import {
 	type RefObject,
 } from "react";
 import { Link } from "react-router-dom";
+import type { useFetchAndPaginate } from "./hooks";
 import { LinkExternal } from "./links";
-import { useFetchAndPaginate } from "./hooks";
 
 export const Btn = ({
 	children,

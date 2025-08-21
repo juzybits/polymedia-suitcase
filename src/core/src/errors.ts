@@ -134,45 +134,54 @@ export type ErrorInfos = Record<number, ErrorInfo>;
  * @param errCodes A map of numeric error codes to string error symbols (constant names).
  * @deprecated Use `TxErrorParser` instead.
  */
-export class TxErrorParserDeprecated // TODO: remove
-{
-    constructor(
-        public readonly packageId: string,
-        public readonly errInfos: ErrorInfos,
-    ) {}
+export class TxErrorParserDeprecated {
+	// TODO: remove
+	constructor(
+		public readonly packageId: string,
+		public readonly errInfos: ErrorInfos,
+	) {}
 
-    /**
-     * Convert a transaction error into a user-friendly message.
-     * @param err The error object/string to parse
-     * @param defaultMsg Default message if error can't be parsed or is not a known error
-     * @param customMsgs Optional map of error symbols to custom messages
-     * @returns User-friendly error message or null if user rejected
-     */
-    public errToStr(
-        err: unknown,
-        defaultMsg: string,
-        customMsgs?: Record<string, string>
-    ): string | null
-    {
-        const str = anyToStr(err);
-        if (!str) { return defaultMsg; }
+	/**
+	 * Convert a transaction error into a user-friendly message.
+	 * @param err The error object/string to parse
+	 * @param defaultMsg Default message if error can't be parsed or is not a known error
+	 * @param customMsgs Optional map of error symbols to custom messages
+	 * @returns User-friendly error message or null if user rejected
+	 */
+	public errToStr(
+		err: unknown,
+		defaultMsg: string,
+		customMsgs?: Record<string, string>,
+	): string | null {
+		const str = anyToStr(err);
+		if (!str) {
+			return defaultMsg;
+		}
 
-        // Handle common cases
-        if (str.includes("User rejected")) { return null; }
-        if (str.includes("InsufficientCoinBalance")) { return "You don't have enough balance"; }
+		// Handle common cases
+		if (str.includes("User rejected")) {
+			return null;
+		}
+		if (str.includes("InsufficientCoinBalance")) {
+			return "You don't have enough balance";
+		}
 
-        const parsed = parseMoveAbort(str);
-        if (!parsed || parsed.packageId !== this.packageId || !(parsed.code in this.errInfos)) {
-            return str;
-        }
-        const info = this.errInfos[parsed.code];
+		const parsed = parseMoveAbort(str);
+		if (
+			!parsed ||
+			parsed.packageId !== this.packageId ||
+			!(parsed.code in this.errInfos)
+		) {
+			return str;
+		}
+		const info = this.errInfos[parsed.code];
 
-        // Check custom error messages passed to this method
-        if (customMsgs && info.symbol in customMsgs) {
-            return customMsgs[info.symbol];
-        }
+		// Check custom error messages passed to this method
+		if (customMsgs && info.symbol in customMsgs) {
+			return customMsgs[info.symbol];
+		}
 
-        // Check custom error messages passed to constructor
-        return info.msg || info.symbol;
-    }
+		// Check custom error messages passed to constructor
+		return info.msg || info.symbol;
+	}
 }

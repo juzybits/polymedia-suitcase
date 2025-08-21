@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 /**
  * A function that updates the state of a `useState` or `useReducer` hook.
