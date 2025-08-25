@@ -4,6 +4,7 @@ import { Btn } from "./buttons";
 
 export type BtnConnectProps = {
 	btnMsg?: string | undefined;
+	wrap?: boolean | undefined;
 	openConnectModal: () => void;
 };
 
@@ -15,27 +16,31 @@ export type ConnectOrProps = {
 	children: ReactNode;
 } & ConnectToGetStartedProps;
 
-export const BtnConnect = ({ btnMsg, openConnectModal }: BtnConnectProps) => {
+export const BtnConnect = ({ btnMsg, wrap, openConnectModal }: BtnConnectProps) => {
 	return (
-		<Btn onClick={() => Promise.resolve(openConnectModal())}>{btnMsg ?? "CONNECT"}</Btn>
+		<Btn onClick={() => Promise.resolve(openConnectModal())} wrap={wrap}>
+			{btnMsg ?? "CONNECT"}
+		</Btn>
 	);
 };
 
 export const ConnectToGetStarted = ({
 	btnMsg,
+	wrap,
 	connectMsg,
 	openConnectModal,
 }: ConnectToGetStartedProps) => {
 	return (
 		<>
 			{connectMsg && <div className="card-desc">{connectMsg}</div>}
-			<BtnConnect btnMsg={btnMsg} openConnectModal={openConnectModal} />
+			<BtnConnect btnMsg={btnMsg} wrap={wrap} openConnectModal={openConnectModal} />
 		</>
 	);
 };
 
 export const ConnectOr = ({
 	btnMsg,
+	wrap,
 	connectMsg,
 	openConnectModal,
 	children,
@@ -48,6 +53,7 @@ export const ConnectOr = ({
 		<ConnectToGetStarted
 			connectMsg={connectMsg}
 			btnMsg={btnMsg}
+			wrap={wrap}
 			openConnectModal={openConnectModal}
 		/>
 	);

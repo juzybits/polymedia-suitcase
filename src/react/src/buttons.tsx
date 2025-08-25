@@ -11,15 +11,15 @@ import { LinkExternal } from "./links";
 
 export const Btn = ({
 	children,
-	wrapped = true,
+	wrap = true,
 	isSubmitting = false,
 	type = "button",
 	className = undefined,
 	...props
 }: {
 	children: ReactNode;
-	wrapped?: boolean;
-	isSubmitting?: boolean;
+	wrap?: boolean | undefined;
+	isSubmitting?: boolean | undefined;
 	type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
 	className?: ButtonHTMLAttributes<HTMLButtonElement>["className"];
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type" | "className">) => {
@@ -33,7 +33,7 @@ export const Btn = ({
 		</button>
 	);
 
-	return wrapped ? <div className="btn-wrap">{button}</div> : button;
+	return wrap ? <div className="btn-wrap">{button}</div> : button;
 };
 
 export const BtnLinkExternal = (
