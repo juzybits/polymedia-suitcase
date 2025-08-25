@@ -3,11 +3,15 @@ import type { ReactNode } from "react";
 export const Card = ({
 	className,
 	children,
+	...props
 }: {
-	className?: string;
 	children: ReactNode;
-}) => {
-	return <div className={`card compact ${className ?? ""}`}>{children}</div>;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+	return (
+		<div {...props} className={`card compact ${className ?? ""}`}>
+			{children}
+		</div>
+	);
 };
 
 export const CardSpinner = ({ className = "compact" }: { className?: string }) => {
