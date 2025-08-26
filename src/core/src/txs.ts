@@ -13,6 +13,7 @@ import type {
 } from "@mysten/sui/transactions";
 
 import { isSuiObjectRef } from "./guards.js";
+import { sleep } from "./misc.js";
 
 // === misc ===
 
@@ -121,6 +122,8 @@ const DEFAULT_WAIT_FOR_TX_OPTIONS: WaitForTxOptions = {
 	pollInterval: 250,
 };
 
+const SLEEP_MS_AFTER_FINALITY_ERROR = 1000;
+
 export type SignAndExecuteTx = ReturnType<typeof newSignAndExecuteTx>;
 
 /**
@@ -170,11 +173,30 @@ export function newSignAndExecuteTx({
 
 		const signedTx = await signTx(tx);
 
-		const resp = await suiClient.executeTransactionBlock({
-			transactionBlock: signedTx.bytes,
-			signature: signedTx.signature,
-			options: txRespOptions,
-		});
+		let resp: SuiTransactionBlockResponse | null = null;
+		while (!resp) {
+			try {
+				resp = await suiClient.executeTransactionBlock({
+					transactionBlock: signedTx.bytes,
+					signature: signedTx.signature,
+					options: txRespOptions,
+				});
+			} catch (err) {
+				// Prevent equivocation by retrying the same tx until it fails definitely.
+				// If we were to submit a new tx, we risk locking objects until epoch end.
+				const errStr = String(err);
+				const errStrLower = errStr.toLowerCase();
+				if (
+					errStrLower.includes("finality") ||
+					errStrLower.includes("timeout") ||
+					errStrLower.includes("timed out")
+				) {
+					await sleep(SLEEP_MS_AFTER_FINALITY_ERROR);
+				} else {
+					throw err;
+				}
+			}
+		}
 
 		if (resp.effects && resp.effects.status.status !== "success") {
 			throw new Error(`transaction failed: ${resp.effects.status.status}`);
