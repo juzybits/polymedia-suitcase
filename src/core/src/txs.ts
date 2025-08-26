@@ -128,6 +128,7 @@ export type SignAndExecuteTx = ReturnType<typeof newSignAndExecuteTx>;
 
 /**
  * Create a function that signs and executes a `Transaction`.
+ * TODO: add to README
  */
 export function newSignAndExecuteTx({
 	suiClient,
@@ -199,7 +200,7 @@ export function newSignAndExecuteTx({
 		}
 
 		if (resp.effects && resp.effects.status.status !== "success") {
-			throw new Error(`transaction failed: ${resp.effects.status.status}`);
+			throw new Error(`transaction failed: ${resp.effects.status.error}`);
 		}
 
 		if (!waitForTxOptions) {
